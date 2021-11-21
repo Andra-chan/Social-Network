@@ -14,20 +14,23 @@ import java.util.Scanner;
 public class UserInterface {
 
     private Service service;
+    private Scanner scanner;
 
     public UserInterface(Service service) {
         this.service = service;
+        scanner = new Scanner(System.in);
     }
 
     /**
      * Main intefrace method
+     * 
      * @throws Exception whenever a method catches an exception for the input
      */
-    public void run() throws Exception{
+    public void run() throws Exception {
 
         boolean continueRunning = true;
 
-        while(continueRunning){
+        while (continueRunning) {
             System.out.println("\n1.1. Add user.");
             System.out.println("1.2. Remove user.");
             System.out.println("2.1. Add friendship.");
@@ -41,56 +44,59 @@ public class UserInterface {
             System.out.println("10. EXIT!");
 
             String command;
-            Scanner scanner = new Scanner(System.in);
-            command = scanner.nextLine();
-
-            switch(command) {
-                case "1.1":
-                    addUser();
-                    break;
-                case "1.2":
-                    removeUser();
-                    break;
-                case "2.1":
-                    addFriendship();
-                    break;
-                case "2.2":
-                    removeFriendship();
-                    break;
-                case "3":
-                    communitiesNumber();
-                    break;
-                case "4":
-                    strongestCommunity();
-                    break;
-                case "5":
-                    printUsers();
-                    break;
-                case "6":
-                    printFriendships();
-                    break;
-                case "7":
-                    showFriends();
-                    break;
-                case "8":
-                    showFriendsFromMonth();
-                    break;
-                case "10": {
-                    continueRunning = false;
-                    break;
+            try {
+                command = scanner.nextLine();
+                switch (command) {
+                    case "1.1":
+                        addUser();
+                        break;
+                    case "1.2":
+                        removeUser();
+                        break;
+                    case "2.1":
+                        addFriendship();
+                        break;
+                    case "2.2":
+                        removeFriendship();
+                        break;
+                    case "3":
+                        communitiesNumber();
+                        break;
+                    case "4":
+                        strongestCommunity();
+                        break;
+                    case "5":
+                        printUsers();
+                        break;
+                    case "6":
+                        printFriendships();
+                        break;
+                    case "7":
+                        showFriends();
+                        break;
+                    case "8":
+                        showFriendsFromMonth();
+                        break;
+                    case "10": {
+                        continueRunning = false;
+                        break;
+                    }
+                    default: {
+                        System.out.println(("Invalid input!\n"));
+                    }
                 }
-                default: {
-                    System.out.println(("Invalid input!\n"));
-                }
+            } catch (Exception ex) {
+                System.out.println(ex);
             }
         }
     }
 
     /**
-     * Receives the input from the client and calls the addUser() method from the service
+     * Receives the input from the client and calls the addUser() method from the
+     * service
      */
     private void addUser() {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
 
         System.out.println("Insert ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
@@ -108,10 +114,11 @@ public class UserInterface {
     }
 
     /**
-     * Receives the input from the client and calls the removeUser() method from the service
+     * Receives the input from the client and calls the removeUser() method from the
+     * service
      */
     private void removeUser() {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
 
         System.out.println("Insert ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
@@ -121,13 +128,11 @@ public class UserInterface {
     }
 
     /**
-     * Receives the input from the client and calls the addFriendship() method from the service
+     * Receives the input from the client and calls the addFriendship() method from
+     * the service
      */
     private void addFriendship() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Insert friendship ID: ");
-        Long friendshipID = Long.parseLong(scanner.nextLine());
+        scanner = new Scanner(System.in);
 
         System.out.println("Insert first user ID: ");
         Long firstUserID = Long.parseLong(scanner.nextLine());
@@ -136,15 +141,16 @@ public class UserInterface {
         Long secondUserID = Long.parseLong(scanner.nextLine());
 
         Prietenie prietenie = new Prietenie(firstUserID, secondUserID, LocalDateTime.now());
-        prietenie.setId(friendshipID);
+        prietenie.setId(0l);
         service.addFriendship(prietenie);
     }
 
     /**
-     * Receives the input from the client and calls the removeFriendship() method from the service
+     * Receives the input from the client and calls the removeFriendship() method
+     * from the service
      */
     private void removeFriendship() {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
 
         System.out.println("Insert friendship ID: ");
         Long friendshipID = Long.parseLong(scanner.nextLine());
@@ -187,7 +193,7 @@ public class UserInterface {
      * Receives the input from the client and prints the friends of an user
      */
     private void showFriends() {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         System.out.println("Insert user ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
         System.out.println();
@@ -195,17 +201,17 @@ public class UserInterface {
         service.getFriends(userID).forEach(System.out::println);
     }
 
-    private void showFriendsFromMonth() throws Exception{
-        Scanner scanner = new Scanner(System.in);
+    private void showFriendsFromMonth() throws Exception {
+        scanner = new Scanner(System.in);
         System.out.println("Insert user ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
         System.out.println("Insert month: ");
         Integer month = Integer.parseInt(scanner.nextLine());
-        if(month < 1 || month > 12) {
+        if (month < 1 || month > 12) {
             throw new Exception("Month has to be in the 1-12 range!");
         }
         System.out.println();
-        System.out.println(userID + "'s friends from month " + month +": ");
+        System.out.println(userID + "'s friends from month " + month + ": ");
         service.getFriends(userID, month).forEach(System.out::println);
     }
 

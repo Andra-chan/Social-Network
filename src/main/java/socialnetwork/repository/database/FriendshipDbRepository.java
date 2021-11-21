@@ -1,23 +1,23 @@
 package socialnetwork.repository.database;
 
-import socialnetwork.domain.Prietenie;
-import socialnetwork.domain.Utilizator;
-import socialnetwork.domain.validators.Validator;
-import socialnetwork.repository.Repository;
-import socialnetwork.repository.RepositoryException;
-
-import javax.swing.text.html.parser.Entity;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
+import socialnetwork.domain.Prietenie;
+import socialnetwork.repository.Repository;
+import socialnetwork.repository.RepositoryException;
 
 public class FriendshipDbRepository implements Repository<Long, Prietenie> {
     private String url;
     private String username;
     private String password;
-
 
     public FriendshipDbRepository(String url, String username, String password) {
         this.url = url;
@@ -27,9 +27,9 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
 
     @Override
     public Prietenie findOne(Long id) {
-        Set<Prietenie> prietenii = new HashSet<>();
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * from friendships WHERE first_user =? AND second_user = ?")) {
+                PreparedStatement statement = connection
+                        .prepareStatement("SELECT * from friendships WHERE first_user =? AND second_user = ?")) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -52,8 +52,8 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
     public Iterable<Prietenie> findAll() {
         Set<Prietenie> prietenii = new HashSet<>();
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * from friendships");
-             ResultSet resultSet = statement.executeQuery()) {
+                PreparedStatement statement = connection.prepareStatement("SELECT * from friendships");
+                ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");
@@ -81,7 +81,7 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
         String queryFind = "select * from friendships where first_user = (?) and second_user = (?) or first_user = (?) and second_user = (?)";
 
         try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password);
-             PreparedStatement ps = connection.prepareStatement(queryFind)) {
+                PreparedStatement ps = connection.prepareStatement(queryFind)) {
 
             ps.setLong(1, prietenie.getFirstUser());
             ps.setLong(2, prietenie.getSecondUser());
@@ -98,9 +98,9 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
             throw new RepositoryException("SQL exception!");
         }
 
-        String sql = "insert into friendships (id, first_user, second_user, date) values (?,?,?,?)";
+        String sql = "insert into friendships (first_user, second_user, date) values (?,?,?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setLong(1, entity.getId());
             ps.setLong(2, entity.getFirstUser());
@@ -121,7 +121,7 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
 
         String sql = "DELETE FROM friendships WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -131,7 +131,7 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
     }
 
     @Override
-    public Prietenie update(Prietenie entity){
+    public Prietenie update(Prietenie entity) {
         return null;
     }
 }
