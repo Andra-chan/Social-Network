@@ -1,5 +1,6 @@
 package socialnetwork.ui;
 
+import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
@@ -37,7 +38,8 @@ public class UserInterface {
             System.out.println("5. Print all users.");
             System.out.println("6. Print all friendships.");
             System.out.println("7. Show friends.");
-            System.out.println("8.Show friends from a certain month.");
+            System.out.println("8. Show friends from a certain month.");
+            System.out.println("9. Friend requests.");
             System.out.println("10. EXIT!");
 
             String command;
@@ -75,12 +77,19 @@ public class UserInterface {
                 case "8":
                     showFriendsFromMonth();
                     break;
+                case "9":{
+                    System.out.println("Who are you? Insert your ID: ");
+                    Long userID = Long.parseLong(scanner.nextLine());
+                    friendRequests(userID);
+                }
+                break;
                 case "10": {
                     continueRunning = false;
                     break;
                 }
                 default: {
                     System.out.println(("Invalid input!\n"));
+                    break;
                 }
             }
         }
@@ -207,6 +216,53 @@ public class UserInterface {
         System.out.println();
         System.out.println(userID + "'s friends from month " + month +": ");
         service.getFriends(userID, month).forEach(System.out::println);
+    }
+
+    private void friendRequests(Long userID){
+        boolean keepLooping = true;
+
+        while(keepLooping){
+            System.out.println("\n1. Send friend request.");
+            System.out.println("2. Accept/Refuse friend request.");
+            System.out.println("3. Go back to the main menu.");
+
+            String cmd;
+            Scanner scanner = new Scanner(System.in);
+            cmd = scanner.nextLine();
+
+            switch (cmd){
+                case "1": {
+                    System.out.println("Insert user ID to send friend request to: ");
+                    Long userIDtoSendTo = Long.parseLong(scanner.nextLine());
+                    FriendRequest request = new FriendRequest(userID, userIDtoSendTo);
+                    service.addFriendRequest(request);
+                } break;
+                case "2":{
+                    if(service.getFriendRequests(userID).isEmpty()){
+                        System.out.println("You currently have no friend requests!");
+                        break;
+                    }
+                    else {
+                        service.getFriendRequests(userID).forEach(req -> {
+                            System.out.println("Friend Request ID: " + req.getId() + ". From: " + this.service.getUser(req.getSender()).getFirstName());
+                        });
+                        System.out.println("Insert Friend Request ID from the list: ");
+                        Long requestID = Long.parseLong(scanner.nextLine());
+                        System.out.println("Insert A to accept, R to refuse.");
+                        String decision = scanner.nextLine();
+                        service.handleFriendRequest(requestID, decision);
+                    }
+                }break;
+                case "3":{
+                    keepLooping = false;
+                    break;
+                }
+                default:{
+                    System.out.println("Invalid input!\n");
+                    break;
+                }
+            }
+        }
     }
 
 }

@@ -1,12 +1,15 @@
 package socialnetwork.service;
 
 import socialnetwork.domain.Friend;
+import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.repository.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -15,10 +18,13 @@ import java.util.stream.Collectors;
 public class Service {
     private Repository<Long, Utilizator> userRepository;
     private Repository<Long, Prietenie> friendshipRepository;
+    private Repository<Long, FriendRequest> friendRequestRepository;
 
-    public Service(Repository<Long, Utilizator> userRepository, Repository<Long, Prietenie> friendshipRepository) {
+    public Service(Repository<Long, Utilizator> userRepository, Repository<Long, Prietenie> friendshipRepository,
+                   Repository<Long, FriendRequest> friendRequestRepository) {
         this.userRepository = userRepository;
         this.friendshipRepository = friendshipRepository;
+        this.friendRequestRepository = friendRequestRepository;
     }
 
     /**
@@ -209,5 +215,42 @@ public class Service {
         return this.getFriends(userID).stream()
                 .filter(fr-> fr.getDateTime().getMonthValue() == month)
                 .collect(Collectors.toList());
+    }
+
+    public FriendRequest addFriendRequest(FriendRequest request) {
+        request.setStatus("PENDING");
+        request.setLocalDateTime(LocalDateTime.now());
+        return this.friendRequestRepository.save(request);
+    }
+
+    public List<FriendRequest> getFriendRequests(Long userID) {
+        List<FriendRequest> friendRequests = new ArrayList<>();
+        this.friendRequestRepository.findAll().forEach(req -> {
+            if(req.getReceiver().equals(userID) && req.getStatus().equals("PENDING")) friendRequests.add(req);
+        });
+        return friendRequests;
+    }
+
+    public void handleFriendRequest(Long requestID, String decision) {
+
+        FriendRequest fr = friendRequestRepository.findOne(requestID);
+        if(decision.equals("A")){
+            Prietenie prietenie = new Prietenie(fr.getSender(), fr.getReceiver(), LocalDateTime.now());
+
+            AtomicLong friendshipID = new AtomicLong(1L);
+            friendshipRepository.findAll().forEach((friendship -> friendshipID.getAndIncrement()));
+            prietenie.setId(friendshipID.get());
+
+            System.out.println(prietenie.getId());
+            friendshipRepository.save(prietenie);
+            fr.setStatus("ACCEPTED");
+            fr.setLocalDateTime(LocalDateTime.now());
+            friendRequestRepository.update(fr);
+        }
+        else {
+            fr.setStatus("REJECTED");
+            fr.setLocalDateTime(LocalDateTime.now());
+            friendRequestRepository.delete(requestID);
+        }
     }
 }
