@@ -224,6 +224,16 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Sends a message from a user to a list of users.
+     *
+     * @param creatorId   the user's id(message sender)
+     * @param to          a list of id's representing the message recipients.
+     * @param messageBody the message's body.
+     *
+     * @param returns     null if the message wasn't sent, and the message itself
+     *                    otherwise.
+     */
     public Message sendMessage(Long creatorId, List<Long> to, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
         var creator = userRepository.findOne(creatorId);
@@ -237,6 +247,17 @@ public class Service {
         return messageRepository.save(message);
     }
 
+    /**
+     * Replies to a message
+     *
+     * @param messageId      the message's id that you're trying to reply to
+     * @param replyCreatorId the user's id that created the reply
+     * @param messageBody    the reply's body
+     *
+     * @return null if the message wasn't sent(the message you want to reply to
+     *         doesn't exist, or it wasn't sent to replyCreatorId), the message
+     *         otherwise
+     */
     public Message replyToMessage(Long messageId, Long replyCreatorId, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
         var reply = messageRepository.findOne(messageId);
@@ -260,6 +281,15 @@ public class Service {
         return messageRepository.save(message);
     }
 
+    /**
+     * Get a list of all messages between two users.
+     *
+     * @param userId1 the first user's id
+     * @param userId2 the second user's id
+     *
+     * @return a list of entries of all messages between two users(in chronological order). Entry.key is a
+     * message, Entry.value is the reply(if it exists)
+     */
     public List<Map.Entry<Message, Message>> getAllMessagesBetweenTwoUsers(Long userId1, Long userId2) {
         var allMessages = messageRepository.findAll();
         Map<Long, Message> messages = StreamSupport.stream(allMessages.spliterator(), false)
