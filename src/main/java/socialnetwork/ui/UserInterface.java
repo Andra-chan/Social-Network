@@ -1,11 +1,14 @@
 package socialnetwork.ui;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.List;
+
+import socialnetwork.domain.Message;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
-
-import java.time.LocalDateTime;
-import java.util.Scanner;
 
 /**
  * User Interface
@@ -41,6 +44,9 @@ public class UserInterface {
             System.out.println("6. Print all friendships.");
             System.out.println("7. Show friends.");
             System.out.println("8.Show friends from a certain month.");
+            System.out.println("9.1 Send message.");
+            System.out.println("9.2 Reply to message");
+            System.out.println("9.3 Print all messages between 2 users.");
             System.out.println("10. EXIT!");
 
             String command;
@@ -77,6 +83,15 @@ public class UserInterface {
                     case "8":
                         showFriendsFromMonth();
                         break;
+                    case "9.1":
+                        sendMessage();
+                        break;
+                    case "9.2":
+                        replyToMessage();
+                        break;
+                    case "9.3":
+                        showMessagesBetweenTwoUsers();
+                        break;
                     case "10": {
                         continueRunning = false;
                         break;
@@ -96,8 +111,6 @@ public class UserInterface {
      * service
      */
     private void addUser() {
-        scanner = new Scanner(System.in);
-
         System.out.println("Insert ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
 
@@ -118,8 +131,6 @@ public class UserInterface {
      * service
      */
     private void removeUser() {
-        scanner = new Scanner(System.in);
-
         System.out.println("Insert ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
 
@@ -132,8 +143,6 @@ public class UserInterface {
      * the service
      */
     private void addFriendship() {
-        scanner = new Scanner(System.in);
-
         System.out.println("Insert first user ID: ");
         Long firstUserID = Long.parseLong(scanner.nextLine());
 
@@ -150,8 +159,6 @@ public class UserInterface {
      * from the service
      */
     private void removeFriendship() {
-        scanner = new Scanner(System.in);
-
         System.out.println("Insert friendship ID: ");
         Long friendshipID = Long.parseLong(scanner.nextLine());
 
@@ -193,7 +200,6 @@ public class UserInterface {
      * Receives the input from the client and prints the friends of an user
      */
     private void showFriends() {
-        scanner = new Scanner(System.in);
         System.out.println("Insert user ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
         System.out.println();
@@ -202,7 +208,6 @@ public class UserInterface {
     }
 
     private void showFriendsFromMonth() throws Exception {
-        scanner = new Scanner(System.in);
         System.out.println("Insert user ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
         System.out.println("Insert month: ");
@@ -215,4 +220,64 @@ public class UserInterface {
         service.getFriends(userID, month).forEach(System.out::println);
     }
 
+    private void sendMessage() {
+        System.out.println("Insert user ID:");
+        Long creatorId = Long.parseLong(scanner.nextLine());
+        List<Long> recipients = new ArrayList<>();
+        boolean done = false;
+        while (!done) {
+            System.out.println("Insert recipient id(type 0 to stop):");
+            Long id = Long.parseLong(scanner.nextLine());
+            if (id == 0) {
+                done = true;
+                continue;
+            }
+            recipients.add(id);
+        }
+        System.out.println("Message body: ");
+        String messageBody = scanner.nextLine();
+        service.sendMessage(creatorId, recipients, messageBody);
+    }
+
+    private void replyToMessage() {
+        System.out.println("Insert user ID:");
+        Long creatorId = Long.parseLong(scanner.nextLine());
+        System.out.println("Enter reply message ID: ");
+        Long replyMessageId = Long.parseLong(scanner.nextLine());
+        System.out.println("Message body: ");
+        String messageBody = scanner.nextLine();
+        service.replyToMessage(replyMessageId, creatorId, messageBody);
+    }
+
+    private void showMessagesBetweenTwoUsers() {
+        System.out.println("First user's ID:");
+        Long idUser1 = Long.parseLong(scanner.nextLine());
+        System.out.println("Second user's ID:");
+        Long idUser2 = Long.parseLong(scanner.nextLine());
+        var conversations = service.getAllMessagesBetweenTwoUsers(idUser1, idUser2);
+
+        for (var messageReplyPair : conversations) {
+            Message initialMessage = messageReplyPair.getKey();
+            String senderName = initialMessage.getFrom().getFirstName() + " " + initialMessage.getFrom().getLastName();
+            if (messageReplyPair.getValue() != null) {
+                Message replyMessage = messageReplyPair.getValue();
+                String receiverName = replyMessage.getFrom().getFirstName() + " "
+                        + replyMessage.getFrom().getLastName();
+                System.out.printf("Message: %s  at %s from %s to %s; Reply: %s at %s\n",
+                        initialMessage.getMessageBody(), initialMessage.getDate(),
+                        senderName, receiverName,
+                        messageReplyPair.getValue().getMessageBody(), messageReplyPair.getValue().getDate());
+            } else {
+                Utilizator receiver = initialMessage.getTo().stream()
+                        .filter(x -> {
+                            return x.getId().equals(idUser1) || x.getId().equals(idUser2);
+                        })
+                        .findFirst().get();
+                String receiverName = receiver.getFirstName() + " " + receiver.getLastName();
+                System.out.printf("Message: %s at %s from %s to %s\n",
+                        messageReplyPair.getKey().getMessageBody(), messageReplyPair.getKey().getDate(),
+                        senderName, receiverName);
+            }
+        }
+    }
 }

@@ -34,7 +34,7 @@ public class MessageDbRepository implements Repository<Long, Message> {
     public Message findOne(Long messageId) {
         var messages = findAll();
         var message = StreamSupport.stream(messages.spliterator(), false)
-                .filter(x -> x.getId() == messageId)
+                .filter(x -> x.getId().equals(messageId))
                 .findAny();
         return message.get();
     }
@@ -96,7 +96,6 @@ public class MessageDbRepository implements Repository<Long, Message> {
             ResultSet generatedId = insertMessageStatement.getGeneratedKeys();
             generatedId.next();
             Long insertedMessageId = generatedId.getLong(1);
-            System.out.println("Generated id: " + insertedMessageId);
 
             for (var to : entity.getTo()) {
                 insertRelationStatement.setLong(1, insertedMessageId);
@@ -133,7 +132,6 @@ public class MessageDbRepository implements Repository<Long, Message> {
 
     private ArrayList<Utilizator> getAllUsersForMessageId(Long messageId, Connection connection) throws SQLException {
         final String query = "SELECT u.id as user_id, u.first_name as first_name, u.last_name as last_name FROM messages m INNER JOIN messages_recipients m_r ON m.id=m_r.message_id INNER JOIN users u ON u.id=m_r.recipient_id WHERE m.id=?;";
-        System.out.println("m.id: " + messageId);
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setLong(1, messageId);
         ResultSet result = statement.executeQuery();
