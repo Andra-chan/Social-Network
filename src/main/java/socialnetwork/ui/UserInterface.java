@@ -9,6 +9,7 @@ import socialnetwork.domain.Message;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
+import socialnetwork.Util.Constants;
 
 /**
  * User Interface
@@ -220,6 +221,9 @@ public class UserInterface {
         service.getFriends(userID, month).forEach(System.out::println);
     }
 
+    /**
+     * Receives input form the client and calls sendMessage from service.
+     */
     private void sendMessage() {
         System.out.println("Insert user ID:");
         Long creatorId = Long.parseLong(scanner.nextLine());
@@ -239,6 +243,9 @@ public class UserInterface {
         service.sendMessage(creatorId, recipients, messageBody);
     }
 
+    /**
+     * Receives input from the client and calls replyToMessage from service
+     */
     private void replyToMessage() {
         System.out.println("Insert user ID:");
         Long creatorId = Long.parseLong(scanner.nextLine());
@@ -249,6 +256,10 @@ public class UserInterface {
         service.replyToMessage(replyMessageId, creatorId, messageBody);
     }
 
+    /**
+     * Receive input from the client, calls getAllMessagesBetweenTwoUsers from
+     * service and prints all conversations between 2 users
+     */
     private void showMessagesBetweenTwoUsers() {
         System.out.println("First user's ID:");
         Long idUser1 = Long.parseLong(scanner.nextLine());
@@ -264,9 +275,10 @@ public class UserInterface {
                 String receiverName = replyMessage.getFrom().getFirstName() + " "
                         + replyMessage.getFrom().getLastName();
                 System.out.printf("Message: %s  at %s from %s to %s; Reply: %s at %s\n",
-                        initialMessage.getMessageBody(), initialMessage.getDate(),
+                        initialMessage.getMessageBody(), initialMessage.getDate().format(Constants.dateTimeFormat),
                         senderName, receiverName,
-                        messageReplyPair.getValue().getMessageBody(), messageReplyPair.getValue().getDate());
+                        messageReplyPair.getValue().getMessageBody(),
+                        messageReplyPair.getValue().getDate().format(Constants.dateTimeFormat));
             } else {
                 Utilizator receiver = initialMessage.getTo().stream()
                         .filter(x -> {
@@ -275,7 +287,8 @@ public class UserInterface {
                         .findFirst().get();
                 String receiverName = receiver.getFirstName() + " " + receiver.getLastName();
                 System.out.printf("Message: %s at %s from %s to %s\n",
-                        messageReplyPair.getKey().getMessageBody(), messageReplyPair.getKey().getDate(),
+                        messageReplyPair.getKey().getMessageBody(),
+                        messageReplyPair.getKey().getDate().format(Constants.dateTimeFormat),
                         senderName, receiverName);
             }
         }

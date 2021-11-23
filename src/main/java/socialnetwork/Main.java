@@ -32,11 +32,8 @@ public class Main {
             Repository<Long, Prietenie> friendshipRepository = new FriendshipDbRepository(url, username, password);
 
             MessageDbRepository messageRepo = new MessageDbRepository(url, username, password);
-            var messages = messageRepo.findAll();
-            messages.forEach(x -> System.out.println(x));
 
             Service service = new Service(userRepository, friendshipRepository, messageRepo);
-            service.getAllMessagesBetweenTwoUsers(2l, 7l);
 
             UserInterface ui = new UserInterface(service);
             ui.run();
