@@ -29,7 +29,7 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
     public Prietenie findOne(Long id) {
         Set<Prietenie> prietenii = new HashSet<>();
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * from friendships WHERE first_user =? AND second_user = ?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * from friendships WHERE id=?")) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
