@@ -290,6 +290,13 @@ public class Service {
         if (!isValidReply) {
             throw new ServiceException("The user doesn't have the message you're trying to reply to.");
         }
+        isValidReply = !StreamSupport.stream(messageRepository.findAll().spliterator(), false)
+                .anyMatch(x -> x.getFrom().getId().equals(replyCreatorId)
+                        && x.getReply() != null
+                        && x.getReply().getId().equals(messageId));
+        if (!isValidReply) {
+            throw new ServiceException("Cannot reply to the same message twice");
+        }
 
         List<Utilizator> to = new ArrayList<>();
         var messageRecipient = userRepository.findOne(reply.getFrom().getId());
@@ -378,18 +385,19 @@ public class Service {
         return this.friendRequestRepository.save(request);
     }
 
-    public Optional<FriendRequest> verifyPendingRequest(FriendRequest request){
-        return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(),false).filter(req->{
-                    if(req.getSender() == request.getReceiver() && req.getReceiver() == request.getSender() && req.getStatus().equals("PENDING")) return true;
+    public Optional<FriendRequest> verifyPendingRequest(FriendRequest request) {
+        return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(), false).filter(req -> {
+            if (req.getSender() == request.getReceiver() && req.getReceiver() == request.getSender()
+                    && req.getStatus().equals("PENDING"))
+                return true;
             return false;
         }).findFirst();
     }
 
-    public boolean checkIfUserExists(Long userID){
-        try{
+    public boolean checkIfUserExists(Long userID) {
+        try {
             userRepository.findOne(userID);
-        }
-        catch (RepositoryException e){
+        } catch (RepositoryException e) {
             return false;
         }
         return true;
