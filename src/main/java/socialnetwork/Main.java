@@ -1,21 +1,31 @@
 package socialnetwork;
 
+import socialnetwork.domain.validators.MessageValidator;
+import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
-import socialnetwork.domain.validators.MessageValidator;
+import socialnetwork.domain.validators.FriendRequestValidator;
+import socialnetwork.domain.validators.FriendshipValidator;
+
 import socialnetwork.domain.validators.UtilizatorValidator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
+import socialnetwork.repository.database.FriendRequestDbRepository;
 import socialnetwork.repository.database.FriendshipDbRepository;
 import socialnetwork.repository.database.MessageDbRepository;
 import socialnetwork.repository.database.UtilizatorDbRepository;
+
+import socialnetwork.repository.file.FriendRequestFile;
+import socialnetwork.repository.file.FriendshipFile;
+import socialnetwork.repository.file.UtilizatorFile;
+
 import socialnetwork.service.Service;
 import socialnetwork.ui.UserInterface;
 
 /**
  * Main class
  * Starts the program, initiates the Repository, Validator and Service
- * Contains where the input will be stored(csv file for now)
+ * Contains where the input will be stored(database)
  */
 public class Main {
 
@@ -23,7 +33,8 @@ public class Main {
 
         String url = "jdbc:postgresql://localhost:5432/socialnetwork";
         String username = "postgres";
-        String password = "admin";
+        String password = "mypostgres";
+
         try {
             Validator<Utilizator> userValidator = new UtilizatorValidator();
 
@@ -34,7 +45,9 @@ public class Main {
 
             MessageDbRepository messageRepo = new MessageDbRepository(url, username, password, new MessageValidator());
 
-            Service service = new Service(userRepository, friendshipRepository, messageRepo);
+            Repository<Long, FriendRequest> friendRequestRepository = new FriendRequestDbRepository(url, username, password);
+
+            Service service = new Service(userRepository, friendshipRepository, friendRequestRepository, messageRepo);
 
             UserInterface ui = new UserInterface(service);
             ui.run();

@@ -28,8 +28,7 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
     @Override
     public Prietenie findOne(Long id) {
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement statement = connection
-                        .prepareStatement("SELECT * from friendships WHERE first_user =? AND second_user = ?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * from friendships WHERE id=?")) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
 
@@ -76,7 +75,7 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
         if (entity == null)
             throw new RepositoryException("Entity must not be null!");
 
-        Prietenie prietenie = (Prietenie) entity;
+        Prietenie prietenie = entity;
 
         String queryFind = "select * from friendships where first_user = (?) and second_user = (?) or first_user = (?) and second_user = (?)";
 

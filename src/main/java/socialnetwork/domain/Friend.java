@@ -25,12 +25,9 @@ public class Friend {
     public String getFirstName() {
         return firstName;
     }
-
-
     public String getLastName() {
         return lastName;
     }
-
     public LocalDateTime getDateTime() {return dateTime;}
 
     /**
@@ -41,7 +38,6 @@ public class Friend {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

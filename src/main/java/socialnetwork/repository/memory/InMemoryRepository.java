@@ -23,8 +23,8 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
     }
 
     /**
-     * Finds and returns an user in the entity Map
-     * @param id specific atribute of an entity
+     * Finds and returns a user in the entity Map
+     * @param id specific attribute of an entity
      * @return an user
      * @throws RepositoryException if the ID is null
      */
