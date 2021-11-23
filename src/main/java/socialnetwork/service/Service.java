@@ -231,8 +231,11 @@ public class Service {
      * @param to          a list of id's representing the message recipients.
      * @param messageBody the message's body.
      *
-     * @param returns     null if the message wasn't sent, and the message itself
-     *                    otherwise.
+     * @return null if the message wasn't sent, and the message itself
+     *         otherwise.
+     * @throws RepositoryException if the user with the id creatorId doesn't exist,
+     *                             or if any of the users in the recipients list
+     *                             don't exist
      */
     public Message sendMessage(Long creatorId, List<Long> to, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
@@ -287,25 +290,47 @@ public class Service {
      * @param userId1 the first user's id
      * @param userId2 the second user's id
      *
-     * @return a list of entries of all messages between two users(in chronological order). Entry.key is a
-     * message, Entry.value is the reply(if it exists)
+     * @return a list of entries of all messages between two users(in chronological
+     *         order). Entry.key is a
+     *         message, Entry.value is the reply(if it exists)
      */
     public List<Map.Entry<Message, Message>> getAllMessagesBetweenTwoUsers(Long userId1, Long userId2) {
         var allMessages = messageRepository.findAll();
         Map<Long, Message> messages = StreamSupport.stream(allMessages.spliterator(), false)
                 .filter(x -> {
+                    // creator must be one of the provided users
                     if (x.getFrom().getId().equals(userId1) || x.getFrom().getId().equals(userId2)) {
                         return true;
                     }
                     return false;
                 })
                 .filter(x -> {
+                    // message must have one of the users in the recipients list
                     boolean from1to2 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId1));
                     boolean from2to1 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId2));
                     return from1to2 || from2to1;
                 })
                 .collect(Collectors.toMap(x -> x.getId(), x -> x));
 
+        HashMap<Message, Message> messageReply = getMessageReplyPairs(messages);
+
+        var conversations = messageReply.entrySet().stream()
+                .sorted(Comparator.comparing(Map.Entry::getKey,
+                        (a, b) -> a.getDate().compareTo(b.getDate())))
+                .collect(Collectors.toList());
+        return conversations;
+    }
+
+    /**
+     * Makes a map of messages where the key is a message and the value is a message
+     * that replies to the key message
+     *
+     * @param messages a map of messages, key is the message id, value is the
+     *                 message itself
+     * @return HashMap<Message, Message> where key is a message, and value is the
+     *         message that replies to the key(null otherwise)
+     */
+    private HashMap<Message, Message> getMessageReplyPairs(Map<Long, Message> messages) {
         HashMap<Message, Message> messageReply = new HashMap<>();
         for (var messageEntry : messages.entrySet()) {
             Predicate<Map.Entry<Long, Message>> hasParent = x -> {
@@ -321,10 +346,6 @@ public class Service {
                 messageReply.put(messageEntry.getValue(), null);
             }
         }
-        var conversations = messageReply.entrySet().stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey,
-                        (a, b) -> a.getDate().compareTo(b.getDate())))
-                .collect(Collectors.toList());
-        return conversations;
+        return messageReply;
     }
 }

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.stream.StreamSupport;
 
 import socialnetwork.domain.Message;
+import socialnetwork.domain.validators.Validator;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
@@ -23,15 +24,20 @@ public class MessageDbRepository implements Repository<Long, Message> {
     private String url;
     private String username;
     private String password;
+    private Validator<Message> validator;
 
-    public MessageDbRepository(String url, String username, String password) {
+    public MessageDbRepository(String url, String username, String password, Validator<Message> validator) {
         this.url = url;
         this.username = username;
         this.password = password;
+        this.validator = validator;
     }
 
     @Override
     public Message findOne(Long messageId) {
+        if (messageId == null) {
+            throw new RepositoryException("Entity id must not be null");
+        }
         var messages = findAll();
         var message = StreamSupport.stream(messages.spliterator(), false)
                 .filter(x -> x.getId().equals(messageId))
@@ -75,6 +81,10 @@ public class MessageDbRepository implements Repository<Long, Message> {
 
     @Override
     public Message save(Message entity) {
+        if (entity == null) {
+            throw new RepositoryException("Entity must not be null");
+        }
+        validator.validate(entity);
         String insertMessageSql = "INSERT INTO messages (creator_id, message_body, date, parent_message_id) VALUES (?, ?, ?, ?)";
         String insertRelationSql = "INSERT INTO messages_recipients (message_id, recipient_id) VALUES (?, ?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
