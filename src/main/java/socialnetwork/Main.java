@@ -2,6 +2,7 @@ package socialnetwork;
 
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
+import socialnetwork.domain.validators.MessageValidator;
 import socialnetwork.domain.validators.UtilizatorValidator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
@@ -31,7 +32,7 @@ public class Main {
 
             Repository<Long, Prietenie> friendshipRepository = new FriendshipDbRepository(url, username, password);
 
-            MessageDbRepository messageRepo = new MessageDbRepository(url, username, password);
+            MessageDbRepository messageRepo = new MessageDbRepository(url, username, password, new MessageValidator());
 
             Service service = new Service(userRepository, friendshipRepository, messageRepo);
 
