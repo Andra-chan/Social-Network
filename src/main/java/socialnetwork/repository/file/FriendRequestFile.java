@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * FriendRequest File Repository
+ */
 public class FriendRequestFile extends AbstractFileRepository<Long, FriendRequest> {
 
 
@@ -15,6 +18,12 @@ public class FriendRequestFile extends AbstractFileRepository<Long, FriendReques
         super(validator, fileName);
     }
 
+    /**
+     *  extract entity override for friendRequest  - template method design pattern
+     *  creates an entity of type FriendRequest having a specified list of @code attributes
+     * @param attributes
+     * @return an entity of type FriendRequest
+     */
     @Override
     public FriendRequest extractEntity(List<String> attributes){
         FriendRequest friendRequest = new FriendRequest(
@@ -31,6 +40,11 @@ public class FriendRequestFile extends AbstractFileRepository<Long, FriendReques
         return entity.getId() + ";" + entity.getSender() + ";" + entity.getReceiver()  + ";" + entity.getLocalDateTime() + ";" + entity.getStatus();
     }
 
+    /**
+     * Overwritten method of delete in order to update the status to REJECTED and not actually delete the FriendRequest
+     * @param id entity to be removed at the specified id
+     * @return
+     */
     @Override
     public FriendRequest delete(Long id){
 

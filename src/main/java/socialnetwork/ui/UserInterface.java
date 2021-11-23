@@ -21,7 +21,7 @@ public class UserInterface {
     }
 
     /**
-     * Main intefrace method
+     * Main interface method
      * @throws Exception whenever a method catches an exception for the input
      */
     public void run() throws Exception{
@@ -96,7 +96,7 @@ public class UserInterface {
     }
 
     /**
-     * Receives the input from the client and calls the addUser() method from the service
+     * Receives the input from the client and calls addUser() method from the service
      */
     private void addUser() {
         Scanner scanner = new Scanner(System.in);
@@ -117,7 +117,7 @@ public class UserInterface {
     }
 
     /**
-     * Receives the input from the client and calls the removeUser() method from the service
+     * Receives the input from the client and calls removeUser() method from the service
      */
     private void removeUser() {
         Scanner scanner = new Scanner(System.in);
@@ -130,7 +130,7 @@ public class UserInterface {
     }
 
     /**
-     * Receives the input from the client and calls the addFriendship() method from the service
+     * Receives the input from the client and calls addFriendship() method from the service
      */
     private void addFriendship() {
         Scanner scanner = new Scanner(System.in);
@@ -150,7 +150,7 @@ public class UserInterface {
     }
 
     /**
-     * Receives the input from the client and calls the removeFriendship() method from the service
+     * Receives the input from the client and calls removeFriendship() method from the service
      */
     private void removeFriendship() {
         Scanner scanner = new Scanner(System.in);
@@ -163,21 +163,21 @@ public class UserInterface {
     }
 
     /**
-     * Calls the nrCommunities() method from the service
+     * Calls nrCommunities() method from the service
      */
     private void communitiesNumber() {
         System.out.println("\nThe number of communities is: " + service.nrCommunities());
     }
 
     /**
-     * Calls the strongestCommunity() method from the service
+     * Calls strongestCommunity() method from the service
      */
     private void strongestCommunity() {
         System.out.println("\nThe strongest community is: " + service.strongestCommunity());
     }
 
     /**
-     * Prints all users in the folder
+     * Prints all users in the database
      */
     private void printUsers() {
         System.out.println("Printing users...");
@@ -185,7 +185,7 @@ public class UserInterface {
     }
 
     /**
-     * Prints all friendships in the folder
+     * Prints all friendships in the database
      */
     private void printFriendships() {
         System.out.println("Printing friendships...");
@@ -193,7 +193,7 @@ public class UserInterface {
     }
 
     /**
-     * Receives the input from the client and prints the friends of an user
+     * Receives the input from the client and prints the friends of a user
      */
     private void showFriends() {
         Scanner scanner = new Scanner(System.in);
@@ -204,6 +204,9 @@ public class UserInterface {
         service.getFriends(userID).forEach(System.out::println);
     }
 
+    /**
+     * Receives the input from the client and prints the friends of a user from a chosen month
+     */
     private void showFriendsFromMonth() throws Exception{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Insert user ID: ");
@@ -218,6 +221,10 @@ public class UserInterface {
         service.getFriends(userID, month).forEach(System.out::println);
     }
 
+    /**
+     * This method prints the menu for friend requests and calls service for the selected option
+     * @param userID the ID of the user who is logged in
+     */
     private void friendRequests(Long userID){
         boolean keepLooping = true;
 

@@ -28,7 +28,7 @@ public class Service {
     }
 
     /**
-     * Adds an user via the save() method from the repository
+     * Adds a user via save() method from the repository
      * @param user entity to be stored
      * @return
      */
@@ -53,7 +53,7 @@ public class Service {
     }
 
     /**
-     * Removes an user via the delete() method from the repository
+     * Removes a user via delete() method from the repository
      * @return the entity that was removed or not
      */
     public Utilizator removeUser(Long userID){
@@ -77,7 +77,7 @@ public class Service {
     }
 
     /**
-     * Adds a friendship via the save() method from the repository
+     * Adds a friendship via save() method from the repository
      * @param prietenie entity to be stored
      * @return the stored entity
      */
@@ -103,8 +103,8 @@ public class Service {
     }
 
     /**
-     * Removes a friendship via the delete() method from the repository
-     * @param id of the entity to be delete
+     * Removes a friendship via delete() method from the repository
+     * @param id of the entity to be deleted
      * @return the deleted entity
      */
     public Prietenie removeFriendship(Long id){
@@ -189,7 +189,7 @@ public class Service {
 
     /**
      *
-     * @param userID the ID of on user
+     * @param userID the ID of o user
      * @return a list of Friends of the given user
      */
     public List<Friend> getFriends(Long userID) {
@@ -211,18 +211,34 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param userID the ID of o user
+     * @param month the month which corresponds to the friend request
+     * @return a list of Friends of the given user in a certain month
+     */
     public List<Friend> getFriends(Long userID, Integer month){
         return this.getFriends(userID).stream()
                 .filter(fr-> fr.getDateTime().getMonthValue() == month)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Adds a friend request using the save() from the repository
+     * @param request to be saved
+     * @return the saved friend request
+     */
     public FriendRequest addFriendRequest(FriendRequest request) {
         request.setStatus("PENDING");
         request.setLocalDateTime(LocalDateTime.now());
         return this.friendRequestRepository.save(request);
     }
 
+    /**
+     *
+     * @param userID id of a user
+     * @return returns a list of friend requests of a user
+     */
     public List<FriendRequest> getFriendRequests(Long userID) {
         List<FriendRequest> friendRequests = new ArrayList<>();
         this.friendRequestRepository.findAll().forEach(req -> {
@@ -231,6 +247,13 @@ public class Service {
         return friendRequests;
     }
 
+    /**
+     * handles a friend requests:
+     *  - if accepted, the friendship will be stored and the friend request will be updated with the status ACCEPTED
+     *  - if denied, the friend request will be updated with the status REJECTED
+     * @param requestID the ID of a request
+     * @param decision whether a user accepts or rejects a friend request
+     */
     public void handleFriendRequest(Long requestID, String decision) {
 
         FriendRequest fr = friendRequestRepository.findOne(requestID);
