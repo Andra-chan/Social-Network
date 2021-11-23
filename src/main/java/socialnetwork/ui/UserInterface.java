@@ -99,6 +99,10 @@ public class UserInterface {
                     case "9":{
                         System.out.println("Who are you? Insert your ID: ");
                         Long userID = Long.parseLong(scanner.nextLine());
+                        if(!service.checkIfUserExists(userID)) {
+                            System.out.println("This user does not exist!");
+                            break;
+                        }
                         friendRequests(userID);
                     }
                     break;
@@ -120,8 +124,6 @@ public class UserInterface {
      * Receives the input from the client and calls addUser() method from the service
      */
     private void addUser() {
-        System.out.println("Insert ID: ");
-        Long userID = Long.parseLong(scanner.nextLine());
 
         System.out.println("Insert last name: ");
         String lastName = scanner.nextLine();
@@ -130,7 +132,6 @@ public class UserInterface {
         String firstName = scanner.nextLine();
 
         Utilizator user = new Utilizator(firstName, lastName);
-        user.setId(userID);
         service.addUser(user);
 
     }
@@ -315,15 +316,27 @@ public class UserInterface {
             System.out.println("3. Go back to the main menu.");
 
             String cmd;
-            Scanner scanner = new Scanner(System.in);
             cmd = scanner.nextLine();
 
             switch (cmd){
                 case "1": {
                     System.out.println("Insert user ID to send friend request to: ");
                     Long userIDtoSendTo = Long.parseLong(scanner.nextLine());
+                    if(!service.checkIfUserExists(userIDtoSendTo)) {
+                        System.out.println("This user does not exist!");
+                        break;
+                    }
                     FriendRequest request = new FriendRequest(userID, userIDtoSendTo);
-                    service.addFriendRequest(request);
+                    var req = service.verifyPendingRequest(request);
+                    if(req.isPresent()) {
+                        System.out.println("This friend request already exists! Do you want to accept it?");
+                        System.out.println("Insert: Y/N");
+                        String decision = scanner.nextLine();
+                        if(decision.equals("Y"))
+                            service.handleFriendRequest(req.get().getId(), "A" );
+                    }
+                    else
+                        service.addFriendRequest(request);
                 } break;
                 case "2":{
                     if(service.getFriendRequests(userID).isEmpty()){

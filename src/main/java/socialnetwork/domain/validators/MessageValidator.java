@@ -15,9 +15,6 @@ public class MessageValidator implements Validator<Message> {
         if (entity.getDate() == null) {
             throw new ValidationException("Message date can't be null");
         }
-        if (entity.getId() == null) {
-            throw new ValidationException("Message id can't be null");
-        }
         if (entity.getTo() == null) {
             throw new ValidationException("Message recipient list can't be null");
         }

@@ -14,6 +14,7 @@ import socialnetwork.service.ServiceException;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.repository.Repository;
+import socialnetwork.repository.RepositoryException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -377,6 +378,23 @@ public class Service {
         return this.friendRequestRepository.save(request);
     }
 
+    public Optional<FriendRequest> verifyPendingRequest(FriendRequest request){
+        return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(),false).filter(req->{
+                    if(req.getSender() == request.getReceiver() && req.getReceiver() == request.getSender() && req.getStatus().equals("PENDING")) return true;
+            return false;
+        }).findFirst();
+    }
+
+    public boolean checkIfUserExists(Long userID){
+        try{
+            userRepository.findOne(userID);
+        }
+        catch (RepositoryException e){
+            return false;
+        }
+        return true;
+    }
+
     /**
      *
      * @param userID id of a user
@@ -410,7 +428,6 @@ public class Service {
             friendshipRepository.findAll().forEach((friendship -> friendshipID.getAndIncrement()));
             prietenie.setId(friendshipID.get());
 
-            System.out.println(prietenie.getId());
             friendshipRepository.save(prietenie);
             fr.setStatus("ACCEPTED");
             fr.setLocalDateTime(LocalDateTime.now());

@@ -72,13 +72,12 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
             throw new RepositoryException("Entity must not be null!");
         validator.validate(entity);
 
-        String sql = "insert into users (id, first_name, last_name ) values (?,?, ?)";
+        String sql = "insert into users ( first_name, last_name ) values (?,?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
                 PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setLong(1, entity.getId());
-            ps.setString(2, entity.getFirstName());
-            ps.setString(3, entity.getLastName());
+            ps.setString(1, entity.getFirstName());
+            ps.setString(2, entity.getLastName());
 
             ps.executeUpdate();
         } catch (SQLException e) {

@@ -101,10 +101,9 @@ public class FriendshipDbRepository implements Repository<Long, Prietenie> {
         try (Connection connection = DriverManager.getConnection(url, username, password);
                 PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setLong(1, entity.getId());
-            ps.setLong(2, entity.getFirstUser());
-            ps.setLong(3, entity.getSecondUser());
-            ps.setTimestamp(4, Timestamp.valueOf(entity.getDate()));
+            ps.setLong(1, entity.getFirstUser());
+            ps.setLong(2, entity.getSecondUser());
+            ps.setTimestamp(3, Timestamp.valueOf(entity.getDate()));
 
             ps.executeUpdate();
         } catch (SQLException e) {
