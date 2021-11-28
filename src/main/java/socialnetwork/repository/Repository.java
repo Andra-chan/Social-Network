@@ -12,7 +12,7 @@ public interface Repository<ID, E extends Entity<ID>> {
 
     /**
      *  Returns entity with the given id
-     * @param id specific atribute of an entity
+     * @param id specific attribute of an entity
      * @return an entity with the specified id, null otherwise
      * @throws IllegalAccessException if id is null
      */

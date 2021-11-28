@@ -37,7 +37,7 @@ public class Prietenie extends Entity<Long>{
     }
 
     /**
-     * Setters which modfies the users of a friendship
+     * Setters which modifies the users of a friendship
      * @param firstUser/secondUser
      */
 

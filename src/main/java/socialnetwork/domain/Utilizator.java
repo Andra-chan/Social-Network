@@ -19,36 +19,33 @@ public class Utilizator extends Entity<Long> {
 
     /**
      * Getters
-     * @return firstName/lastName/Friends of an user
+     * @return firstName/lastName/Friends of a user
      */
 
     public String getFirstName() {
         return firstName;
     }
-
     public String getLastName() {
         return lastName;
     }
-
     public List<Utilizator> getFriends() {
         return friends;
     }
 
     /**
      * Setters used to modify an entity
-     * @param firstName, lastName of an user
+     * @param firstName, lastName of a user
      */
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * How an user will be showcased
+     * How a user will be showcased
      * @return String
      */
     @Override

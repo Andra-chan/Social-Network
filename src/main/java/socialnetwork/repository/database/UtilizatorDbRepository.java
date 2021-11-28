@@ -1,15 +1,17 @@
 package socialnetwork.repository.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import socialnetwork.domain.Utilizator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
-
-import java.sql.*;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
     private String url;
@@ -23,17 +25,18 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
         this.password = password;
         this.validator = validator;
     }
+
     @Override
     public Utilizator findOne(Long id) {
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * from users WHERE id =?")) {
+                PreparedStatement statement = connection.prepareStatement("SELECT * from users WHERE id =?")) {
             statement.setLong(1, id);
-             ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
 
-            if(!resultSet.next())
+            if (!resultSet.next())
                 throw new RepositoryException("Element doesn't exist!");
-            Utilizator toReturn = new Utilizator(resultSet.getString("first_name"),resultSet.getString("last_name"));
+            Utilizator toReturn = new Utilizator(resultSet.getString("first_name"), resultSet.getString("last_name"));
             toReturn.setId(resultSet.getLong("id"));
             return toReturn;
         } catch (SQLException e) {
@@ -45,8 +48,8 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
     public Iterable<Utilizator> findAll() {
         Set<Utilizator> users = new HashSet<>();
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * from users");
-             ResultSet resultSet = statement.executeQuery()) {
+                PreparedStatement statement = connection.prepareStatement("SELECT * from users");
+                ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");
@@ -65,17 +68,16 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
 
     @Override
     public Utilizator save(Utilizator entity) {
-        if(entity == null)
+        if (entity == null)
             throw new RepositoryException("Entity must not be null!");
         validator.validate(entity);
 
-        String sql = "insert into users (id, first_name, last_name ) values (?,?, ?)";
+        String sql = "insert into users ( first_name, last_name ) values (?,?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setLong(1, entity.getId());
-            ps.setString(2, entity.getFirstName());
-            ps.setString(3, entity.getLastName());
+            ps.setString(1, entity.getFirstName());
+            ps.setString(2, entity.getLastName());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -86,15 +88,15 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
 
     @Override
     public Utilizator delete(Long id) {
-        if(id == null)
+        if (id == null)
             throw new RepositoryException("ID must not be null!");
 
         String sql = "DELETE FROM users WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RepositoryException("SQL exception!");
         }
         return null;
@@ -102,23 +104,22 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
 
     @Override
     public Utilizator update(Utilizator entity) {
-        if(entity == null)
+        if (entity == null)
             throw new RepositoryException("Entity must not be null!");
         validator.validate(entity);
 
-        String updateUserSql = "UPDATE users"+ " SET first_name =?, last_name =?" + " WHERE id=?";
+        String updateUserSql = "UPDATE users" + " SET first_name =?, last_name =?" + " WHERE id=?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             var statement = connection.prepareStatement(updateUserSql)){
+                var statement = connection.prepareStatement(updateUserSql)) {
             statement.setString(1, entity.getFirstName());
             statement.setString(2, entity.getLastName());
             statement.setLong(3, entity.getId());
 
             statement.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RepositoryException("SQL exception!");
         }
         return null;
 
     }
 }
-
