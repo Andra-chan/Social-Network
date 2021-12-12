@@ -1,24 +1,15 @@
 package socialnetwork.service;
 
+import socialnetwork.domain.*;
+import socialnetwork.repository.Repository;
+import socialnetwork.repository.RepositoryException;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import socialnetwork.domain.Friend;
-import socialnetwork.domain.FriendRequest;
-import socialnetwork.domain.Message;
-import socialnetwork.domain.Prietenie;
-import socialnetwork.domain.Utilizator;
-import socialnetwork.repository.Repository;
-import socialnetwork.repository.RepositoryException;
 
 /**
  * Service class that implements all methods
@@ -31,7 +22,7 @@ public class Service {
     private Repository<Long, FriendRequest> friendRequestRepository;
 
     public Service(Repository<Long, Utilizator> userRepository, Repository<Long, Prietenie> friendshipRepository,
-            Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
+                   Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
         this.userRepository = userRepository;
         this.friendshipRepository = friendshipRepository;
         this.friendRequestRepository = friendRequestRepository;
@@ -40,7 +31,7 @@ public class Service {
 
     /**
      * Adds a user via save() method from the socialnetwork.repository
-     * 
+     *
      * @param user entity to be stored
      * @return
      */
@@ -49,7 +40,6 @@ public class Service {
     }
 
     /**
-     *
      * @return all users in the socialnetwork.repository
      */
     public Iterable<Utilizator> getAllUsers() {
@@ -57,7 +47,6 @@ public class Service {
     }
 
     /**
-     *
      * @return all friendships in the socialnetwork.repository
      */
     public Iterable<Prietenie> getAllFriendships() {
@@ -66,7 +55,7 @@ public class Service {
 
     /**
      * Removes a user via delete() method from the socialnetwork.repository
-     * 
+     *
      * @return the entity that was removed or not
      */
     public Utilizator removeUser(Long userID) {
@@ -81,7 +70,6 @@ public class Service {
     }
 
     /**
-     *
      * @param userID ID of the user
      * @return the user with the given ID
      */
@@ -91,7 +79,7 @@ public class Service {
 
     /**
      * Adds a friendship via save() method from the socialnetwork.repository
-     * 
+     *
      * @param prietenie entity to be stored
      * @return the stored entity
      */
@@ -100,7 +88,6 @@ public class Service {
     }
 
     /**
-     *
      * @return a friendship from the socialnetwork.repository
      */
     public Prietenie getFriendship(Long friendshipID) {
@@ -118,7 +105,7 @@ public class Service {
 
     /**
      * Removes a friendship via delete() method from the socialnetwork.repository
-     * 
+     *
      * @param id of the entity to be deleted
      * @return the deleted entity
      */
@@ -128,7 +115,7 @@ public class Service {
 
     /**
      * Method which determines the maximum number of communities in the network
-     * 
+     *
      * @return the maximum number of communities
      */
     public Integer nrCommunities() {
@@ -149,7 +136,7 @@ public class Service {
 
     /**
      * Method which determines the strongest community in the network
-     * 
+     *
      * @return a list with the strongest community
      */
     public List<Utilizator> strongestCommunity() {
@@ -178,7 +165,7 @@ public class Service {
     /**
      * Refactored method to determine the strongest community and the number of
      * communities
-     * 
+     *
      * @param visitedUsers users that where checked if they are part of the
      *                     community
      * @param user         to be checked if they are part of the community
@@ -208,7 +195,6 @@ public class Service {
     }
 
     /**
-     *
      * @param userID the ID of o user
      * @return a list of Friends of the given user
      */
@@ -246,9 +232,8 @@ public class Service {
      * @param creatorId   the user's id(message sender)
      * @param to          a list of id's representing the message recipients.
      * @param messageBody the message's body.
-     *
      * @return null if the message wasn't sent, and the message itself
-     *         otherwise.
+     * otherwise.
      * @throws RepositoryException if the user with the id creatorId doesn't exist,
      *                             or if any of the users in the recipients list
      *                             don't exist
@@ -272,10 +257,9 @@ public class Service {
      * @param messageId      the message's id that you're trying to reply to
      * @param replyCreatorId the user's id that created the reply
      * @param messageBody    the reply's body
-     *
      * @return null if the message wasn't sent(the message you want to reply to
-     *         doesn't exist, or it wasn't sent to replyCreatorId), the message
-     *         otherwise
+     * doesn't exist, or it wasn't sent to replyCreatorId), the message
+     * otherwise
      */
     public Message replyToMessage(Long messageId, Long replyCreatorId, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
@@ -312,10 +296,9 @@ public class Service {
      *
      * @param userId1 the first user's id
      * @param userId2 the second user's id
-     *
      * @return a list of entries of all messages between two users(in chronological
-     *         order). Entry.key is a
-     *         message, Entry.value is the reply(if it exists)
+     * order). Entry.key is a
+     * message, Entry.value is the reply(if it exists)
      */
     public List<Map.Entry<Message, Message>> getAllMessagesBetweenTwoUsers(Long userId1, Long userId2) {
         var allMessages = messageRepository.findAll();
@@ -351,7 +334,7 @@ public class Service {
      * @param messages a map of messages, key is the message id, value is the
      *                 message itself
      * @return HashMap<Message, Message> where key is a message, and value is the
-     *         message that replies to the key(null otherwise)
+     * message that replies to the key(null otherwise)
      */
     private HashMap<Message, Message> getMessageReplyPairs(Map<Long, Message> messages) {
         HashMap<Message, Message> messageReply = new HashMap<>();
@@ -374,7 +357,7 @@ public class Service {
 
     /**
      * Adds a friend request using the save() from the socialnetwork.repository
-     * 
+     *
      * @param request to be saved
      * @return the saved friend request
      */
@@ -403,14 +386,25 @@ public class Service {
     }
 
     /**
-     *
      * @param userID id of a user
      * @return returns a list of friend requests of a user
      */
-    public List<FriendRequest> getFriendRequests(Long userID) {
+    public List<FriendRequest> getPendingFriendRequests(Long userID) {
         List<FriendRequest> friendRequests = new ArrayList<>();
         this.friendRequestRepository.findAll().forEach(req -> {
             if (req.getReceiver().equals(userID) && req.getStatus().equals("PENDING"))
+                friendRequests.add(req);
+        });
+        return friendRequests;
+    }
+
+    public List<FriendRequest> getFriendRequests(Long userID) {
+        List<FriendRequest> friendRequests = new ArrayList<>();
+        this.friendRequestRepository.findAll().forEach(req -> {
+            if ((req.getReceiver().equals(userID) || req.getSender().equals(userID))
+                    && req.getStatus().equals("ACCEPTED")) {
+                friendRequests.add(req);
+            } else if (req.getReceiver().equals(userID) && req.getStatus().equals("PENDING"))
                 friendRequests.add(req);
         });
         return friendRequests;
@@ -421,7 +415,7 @@ public class Service {
      * - if accepted, the friendship will be stored and the friend request will be
      * updated with the status ACCEPTED
      * - if denied, the friend request will be updated with the status REJECTED
-     * 
+     *
      * @param requestID the ID of a request
      * @param decision  whether a user accepts or rejects a friend request
      */

@@ -1,5 +1,6 @@
 package socialnetwork.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ public class Utilizator extends Entity<Long> {
     public Utilizator(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        friends = new ArrayList<>();
     }
 
     /**
@@ -60,6 +62,8 @@ public class Utilizator extends Entity<Long> {
 
     @Override
     public boolean equals(Object o){
+        if(o == null)
+            return false;
         if (this==o)
             return true;
         Utilizator that = (Utilizator) o;

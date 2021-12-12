@@ -121,10 +121,11 @@ public class FriendRequestDbRepository implements Repository<Long, FriendRequest
         if (id == null)
             throw new RepositoryException("ID must not be null!");
 
-        String sql = "UPDATE friendrequests SET status ='REJECTED' WHERE id =?";
+        String sql = "UPDATE friendrequests SET status ='REJECTED', date = ? WHERE id =?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, id);
+            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setLong(2, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException("SQL exception!");
@@ -137,11 +138,13 @@ public class FriendRequestDbRepository implements Repository<Long, FriendRequest
         if(entity == null)
             throw new RepositoryException("Entity must not be null!");
 
-        String sql = "UPDATE friendrequests SET status = ? WHERE id = ?";
+        String sql = "UPDATE friendrequests SET status = ?, date = ? WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, entity.getStatus());
-            ps.setLong(2, entity.getId());
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setLong(3, entity.getId());
+
             ps.executeUpdate();
         }catch (SQLException e){
             throw new RepositoryException("SQL exception!");

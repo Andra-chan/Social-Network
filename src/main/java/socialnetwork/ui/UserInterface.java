@@ -339,12 +339,12 @@ public class UserInterface {
                         service.addFriendRequest(request);
                 } break;
                 case "2":{
-                    if(service.getFriendRequests(userID).isEmpty()){
+                    if(service.getPendingFriendRequests(userID).isEmpty()){
                         System.out.println("You currently have no friend requests!");
                         break;
                     }
                     else {
-                        service.getFriendRequests(userID).forEach(req -> {
+                        service.getPendingFriendRequests(userID).forEach(req -> {
                             System.out.println("Friend Request ID: " + req.getId() + ". From: " + this.service.getUser(req.getSender()).getFirstName());
                         });
                         System.out.println("Insert Friend Request ID from the list: ");
