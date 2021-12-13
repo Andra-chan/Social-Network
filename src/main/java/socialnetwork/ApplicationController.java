@@ -105,10 +105,6 @@ public class ApplicationController implements Observer<ChangeEvent> {
         });
     }
 
-    private void updateButtonsForFriendsTable(){
-
-    }
-
     public void handleDeleteButtonClick() {
         var friendDTO = tableViewFriends.getSelectionModel().getSelectedItem();
         service.handleFriendRequest(friendDTO.getRequestId(), "R");
