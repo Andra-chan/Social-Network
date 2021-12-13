@@ -11,13 +11,14 @@ import java.util.List;
  */
 public class FriendshipFile extends AbstractFileRepository<Long, Prietenie> {
 
-    public FriendshipFile(String fileName, Validator<Prietenie> validator){
+    public FriendshipFile(String fileName, Validator<Prietenie> validator) {
         super(validator, fileName);
     }
 
     /**
-     *  extract entity override for friendship  - template method design pattern
-     *  creates an entity of type Prietenie having a specified list of @code attributes
+     * extract entity override for friendship  - template method design pattern
+     * creates an entity of type Prietenie having a specified list of @code attributes
+     *
      * @param attributes
      * @return an entity of type Prietenie
      */
@@ -34,6 +35,6 @@ public class FriendshipFile extends AbstractFileRepository<Long, Prietenie> {
 
     @Override
     protected String createEntityAsString(Prietenie entity) {
-        return entity.getId()+ ";" + entity.getFirstUser() + ";" +entity.getSecondUser()+ ";"+entity.getDate();
+        return entity.getId() + ";" + entity.getFirstUser() + ";" + entity.getSecondUser() + ";" + entity.getDate();
     }
 }

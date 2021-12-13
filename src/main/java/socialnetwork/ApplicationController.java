@@ -6,7 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
-import socialnetwork.Util.events.*;
+import socialnetwork.Util.events.ChangeEvent;
+import socialnetwork.Util.events.ChangeEventType;
 import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.FriendDTO;
 import socialnetwork.domain.FriendRequest;
@@ -74,17 +75,15 @@ public class ApplicationController implements Observer<ChangeEvent> {
         tableViewUsers.setItems(modelUsers);
         tableViewFriends.setItems(modelFriendships);
         comboBoxUsers.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) ->
-                {
+                (observable, oldValue, newValue) -> {
                     Utilizator selectedUser = tableViewUsers.getSelectionModel().getSelectedItem();
                     addFriendButton.setDisable(selectedUser == null || newValue.getId().equals(selectedUser.getId()));
                     updateFriendshipModel();
                     filterFriendships();
-                }
-        );
+                });
 
         tableViewFriends.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue==null){
+            if (newValue == null) {
                 deleteButton.setDisable(true);
                 acceptButton.setDisable(true);
                 return;
@@ -98,8 +97,7 @@ public class ApplicationController implements Observer<ChangeEvent> {
                 acceptButton.setDisable(false);
             }
         });
-        tableViewUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-        {
+        tableViewUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             Utilizator currentUser = comboBoxUsers.getSelectionModel().getSelectedItem();
             addFriendButton.setDisable(newValue == null || newValue.getId().equals(currentUser.getId()));
         });
@@ -146,21 +144,23 @@ public class ApplicationController implements Observer<ChangeEvent> {
                 .map(x -> {
                     if (x.getReceiver().equals(userId)) {
                         Utilizator sender = service.getUser(x.getSender());
-                        return new FriendDTO(sender.getId(), x.getId(), sender.getFirstName(), sender.getLastName(), x.getStatus(), x.getLocalDateTime());
+                        return new FriendDTO(sender.getId(), x.getId(), sender.getFirstName(), sender.getLastName(),
+                                x.getStatus(), x.getLocalDateTime());
                     }
                     Utilizator receiver = service.getUser(x.getReceiver());
-                    return new FriendDTO(receiver.getId(), x.getId(), receiver.getFirstName(), receiver.getLastName(), x.getStatus(), x.getLocalDateTime());
+                    return new FriendDTO(receiver.getId(), x.getId(), receiver.getFirstName(), receiver.getLastName(),
+                            x.getStatus(), x.getLocalDateTime());
                 })
                 .collect(Collectors.toList());
     }
 
-    private void updateUserModel(){
+    private void updateUserModel() {
         modelUsers.setAll(getAllUsers());
     }
 
-    private void updateFriendshipModel(){
+    private void updateFriendshipModel() {
         var currentUser = comboBoxUsers.getSelectionModel().getSelectedItem();
-        if(currentUser!=null) {
+        if (currentUser != null) {
             modelFriendships.setAll(getAllFriendRequestsForUser(currentUser.getId()));
         }
     }
@@ -188,15 +188,15 @@ public class ApplicationController implements Observer<ChangeEvent> {
 
     @Override
     public void update(ChangeEvent event) {
-        if(event.getType().equals(ChangeEventType.MESSAGE)){
-         return;
+        if (event.getType().equals(ChangeEventType.MESSAGE)) {
+            return;
         }
-        if(event.getType().equals(ChangeEventType.FRIEND_REQUEST) ||
-        event.getType().equals(ChangeEventType.FRIENDSHIP)) {
+        if (event.getType().equals(ChangeEventType.FRIEND_REQUEST) ||
+                event.getType().equals(ChangeEventType.FRIENDSHIP)) {
             updateFriendshipModel();
             return;
         }
-        if(event.getType().equals(ChangeEventType.USER)){
+        if (event.getType().equals(ChangeEventType.USER)) {
             updateUserModel();
             return;
         }

@@ -12,7 +12,7 @@ public class FriendDTO {
     private String status;
     private LocalDateTime date;
 
-    public FriendDTO(Long friendId,Long requestId, String firstName, String lastName, String status, LocalDateTime date) {
+    public FriendDTO(Long friendId, Long requestId, String firstName, String lastName, String status, LocalDateTime date) {
         this.friendId = friendId;
         this.requestId = requestId;
         this.firstName = firstName;

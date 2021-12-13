@@ -19,29 +19,39 @@ public class Friend {
 
     /**
      * Getters
+     *
      * @return firstName/lastName/date of a friend
      */
 
     public String getFirstName() {
         return firstName;
     }
+
     public String getLastName() {
         return lastName;
     }
-    public LocalDateTime getDateTime() {return dateTime;}
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
 
     /**
      * Setters which modify a friend
+     *
      * @param firstName/lastName/date to be modified
      */
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    public void setDateTime(LocalDateTime dateTime) {this.dateTime = dateTime;}
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
     @Override
     public String toString() {

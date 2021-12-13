@@ -1,7 +1,6 @@
 package socialnetwork.repository.database;
 
 import socialnetwork.domain.FriendRequest;
-import socialnetwork.domain.Prietenie;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
 
@@ -11,9 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FriendRequestDbRepository implements Repository<Long, FriendRequest> {
-    private String url;
-    private String username;
-    private String password;
+    private final String url;
+    private final String username;
+    private final String password;
 
     public FriendRequestDbRepository(String url, String username, String password) {
         this.url = url;
@@ -78,7 +77,7 @@ public class FriendRequestDbRepository implements Repository<Long, FriendRequest
         if (entity == null)
             throw new RepositoryException("Entity must not be null!");
 
-        FriendRequest friendRequest = (FriendRequest) entity;
+        FriendRequest friendRequest = entity;
 
         String queryFind = "select * from friendrequests where sender = (?) and receiver = (?) or sender= (?) and receiver = (?)";
 
@@ -134,19 +133,19 @@ public class FriendRequestDbRepository implements Repository<Long, FriendRequest
     }
 
     @Override
-    public FriendRequest update(FriendRequest entity){
-        if(entity == null)
+    public FriendRequest update(FriendRequest entity) {
+        if (entity == null)
             throw new RepositoryException("Entity must not be null!");
 
         String sql = "UPDATE friendrequests SET status = ?, date = ? WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-        PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, entity.getStatus());
             ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             ps.setLong(3, entity.getId());
 
             ps.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RepositoryException("SQL exception!");
         }
         return null;

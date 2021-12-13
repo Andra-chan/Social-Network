@@ -1,18 +1,16 @@
 package socialnetwork.ui;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.List;
-
-import socialnetwork.domain.Message;
-
+import socialnetwork.Util.Constants;
 import socialnetwork.domain.FriendRequest;
-
+import socialnetwork.domain.Message;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
-import socialnetwork.Util.Constants;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * User Interface
@@ -20,8 +18,8 @@ import socialnetwork.Util.Constants;
  */
 public class UserInterface {
 
-    private Service service;
-    private Scanner scanner;
+    private final Service service;
+    private final Scanner scanner;
 
     public UserInterface(Service service) {
         this.service = service;
@@ -30,6 +28,7 @@ public class UserInterface {
 
     /**
      * Main interface method
+     *
      * @throws Exception whenever a method catches an exception for the input
      */
     public void run() throws Exception {
@@ -96,10 +95,10 @@ public class UserInterface {
                     case "8.3":
                         showMessagesBetweenTwoUsers();
                         break;
-                    case "9":{
+                    case "9": {
                         System.out.println("Who are you? Insert your ID: ");
                         Long userID = Long.parseLong(scanner.nextLine());
-                        if(!service.checkIfUserExists(userID)) {
+                        if (!service.checkIfUserExists(userID)) {
                             System.out.println("This user does not exist!");
                             break;
                         }
@@ -217,7 +216,7 @@ public class UserInterface {
     /**
      * Receives the input from the client and prints the friends of a user from a chosen month
      */
-    private void showFriendsFromMonth() throws Exception{
+    private void showFriendsFromMonth() throws Exception {
         System.out.println("Insert user ID: ");
         Long userID = Long.parseLong(scanner.nextLine());
         System.out.println("Insert month: ");
@@ -302,15 +301,16 @@ public class UserInterface {
             }
         }
     }
-  
+
     /**
      * This method prints the menu for friend requests and calls socialnetwork.service for the selected option
+     *
      * @param userID the ID of the user who is logged in
      */
-    private void friendRequests(Long userID){
+    private void friendRequests(Long userID) {
         boolean keepLooping = true;
 
-        while(keepLooping){
+        while (keepLooping) {
             System.out.println("\n1. Send friend request.");
             System.out.println("2. Accept/Refuse friend request.");
             System.out.println("3. Go back to the main menu.");
@@ -318,32 +318,31 @@ public class UserInterface {
             String cmd;
             cmd = scanner.nextLine();
 
-            switch (cmd){
+            switch (cmd) {
                 case "1": {
                     System.out.println("Insert user ID to send friend request to: ");
                     Long userIDtoSendTo = Long.parseLong(scanner.nextLine());
-                    if(!service.checkIfUserExists(userIDtoSendTo)) {
+                    if (!service.checkIfUserExists(userIDtoSendTo)) {
                         System.out.println("This user does not exist!");
                         break;
                     }
                     FriendRequest request = new FriendRequest(userID, userIDtoSendTo);
                     var req = service.verifyPendingRequest(request);
-                    if(req.isPresent()) {
+                    if (req.isPresent()) {
                         System.out.println("This friend request already exists! Do you want to accept it?");
                         System.out.println("Insert: Y/N");
                         String decision = scanner.nextLine();
-                        if(decision.equals("Y"))
-                            service.handleFriendRequest(req.get().getId(), "A" );
-                    }
-                    else
+                        if (decision.equals("Y"))
+                            service.handleFriendRequest(req.get().getId(), "A");
+                    } else
                         service.addFriendRequest(request);
-                } break;
-                case "2":{
-                    if(service.getPendingFriendRequests(userID).isEmpty()){
+                }
+                break;
+                case "2": {
+                    if (service.getPendingFriendRequests(userID).isEmpty()) {
                         System.out.println("You currently have no friend requests!");
                         break;
-                    }
-                    else {
+                    } else {
                         service.getPendingFriendRequests(userID).forEach(req -> {
                             System.out.println("Friend Request ID: " + req.getId() + ". From: " + this.service.getUser(req.getSender()).getFirstName());
                         });
@@ -353,12 +352,13 @@ public class UserInterface {
                         String decision = scanner.nextLine();
                         service.handleFriendRequest(requestID, decision);
                     }
-                }break;
-                case "3":{
+                }
+                break;
+                case "3": {
                     keepLooping = false;
                     break;
                 }
-                default:{
+                default: {
                     System.out.println("Invalid input!\n");
                     break;
                 }

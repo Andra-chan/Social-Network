@@ -1,8 +1,7 @@
 package socialnetwork.service;
 
-import javafx.collections.ListChangeListener;
-import javafx.collections.SetChangeListener;
-import socialnetwork.Util.events.*;
+import socialnetwork.Util.events.ChangeEvent;
+import socialnetwork.Util.events.ChangeEventType;
 import socialnetwork.Util.observer.Observable;
 import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.*;
@@ -20,12 +19,12 @@ import java.util.stream.StreamSupport;
  * Service class that implements all methods
  */
 public class Service implements Observable<ChangeEvent> {
-    private Repository<Long, Utilizator> userRepository;
-    private Repository<Long, Prietenie> friendshipRepository;
+    private final Repository<Long, Utilizator> userRepository;
+    private final Repository<Long, Prietenie> friendshipRepository;
 
-    private Repository<Long, Message> messageRepository;
-    private Repository<Long, FriendRequest> friendRequestRepository;
-    private List<Observer<ChangeEvent>> observers=new ArrayList<>();
+    private final Repository<Long, Message> messageRepository;
+    private final Repository<Long, FriendRequest> friendRequestRepository;
+    private final List<Observer<ChangeEvent>> observers = new ArrayList<>();
 
     public Service(Repository<Long, Utilizator> userRepository, Repository<Long, Prietenie> friendshipRepository,
                    Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
@@ -261,7 +260,7 @@ public class Service implements Observable<ChangeEvent> {
         }
         message.setTo(toUsers);
         var sentMessage = messageRepository.save(message);
-        if(sentMessage==null){
+        if (sentMessage == null) {
             notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
         }
         return sentMessage;
@@ -304,8 +303,8 @@ public class Service implements Observable<ChangeEvent> {
         message.setTo(to);
         message.setReply(reply);
 
-        var replyResult= messageRepository.save(message);
-        if(replyResult==null){
+        var replyResult = messageRepository.save(message);
+        if (replyResult == null) {
             notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
         }
         return replyResult;
@@ -325,10 +324,7 @@ public class Service implements Observable<ChangeEvent> {
         Map<Long, Message> messages = StreamSupport.stream(allMessages.spliterator(), false)
                 .filter(x -> {
                     // creator must be one of the provided users
-                    if (x.getFrom().getId().equals(userId1) || x.getFrom().getId().equals(userId2)) {
-                        return true;
-                    }
-                    return false;
+                    return x.getFrom().getId().equals(userId1) || x.getFrom().getId().equals(userId2);
                 })
                 .filter(x -> {
                     // message must have one of the users in the recipients list
@@ -384,8 +380,8 @@ public class Service implements Observable<ChangeEvent> {
     public FriendRequest addFriendRequest(FriendRequest request) {
         request.setStatus("PENDING");
         request.setLocalDateTime(LocalDateTime.now());
-        var requestResult =  friendRequestRepository.save(request);
-        if(requestResult==null){
+        var requestResult = friendRequestRepository.save(request);
+        if (requestResult == null) {
             notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
         }
         notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
@@ -394,10 +390,8 @@ public class Service implements Observable<ChangeEvent> {
 
     public Optional<FriendRequest> verifyPendingRequest(FriendRequest request) {
         return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(), false).filter(req -> {
-            if (req.getSender() == request.getReceiver() && req.getReceiver() == request.getSender()
-                    && req.getStatus().equals("PENDING"))
-                return true;
-            return false;
+            return req.getSender() == request.getReceiver() && req.getReceiver() == request.getSender()
+                    && req.getStatus().equals("PENDING");
         }).findFirst();
     }
 
@@ -481,6 +475,6 @@ public class Service implements Observable<ChangeEvent> {
 
     @Override
     public void notifyObservers(ChangeEvent t) {
-        observers.stream().forEach(x->x.update(t));
+        observers.stream().forEach(x -> x.update(t));
     }
 }
