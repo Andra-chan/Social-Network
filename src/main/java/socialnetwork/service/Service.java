@@ -1,5 +1,10 @@
 package socialnetwork.service;
 
+import javafx.collections.ListChangeListener;
+import javafx.collections.SetChangeListener;
+import socialnetwork.Util.events.*;
+import socialnetwork.Util.observer.Observable;
+import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.*;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
@@ -14,12 +19,13 @@ import java.util.stream.StreamSupport;
 /**
  * Service class that implements all methods
  */
-public class Service {
+public class Service implements Observable<ChangeEvent> {
     private Repository<Long, Utilizator> userRepository;
     private Repository<Long, Prietenie> friendshipRepository;
 
     private Repository<Long, Message> messageRepository;
     private Repository<Long, FriendRequest> friendRequestRepository;
+    private List<Observer<ChangeEvent>> observers=new ArrayList<>();
 
     public Service(Repository<Long, Utilizator> userRepository, Repository<Long, Prietenie> friendshipRepository,
                    Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
@@ -66,6 +72,9 @@ public class Service {
             if (fr.getFirstUser().equals(userID) || fr.getSecondUser().equals(userID))
                 friendshipRepository.delete(fr.getId());
         });
+        notifyObservers(new ChangeEvent(ChangeEventType.USER));
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+        notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
         return toBeReturned;
     }
 
@@ -84,7 +93,8 @@ public class Service {
      * @return the stored entity
      */
     public Prietenie addFriendship(Prietenie prietenie) {
-        return this.friendshipRepository.save(prietenie);
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+        return friendshipRepository.save(prietenie);
     }
 
     /**
@@ -100,6 +110,7 @@ public class Service {
                 return this.friendshipRepository.delete(pr.getId());
             }
         }
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
         return null;
     }
 
@@ -110,6 +121,7 @@ public class Service {
      * @return the deleted entity
      */
     public Prietenie removeFriendship(Long id) {
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
         return this.friendshipRepository.delete(id);
     }
 
@@ -248,7 +260,11 @@ public class Service {
             toUsers.add(userRepository.findOne(userId));
         }
         message.setTo(toUsers);
-        return messageRepository.save(message);
+        var sentMessage = messageRepository.save(message);
+        if(sentMessage==null){
+            notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
+        }
+        return sentMessage;
     }
 
     /**
@@ -288,7 +304,11 @@ public class Service {
         message.setTo(to);
         message.setReply(reply);
 
-        return messageRepository.save(message);
+        var replyResult= messageRepository.save(message);
+        if(replyResult==null){
+            notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
+        }
+        return replyResult;
     }
 
     /**
@@ -364,7 +384,12 @@ public class Service {
     public FriendRequest addFriendRequest(FriendRequest request) {
         request.setStatus("PENDING");
         request.setLocalDateTime(LocalDateTime.now());
-        return this.friendRequestRepository.save(request);
+        var requestResult =  friendRequestRepository.save(request);
+        if(requestResult==null){
+            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+        }
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+        return requestResult;
     }
 
     public Optional<FriendRequest> verifyPendingRequest(FriendRequest request) {
@@ -433,10 +458,29 @@ public class Service {
             fr.setStatus("ACCEPTED");
             fr.setLocalDateTime(LocalDateTime.now());
             friendRequestRepository.update(fr);
+            notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+
         } else {
             fr.setStatus("REJECTED");
             fr.setLocalDateTime(LocalDateTime.now());
             friendRequestRepository.delete(requestID);
+            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
         }
+    }
+
+    @Override
+    public void addObserver(Observer<ChangeEvent> e) {
+        observers.add(e);
+    }
+
+    @Override
+    public void removeObserver(Observer<ChangeEvent> e) {
+        observers.remove(e);
+    }
+
+    @Override
+    public void notifyObservers(ChangeEvent t) {
+        observers.stream().forEach(x->x.update(t));
     }
 }

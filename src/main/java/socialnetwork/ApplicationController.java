@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
+import socialnetwork.Util.events.*;
+import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.FriendDTO;
 import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Utilizator;
@@ -16,10 +18,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class ApplicationController {
+public class ApplicationController implements Observer<ChangeEvent> {
 
     ObservableList<Utilizator> modelUsers = FXCollections.observableArrayList();
-    List<String> modelUsernames;
     ObservableList<FriendDTO> modelFriendships = FXCollections.observableArrayList();
 
     private Service service;
@@ -75,9 +76,9 @@ public class ApplicationController {
         comboBoxUsers.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) ->
                 {
-                    Utilizator currentUser = comboBoxUsers.getSelectionModel().getSelectedItem();
-                    addFriendButton.setDisable(newValue.getId().equals(currentUser.getId()));
-                    modelFriendships.setAll(getAllFriendRequestsForUser(currentUser.getId()));
+                    Utilizator selectedUser = tableViewUsers.getSelectionModel().getSelectedItem();
+                    addFriendButton.setDisable(selectedUser == null || newValue.getId().equals(selectedUser.getId()));
+                    updateFriendshipModel();
                     filterFriendships();
                 }
         );
@@ -104,23 +105,24 @@ public class ApplicationController {
         });
     }
 
+    private void updateButtonsForFriendsTable(){
+
+    }
+
     public void handleDeleteButtonClick() {
         var friendDTO = tableViewFriends.getSelectionModel().getSelectedItem();
         service.handleFriendRequest(friendDTO.getRequestId(), "R");
-        modelFriendships.setAll(getAllFriendRequestsForUser(comboBoxUsers.getSelectionModel().getSelectedItem().getId()));
     }
 
     public void handleAcceptButtonClick() {
         var friendDTO = tableViewFriends.getSelectionModel().getSelectedItem();
         service.handleFriendRequest(friendDTO.getRequestId(), "A");
-        modelFriendships.setAll(getAllFriendRequestsForUser(comboBoxUsers.getSelectionModel().getSelectedItem().getId()));
     }
 
     public void handleAddFriendButtonClick() {
         Utilizator sender = comboBoxUsers.getSelectionModel().getSelectedItem();
         Utilizator receiver = tableViewUsers.getSelectionModel().getSelectedItem();
         service.addFriendRequest(new FriendRequest(sender.getId(), receiver.getId()));
-        modelFriendships.setAll(getAllFriendRequestsForUser(comboBoxUsers.getSelectionModel().getSelectedItem().getId()));
     }
 
     public void filterUsers() {
@@ -156,12 +158,21 @@ public class ApplicationController {
                 .collect(Collectors.toList());
     }
 
+    private void updateUserModel(){
+        modelUsers.setAll(getAllUsers());
+    }
+
+    private void updateFriendshipModel(){
+        var currentUser = comboBoxUsers.getSelectionModel().getSelectedItem();
+        if(currentUser!=null) {
+            modelFriendships.setAll(getAllFriendRequestsForUser(currentUser.getId()));
+        }
+    }
+
     public void setService(Service service) {
         this.service = service;
-        var userList = getAllUsers();
-        modelUsers.setAll(userList);
-
-        modelUsernames = userList.stream().map(x -> x.getFirstName() + " " + x.getLastName()).collect(Collectors.toList());
+        service.addObserver(this);
+        updateUserModel();
 
         comboBoxUsers.getItems().setAll(modelUsers);
         comboBoxUsers.setConverter(new StringConverter<>() {
@@ -176,6 +187,22 @@ public class ApplicationController {
             }
         });
         comboBoxUsers.getSelectionModel().selectFirst();
-        modelFriendships.setAll(getAllFriendRequestsForUser(comboBoxUsers.getSelectionModel().getSelectedItem().getId()));
+        updateFriendshipModel();
+    }
+
+    @Override
+    public void update(ChangeEvent event) {
+        if(event.getType().equals(ChangeEventType.MESSAGE)){
+         return;
+        }
+        if(event.getType().equals(ChangeEventType.FRIEND_REQUEST) ||
+        event.getType().equals(ChangeEventType.FRIENDSHIP)) {
+            updateFriendshipModel();
+            return;
+        }
+        if(event.getType().equals(ChangeEventType.USER)){
+            updateUserModel();
+            return;
+        }
     }
 }

@@ -48,7 +48,7 @@ public class HelloApplication extends Application {
 
         controller.setService(serviceNetwork);
 
-        Scene scene = new Scene(root, 320, 240);
+        Scene scene = new Scene(root, 950, 450);
         stage.setTitle("Social Network");
         stage.setScene(scene);
         stage.show();
