@@ -469,11 +469,6 @@ public class Service implements Observable<ChangeEvent> {
     }
 
     @Override
-    public void removeObserver(Observer<ChangeEvent> e) {
-        observers.remove(e);
-    }
-
-    @Override
     public void notifyObservers(ChangeEvent t) {
         observers.stream().forEach(x -> x.update(t));
     }
