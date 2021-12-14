@@ -6,8 +6,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.swing.text.Utilities;
-
 import socialnetwork.domain.Friend;
 
 import socialnetwork.domain.Message;
@@ -308,31 +306,6 @@ public class Service {
         message.setReply(reply);
 
         return messageRepository.save(message);
-    }
-
-    public void replyAll(Long userID, String messageBody) {
-        Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
-        Utilizator replyCreator = userRepository.findOne(userID);
-
-        Predicate<Message> isValidReply = m -> m.getTo().stream()
-                .anyMatch(x -> x.getId().equals(userID));
-
-        Predicate<Message> checkReplyLimit = m -> !StreamSupport.stream(messageRepository.findAll().spliterator(), false)
-                .anyMatch(x -> x.getFrom().getId().equals(userID)
-                        && x.getReply() != null
-                        && x.getReply().getId().equals(m.getId()));
-
-        var messages = StreamSupport.stream(messageRepository.findAll().spliterator(), false)
-                .filter(isValidReply.and(checkReplyLimit)).collect(Collectors.toList());
-        for (var currentMessage : messages) { 
-            List<Utilizator> to = new ArrayList<>();
-            var messageRecipient = userRepository.findOne(currentMessage.getFrom().getId());
-            to.add(messageRecipient);
-            message.setFrom(replyCreator);
-            message.setTo(to);
-            message.setReply(currentMessage);
-            messageRepository.save(message);
-        }
     }
 
     /**

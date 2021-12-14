@@ -50,7 +50,6 @@ public class UserInterface {
             System.out.println("8.1 Send message.");
             System.out.println("8.2 Reply to message");
             System.out.println("8.3 Print all messages between 2 users.");
-            System.out.println("8.4 Reply all");
             System.out.println("9. Friend requests.");
             System.out.println("10. EXIT!");
 
@@ -97,9 +96,6 @@ public class UserInterface {
                     case "8.3":
                         showMessagesBetweenTwoUsers();
                         break;
-                    case "8.4":
-                        replyAll();
-                        break;
                     case "9":{
                         System.out.println("Who are you? Insert your ID: ");
                         Long userID = Long.parseLong(scanner.nextLine());
@@ -122,14 +118,6 @@ public class UserInterface {
                 System.out.println(ex);
             }
         }
-    }
-
-    private void replyAll(){
-        System.out.println("User id: ");
-        Long id = Long.parseLong(scanner.nextLine());
-        System.out.println("Message body: ");
-        String messageBody = scanner.nextLine();
-        service.replyAll(id, messageBody);
     }
 
     /**
