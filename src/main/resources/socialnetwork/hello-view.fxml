@@ -20,7 +20,7 @@
             <TableView fx:id="tableViewUsers" prefHeight="222.0" prefWidth="271.0">
               <columns>
                 <TableColumn id="first_name" fx:id="tableColumnFirstName" prefWidth="167.0" text="First Name" />
-                <TableColumn fx:id="tableColumnLastName" prefWidth="156.0" text="Last Name" />
+                <TableColumn fx:id="tableColumnLastName" prefWidth="154.0" text="Last Name" />
               </columns>
             </TableView>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
