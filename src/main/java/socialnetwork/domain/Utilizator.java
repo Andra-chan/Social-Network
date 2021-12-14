@@ -1,5 +1,6 @@
 package socialnetwork.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,47 +10,54 @@ import java.util.Objects;
 public class Utilizator extends Entity<Long> {
     private String firstName;
     private String lastName;
-    private List<Utilizator> friends;
+    private final List<Utilizator> friends;
 
 
     public Utilizator(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        friends = new ArrayList<>();
     }
 
     /**
      * Getters
+     *
      * @return firstName/lastName/Friends of a user
      */
 
     public String getFirstName() {
         return firstName;
     }
+
     public String getLastName() {
         return lastName;
     }
+
     public List<Utilizator> getFriends() {
         return friends;
     }
 
     /**
      * Setters used to modify an entity
+     *
      * @param firstName, lastName of a user
      */
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
      * How a user will be showcased
+     *
      * @return String
      */
     @Override
-    public String toString(){
+    public String toString() {
         return "User: " + this.getLastName() + " " + this.getFirstName();
     }
 
@@ -59,17 +67,19 @@ public class Utilizator extends Entity<Long> {
      */
 
     @Override
-    public boolean equals(Object o){
-        if (this==o)
+    public boolean equals(Object o) {
+        if (o == null)
+            return false;
+        if (this == o)
             return true;
         Utilizator that = (Utilizator) o;
-        return getFirstName().equals(that.getFirstName())&&
-                getLastName().equals(that.getLastName())&&
+        return getFirstName().equals(that.getFirstName()) &&
+                getLastName().equals(that.getLastName()) &&
                 getFriends().equals(that.getFriends());
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hash(getFirstName(), getLastName(), getClass());
     }
 }

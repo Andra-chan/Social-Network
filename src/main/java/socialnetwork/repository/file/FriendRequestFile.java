@@ -19,13 +19,14 @@ public class FriendRequestFile extends AbstractFileRepository<Long, FriendReques
     }
 
     /**
-     *  extract entity override for friendRequest  - template method design pattern
-     *  creates an entity of type FriendRequest having a specified list of @code attributes
+     * extract entity override for friendRequest  - template method design pattern
+     * creates an entity of type FriendRequest having a specified list of @code attributes
+     *
      * @param attributes
      * @return an entity of type FriendRequest
      */
     @Override
-    public FriendRequest extractEntity(List<String> attributes){
+    public FriendRequest extractEntity(List<String> attributes) {
         FriendRequest friendRequest = new FriendRequest(
                 Long.parseLong(attributes.get(1)),
                 Long.parseLong(attributes.get(2)));
@@ -36,17 +37,18 @@ public class FriendRequestFile extends AbstractFileRepository<Long, FriendReques
     }
 
     @Override
-    protected String createEntityAsString(FriendRequest entity){
-        return entity.getId() + ";" + entity.getSender() + ";" + entity.getReceiver()  + ";" + entity.getLocalDateTime() + ";" + entity.getStatus();
+    protected String createEntityAsString(FriendRequest entity) {
+        return entity.getId() + ";" + entity.getSender() + ";" + entity.getReceiver() + ";" + entity.getLocalDateTime() + ";" + entity.getStatus();
     }
 
     /**
      * Overwritten method of delete in order to update the status to REJECTED and not actually delete the FriendRequest
+     *
      * @param id entity to be removed at the specified id
      * @return
      */
     @Override
-    public FriendRequest delete(Long id){
+    public FriendRequest delete(Long id) {
 
         FriendRequest request = super.findOne(id);
         request.setStatus("REFUSED");

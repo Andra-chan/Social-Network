@@ -10,5 +10,6 @@ public class FriendRequestValidator implements Validator<FriendRequest> {
      * - no current exceptions
      */
     @Override
-    public void validate(FriendRequest entity) throws ValidationException {}
+    public void validate(FriendRequest entity) throws ValidationException {
+    }
 }

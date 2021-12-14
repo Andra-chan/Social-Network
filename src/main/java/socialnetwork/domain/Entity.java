@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Entity class
+ *
  * @param <ID> each Entity needs to have an ID
  */
 public class Entity<ID> implements Serializable {
@@ -14,6 +15,7 @@ public class Entity<ID> implements Serializable {
     public ID getId() {
         return id;
     }
+
     public void setId(ID id) {
         this.id = id;
     }

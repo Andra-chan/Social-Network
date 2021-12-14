@@ -1,30 +1,23 @@
 package socialnetwork.repository.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Types;
+import socialnetwork.domain.Message;
+import socialnetwork.domain.Utilizator;
+import socialnetwork.domain.validators.Validator;
+import socialnetwork.repository.Repository;
+import socialnetwork.repository.RepositoryException;
+
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.StreamSupport;
 
-import socialnetwork.domain.Message;
-import socialnetwork.domain.validators.Validator;
-import socialnetwork.domain.Utilizator;
-import socialnetwork.repository.Repository;
-import socialnetwork.repository.RepositoryException;
-
 public class MessageDbRepository implements Repository<Long, Message> {
-    private String url;
-    private String username;
-    private String password;
-    private Validator<Message> validator;
+    private final String url;
+    private final String username;
+    private final String password;
+    private final Validator<Message> validator;
 
     public MessageDbRepository(String url, String username, String password, Validator<Message> validator) {
         this.url = url;
@@ -51,7 +44,7 @@ public class MessageDbRepository implements Repository<Long, Message> {
         Map<Long, Message> messages = new HashMap<>();
         Map<Long, Long> parentIds = new HashMap<>();
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Long id = result.getLong("id");
@@ -88,9 +81,9 @@ public class MessageDbRepository implements Repository<Long, Message> {
         String insertMessageSql = "INSERT INTO messages (creator_id, message_body, date, parent_message_id) VALUES (?, ?, ?, ?)";
         String insertRelationSql = "INSERT INTO messages_recipients (message_id, recipient_id) VALUES (?, ?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement insertMessageStatement = connection.prepareStatement(insertMessageSql,
-                        Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement insertRelationStatement = connection.prepareStatement(insertRelationSql)) {
+             PreparedStatement insertMessageStatement = connection.prepareStatement(insertMessageSql,
+                     Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement insertRelationStatement = connection.prepareStatement(insertRelationSql)) {
 
             insertMessageStatement.setLong(1, entity.getFrom().getId());
             insertMessageStatement.setString(2, entity.getMessageBody());
@@ -126,7 +119,7 @@ public class MessageDbRepository implements Repository<Long, Message> {
         }
         final String deleteSql = "DELETE FROM messages WHERE id=?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement statement = connection.prepareStatement(deleteSql)) {
+             PreparedStatement statement = connection.prepareStatement(deleteSql)) {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
