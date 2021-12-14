@@ -38,7 +38,7 @@ public class Service implements Observable<ChangeEvent> {
      * Adds a user via save() method from the socialnetwork.repository
      *
      * @param user entity to be stored
-     * @return
+     * @return the user if it already exists, null otherwise
      */
     public Utilizator addUser(Utilizator user) {
         return this.userRepository.save(user);
@@ -101,16 +101,6 @@ public class Service implements Observable<ChangeEvent> {
      */
     public Prietenie getFriendship(Long friendshipID) {
         return friendshipRepository.findOne(friendshipID);
-    }
-
-    public Prietenie removeFriendship(Utilizator user, Utilizator friend) {
-        for (Prietenie pr : this.getAllFriendships()) {
-            if ((pr.getFirstUser().equals(user.getId())) || (pr.getSecondUser().equals(user.getId()))) {
-                return this.friendshipRepository.delete(pr.getId());
-            }
-        }
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
-        return null;
     }
 
     /**
@@ -215,13 +205,13 @@ public class Service implements Observable<ChangeEvent> {
 
         return friendships.stream().filter(fr -> fr.getSecondUser().equals(userID) || fr.getFirstUser().equals(userID))
                 .map(fr -> {
+                    Utilizator user;
                     if (fr.getFirstUser().equals(userID)) {
-                        Utilizator user = userRepository.findOne(fr.getSecondUser());
-                        return new Friend(user.getFirstName(), user.getLastName(), fr.getDate());
+                        user = userRepository.findOne(fr.getSecondUser());
                     } else {
-                        Utilizator user = userRepository.findOne(fr.getFirstUser());
-                        return new Friend(user.getFirstName(), user.getLastName(), fr.getDate());
+                        user = userRepository.findOne(fr.getFirstUser());
                     }
+                    return new Friend(user.getFirstName(), user.getLastName(), fr.getDate());
                 })
                 .collect(Collectors.toList());
     }
@@ -272,7 +262,7 @@ public class Service implements Observable<ChangeEvent> {
      * @param messageId      the message's id that you're trying to reply to
      * @param replyCreatorId the user's id that created the reply
      * @param messageBody    the reply's body
-     * @return null if the message wasn't sent(the message you want to reply to
+     * @return null if the message wasn't sent(the message you want to reply to,
      * doesn't exist, or it wasn't sent to replyCreatorId), the message
      * otherwise
      */
@@ -288,8 +278,8 @@ public class Service implements Observable<ChangeEvent> {
         if (!isValidReply) {
             throw new ServiceException("The user doesn't have the message you're trying to reply to.");
         }
-        isValidReply = !StreamSupport.stream(messageRepository.findAll().spliterator(), false)
-                .anyMatch(x -> x.getFrom().getId().equals(replyCreatorId)
+        isValidReply = StreamSupport.stream(messageRepository.findAll().spliterator(), false)
+                .noneMatch(x -> x.getFrom().getId().equals(replyCreatorId)
                         && x.getReply() != null
                         && x.getReply().getId().equals(messageId));
         if (!isValidReply) {
@@ -332,13 +322,12 @@ public class Service implements Observable<ChangeEvent> {
                     boolean from2to1 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId2));
                     return from1to2 || from2to1;
                 })
-                .collect(Collectors.toMap(x -> x.getId(), x -> x));
+                .collect(Collectors.toMap(Entity::getId, x -> x));
 
         HashMap<Message, Message> messageReply = getMessageReplyPairs(messages);
 
         var conversations = messageReply.entrySet().stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey,
-                        (a, b) -> a.getDate().compareTo(b.getDate())))
+                .sorted(Map.Entry.comparingByKey(Comparator.comparing(Message::getDate)))
                 .collect(Collectors.toList());
         return conversations;
     }
@@ -381,20 +370,26 @@ public class Service implements Observable<ChangeEvent> {
         request.setStatus("PENDING");
         request.setLocalDateTime(LocalDateTime.now());
         var requestResult = friendRequestRepository.save(request);
-        if (requestResult == null) {
-            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
-        }
         notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
         return requestResult;
     }
 
+    /**
+     * Finds and returns a pending friend request
+     *
+     * @param request: the request you're searching for
+     * @return optional of request if the request exists, empty optional otherwise.
+     */
     public Optional<FriendRequest> verifyPendingRequest(FriendRequest request) {
-        return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(), false).filter(req -> {
-            return req.getSender() == request.getReceiver() && req.getReceiver() == request.getSender()
-                    && req.getStatus().equals("PENDING");
-        }).findFirst();
+        return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(), false)
+                .filter(req -> req.getSender().equals(request.getReceiver()) && req.getReceiver().equals(request.getSender())
+                        && req.getStatus().equals("PENDING")).findFirst();
     }
 
+    /**
+     * @param userID: a user's id
+     * @return true of the user exists, false otherwise
+     */
     public boolean checkIfUserExists(Long userID) {
         try {
             userRepository.findOne(userID);
@@ -417,6 +412,12 @@ public class Service implements Observable<ChangeEvent> {
         return friendRequests;
     }
 
+    /**
+     * Returns all accepted or pending friend requests for a user.
+     *
+     * @param userID: id of a user
+     * @return a list of accepted and pending friend requests for a user
+     */
     public List<FriendRequest> getFriendRequests(Long userID) {
         List<FriendRequest> friendRequests = new ArrayList<>();
         this.friendRequestRepository.findAll().forEach(req -> {
