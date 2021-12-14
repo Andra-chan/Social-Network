@@ -394,6 +394,9 @@ public class Service implements Observable<ChangeEvent> {
     public FriendRequest addFriendRequest(FriendRequest request) {
         request.setStatus("PENDING");
         request.setLocalDateTime(LocalDateTime.now());
+        if(verifyPendingRequest(request).isPresent()) {
+            return null;
+        }
         var requestResult = friendRequestRepository.save(request);
         notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
         return requestResult;
