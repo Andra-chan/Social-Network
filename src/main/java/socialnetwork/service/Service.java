@@ -300,28 +300,38 @@ public class Service implements Observable<ChangeEvent> {
         return replyResult;
     }
 
+    /**
+     * reply to all messages sent to a user.
+     * @param userID the user's id
+     * @param messageBody reply message body
+     */
     public void replyAll(Long userID, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
         Utilizator replyCreator = userRepository.findOne(userID);
 
-        Predicate<Message> isValidReply = m -> m.getTo().stream()
-                .anyMatch(x -> x.getId().equals(userID));
-
-        Predicate<Message> checkReplyLimit = m -> !StreamSupport.stream(messageRepository.findAll().spliterator(), false)
-                .anyMatch(x -> x.getFrom().getId().equals(userID)
-                        && x.getReply() != null
-                        && x.getReply().getId().equals(m.getId()));
-
-        var messages = StreamSupport.stream(messageRepository.findAll().spliterator(), false)
-                .filter(isValidReply.and(checkReplyLimit)).collect(Collectors.toList());
-        for (var currentMessage : messages) {
-            List<Utilizator> to = new ArrayList<>();
-            var messageRecipient = userRepository.findOne(currentMessage.getFrom().getId());
-            to.add(messageRecipient);
-            message.setFrom(replyCreator);
-            message.setTo(to);
-            message.setReply(currentMessage);
-            messageRepository.save(message);
+        var users = getAllUsers();
+        for(var user: users) {
+            if(!user.getId().equals(userID)) {
+                var allMessages = getAllMessagesBetweenTwoUsers(userID, user.getId());
+                if(!allMessages.isEmpty()){
+                    var lastEntry = allMessages.get(allMessages.size()-1);
+                    for (int i = allMessages.size()-1; i>=0;i--){
+                        if(allMessages.get(i).getKey().getFrom().getId().equals(userID)){
+                            continue;
+                        }
+                        if(allMessages.get(i).getValue() != null){
+                            break;
+                        }
+                        List<Utilizator> to = new ArrayList<>();
+                        var messageRecipient = user;
+                        to.add(messageRecipient);
+                        message.setFrom(replyCreator);
+                        message.setTo(to);
+                        message.setReply(allMessages.get(i).getKey());
+                        messageRepository.save(message);
+                    }
+                }
+            }
         }
     }
 
