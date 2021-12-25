@@ -329,6 +329,7 @@ public class Service implements Observable<ChangeEvent> {
                         message.setTo(to);
                         message.setReply(allMessages.get(i).getKey());
                         messageRepository.save(message);
+                        break;
                     }
                 }
             }

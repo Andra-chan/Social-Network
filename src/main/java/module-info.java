@@ -9,4 +9,5 @@ module socialnetwork {
 
     opens socialnetwork to javafx.graphics, javafx.fxml, javafx.base;
     opens socialnetwork.domain to javafx.graphics, javafx.fxml, javafx.base;
+    opens socialnetwork.controller to javafx.base, javafx.fxml, javafx.graphics;
 }

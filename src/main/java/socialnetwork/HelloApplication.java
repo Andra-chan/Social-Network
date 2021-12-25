@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import socialnetwork.controller.ApplicationController;
 import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.Utilizator;

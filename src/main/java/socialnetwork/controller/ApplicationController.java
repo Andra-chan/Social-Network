@@ -1,4 +1,4 @@
-package socialnetwork;
+package socialnetwork.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
