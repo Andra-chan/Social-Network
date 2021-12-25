@@ -11,8 +11,9 @@ import java.util.List;
 
 /**
  * Template Method Design Pattern for Repository
+ *
  * @param <ID> each entity has an attribute of type ID
- * @param <E> entities stored in the Repository
+ * @param <E>  entities stored in the Repository
  */
 public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends InMemoryRepository<ID, E> {
     String fileName;
@@ -42,8 +43,9 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
     }
 
     /**
-     *  extract entity  - template method design pattern
-     *  creates an entity of type E having a specified list of @code attributes
+     * extract entity  - template method design pattern
+     * creates an entity of type E having a specified list of @code attributes
+     *
      * @param attributes
      * @return an entity of type E
      */
@@ -53,10 +55,11 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
 
     /**
      * writes to file the given entity
+     *
      * @param entity to be added, if valid
      */
-    protected void writeToFile(E entity){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))){
+    protected void writeToFile(E entity) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
             bw.write(createEntityAsString(entity));
             bw.newLine();
         } catch (IOException e) {
@@ -66,32 +69,34 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
 
     /**
      * Method which overrides the Repository interface save()
-     * saves an entity into the repository and writes it to the file
+     * saves an entity into the socialnetwork.repository and writes it to the file
+     *
      * @param entity to be saved
      * @return entity if it already exists, null otherwise
      * @throws RepositoryException if the given entity is null
      */
     @Override
-    public E save(E entity){
+    public E save(E entity) {
         E e = super.save(entity);
-        if(e==null)
+        if (e == null)
             writeToFile(entity);
         return e;
     }
 
     /**
      * Method which overrides the Repository interface remove()
-     * deletes an entity from the repository and updates the file
+     * deletes an entity from the socialnetwork.repository and updates the file
+     *
      * @param id entity to be removed at the specified id
      * @return the removed entity, null otherwise(e.g. it doesn't exist)
-     * @throws RepositoryException if the given ID is null
+     * @throws RepositoryException   if the given ID is null
      * @throws FileNotFoundException if the file does not exist
      */
     @Override
-    public E delete(ID id){
+    public E delete(ID id) {
         E e = super.delete(id);
         PrintWriter pw = null;
-        try{
+        try {
             pw = new PrintWriter(fileName);
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
@@ -104,18 +109,19 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
 
     /**
      * Method which overrides the Repository interface update()
-     * updates an entity stored in the repository and updates the file
+     * updates an entity stored in the socialnetwork.repository and updates the file
+     *
      * @param entity to be updated
      * @return null if the entity was update, the entity otherwise(e.g. it doesn't exist)
-     * @throws RepositoryException if the given entity is null
+     * @throws RepositoryException   if the given entity is null
      * @throws FileNotFoundException if the file does not exist
      */
     @Override
-    public E update(E entity){
+    public E update(E entity) {
         E e = super.update(entity);
 
         PrintWriter pw = null;
-        try{
+        try {
             pw = new PrintWriter(fileName);
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();

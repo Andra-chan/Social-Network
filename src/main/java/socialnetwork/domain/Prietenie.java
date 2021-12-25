@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * - ID of the second user
  * - the time the friendship was made
  */
-public class Prietenie extends Entity<Long>{
+public class Prietenie extends Entity<Long> {
 
     LocalDateTime date;
     Long firstUser;
@@ -22,6 +22,7 @@ public class Prietenie extends Entity<Long>{
 
     /**
      * Getters
+     *
      * @return the first user from the friendship
      */
     public Long getFirstUser() {
@@ -29,7 +30,6 @@ public class Prietenie extends Entity<Long>{
     }
 
     /**
-     *
      * @return the second user from the friendship
      */
     public Long getSecondUser() {
@@ -38,6 +38,7 @@ public class Prietenie extends Entity<Long>{
 
     /**
      * Setters which modifies the users of a friendship
+     *
      * @param firstUser/secondUser
      */
 
@@ -51,6 +52,7 @@ public class Prietenie extends Entity<Long>{
 
     /**
      * How a friendship will be showcased
+     *
      * @return String
      */
     @Override

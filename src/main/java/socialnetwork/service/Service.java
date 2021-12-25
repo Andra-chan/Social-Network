@@ -1,38 +1,33 @@
 package socialnetwork.service;
 
+import socialnetwork.Util.events.ChangeEvent;
+import socialnetwork.Util.events.ChangeEventType;
+import socialnetwork.Util.observer.Observable;
+import socialnetwork.Util.observer.Observer;
+import socialnetwork.domain.*;
+import socialnetwork.repository.Repository;
+import socialnetwork.repository.RepositoryException;
+
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import socialnetwork.domain.Friend;
-
-import socialnetwork.domain.Message;
-import socialnetwork.domain.FriendRequest;
-import socialnetwork.service.ServiceException;
-import socialnetwork.domain.Prietenie;
-import socialnetwork.domain.Utilizator;
-import socialnetwork.repository.Repository;
-import socialnetwork.repository.RepositoryException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-
 /**
  * Service class that implements all methods
  */
-public class Service {
-    private Repository<Long, Utilizator> userRepository;
-    private Repository<Long, Prietenie> friendshipRepository;
+public class Service implements Observable<ChangeEvent> {
+    private final Repository<Long, Utilizator> userRepository;
+    private final Repository<Long, Prietenie> friendshipRepository;
 
-    private Repository<Long, Message> messageRepository;
-    private Repository<Long, FriendRequest> friendRequestRepository;
+    private final Repository<Long, Message> messageRepository;
+    private final Repository<Long, FriendRequest> friendRequestRepository;
+    private final List<Observer<ChangeEvent>> observers = new ArrayList<>();
 
     public Service(Repository<Long, Utilizator> userRepository, Repository<Long, Prietenie> friendshipRepository,
-            Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
+                   Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
         this.userRepository = userRepository;
         this.friendshipRepository = friendshipRepository;
         this.friendRequestRepository = friendRequestRepository;
@@ -40,34 +35,32 @@ public class Service {
     }
 
     /**
-     * Adds a user via save() method from the repository
-     * 
+     * Adds a user via save() method from the socialnetwork.repository
+     *
      * @param user entity to be stored
-     * @return
+     * @return the user if it already exists, null otherwise
      */
     public Utilizator addUser(Utilizator user) {
         return this.userRepository.save(user);
     }
 
     /**
-     *
-     * @return all users in the repository
+     * @return all users in the socialnetwork.repository
      */
     public Iterable<Utilizator> getAllUsers() {
         return this.userRepository.findAll();
     }
 
     /**
-     *
-     * @return all friendships in the repository
+     * @return all friendships in the socialnetwork.repository
      */
     public Iterable<Prietenie> getAllFriendships() {
         return this.friendshipRepository.findAll();
     }
 
     /**
-     * Removes a user via delete() method from the repository
-     * 
+     * Removes a user via delete() method from the socialnetwork.repository
+     *
      * @return the entity that was removed or not
      */
     public Utilizator removeUser(Long userID) {
@@ -78,11 +71,13 @@ public class Service {
             if (fr.getFirstUser().equals(userID) || fr.getSecondUser().equals(userID))
                 friendshipRepository.delete(fr.getId());
         });
+        notifyObservers(new ChangeEvent(ChangeEventType.USER));
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+        notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
         return toBeReturned;
     }
 
     /**
-     *
      * @param userID ID of the user
      * @return the user with the given ID
      */
@@ -91,45 +86,37 @@ public class Service {
     }
 
     /**
-     * Adds a friendship via save() method from the repository
-     * 
+     * Adds a friendship via save() method from the socialnetwork.repository
+     *
      * @param prietenie entity to be stored
      * @return the stored entity
      */
     public Prietenie addFriendship(Prietenie prietenie) {
-        return this.friendshipRepository.save(prietenie);
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+        return friendshipRepository.save(prietenie);
     }
 
     /**
-     *
-     * @return a friendship from the repository
+     * @return a friendship from the socialnetwork.repository
      */
     public Prietenie getFriendship(Long friendshipID) {
         return friendshipRepository.findOne(friendshipID);
     }
 
-    public Prietenie removeFriendship(Utilizator user, Utilizator friend) {
-        for (Prietenie pr : this.getAllFriendships()) {
-            if ((pr.getFirstUser().equals(user.getId())) || (pr.getSecondUser().equals(user.getId()))) {
-                return this.friendshipRepository.delete(pr.getId());
-            }
-        }
-        return null;
-    }
-
     /**
-     * Removes a friendship via delete() method from the repository
-     * 
+     * Removes a friendship via delete() method from the socialnetwork.repository
+     *
      * @param id of the entity to be deleted
      * @return the deleted entity
      */
     public Prietenie removeFriendship(Long id) {
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
         return this.friendshipRepository.delete(id);
     }
 
     /**
      * Method which determines the maximum number of communities in the network
-     * 
+     *
      * @return the maximum number of communities
      */
     public Integer nrCommunities() {
@@ -150,7 +137,7 @@ public class Service {
 
     /**
      * Method which determines the strongest community in the network
-     * 
+     *
      * @return a list with the strongest community
      */
     public List<Utilizator> strongestCommunity() {
@@ -179,7 +166,7 @@ public class Service {
     /**
      * Refactored method to determine the strongest community and the number of
      * communities
-     * 
+     *
      * @param visitedUsers users that where checked if they are part of the
      *                     community
      * @param user         to be checked if they are part of the community
@@ -209,7 +196,6 @@ public class Service {
     }
 
     /**
-     *
      * @param userID the ID of o user
      * @return a list of Friends of the given user
      */
@@ -219,13 +205,13 @@ public class Service {
 
         return friendships.stream().filter(fr -> fr.getSecondUser().equals(userID) || fr.getFirstUser().equals(userID))
                 .map(fr -> {
+                    Utilizator user;
                     if (fr.getFirstUser().equals(userID)) {
-                        Utilizator user = userRepository.findOne(fr.getSecondUser());
-                        return new Friend(user.getFirstName(), user.getLastName(), fr.getDate());
+                        user = userRepository.findOne(fr.getSecondUser());
                     } else {
-                        Utilizator user = userRepository.findOne(fr.getFirstUser());
-                        return new Friend(user.getFirstName(), user.getLastName(), fr.getDate());
+                        user = userRepository.findOne(fr.getFirstUser());
                     }
+                    return new Friend(user.getFirstName(), user.getLastName(), fr.getDate());
                 })
                 .collect(Collectors.toList());
     }
@@ -247,9 +233,8 @@ public class Service {
      * @param creatorId   the user's id(message sender)
      * @param to          a list of id's representing the message recipients.
      * @param messageBody the message's body.
-     *
      * @return null if the message wasn't sent, and the message itself
-     *         otherwise.
+     * otherwise.
      * @throws RepositoryException if the user with the id creatorId doesn't exist,
      *                             or if any of the users in the recipients list
      *                             don't exist
@@ -264,7 +249,11 @@ public class Service {
             toUsers.add(userRepository.findOne(userId));
         }
         message.setTo(toUsers);
-        return messageRepository.save(message);
+        var sentMessage = messageRepository.save(message);
+        if (sentMessage == null) {
+            notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
+        }
+        return sentMessage;
     }
 
     /**
@@ -273,10 +262,9 @@ public class Service {
      * @param messageId      the message's id that you're trying to reply to
      * @param replyCreatorId the user's id that created the reply
      * @param messageBody    the reply's body
-     *
-     * @return null if the message wasn't sent(the message you want to reply to
-     *         doesn't exist, or it wasn't sent to replyCreatorId), the message
-     *         otherwise
+     * @return null if the message wasn't sent(the message you want to reply to,
+     * doesn't exist, or it wasn't sent to replyCreatorId), the message
+     * otherwise
      */
     public Message replyToMessage(Long messageId, Long replyCreatorId, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
@@ -290,8 +278,8 @@ public class Service {
         if (!isValidReply) {
             throw new ServiceException("The user doesn't have the message you're trying to reply to.");
         }
-        isValidReply = !StreamSupport.stream(messageRepository.findAll().spliterator(), false)
-                .anyMatch(x -> x.getFrom().getId().equals(replyCreatorId)
+        isValidReply = StreamSupport.stream(messageRepository.findAll().spliterator(), false)
+                .noneMatch(x -> x.getFrom().getId().equals(replyCreatorId)
                         && x.getReply() != null
                         && x.getReply().getId().equals(messageId));
         if (!isValidReply) {
@@ -305,7 +293,47 @@ public class Service {
         message.setTo(to);
         message.setReply(reply);
 
-        return messageRepository.save(message);
+        var replyResult = messageRepository.save(message);
+        if (replyResult == null) {
+            notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
+        }
+        return replyResult;
+    }
+
+    /**
+     * reply to all messages sent to a user.
+     * @param userID the user's id
+     * @param messageBody reply message body
+     */
+    public void replyAll(Long userID, String messageBody) {
+        Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
+        Utilizator replyCreator = userRepository.findOne(userID);
+
+        var users = getAllUsers();
+        for(var user: users) {
+            if(!user.getId().equals(userID)) {
+                var allMessages = getAllMessagesBetweenTwoUsers(userID, user.getId());
+                if(!allMessages.isEmpty()){
+                    var lastEntry = allMessages.get(allMessages.size()-1);
+                    for (int i = allMessages.size()-1; i>=0;i--){
+                        if(allMessages.get(i).getKey().getFrom().getId().equals(userID)){
+                            continue;
+                        }
+                        if(allMessages.get(i).getValue() != null){
+                            break;
+                        }
+                        List<Utilizator> to = new ArrayList<>();
+                        var messageRecipient = user;
+                        to.add(messageRecipient);
+                        message.setFrom(replyCreator);
+                        message.setTo(to);
+                        message.setReply(allMessages.get(i).getKey());
+                        messageRepository.save(message);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -313,20 +341,16 @@ public class Service {
      *
      * @param userId1 the first user's id
      * @param userId2 the second user's id
-     *
      * @return a list of entries of all messages between two users(in chronological
-     *         order). Entry.key is a
-     *         message, Entry.value is the reply(if it exists)
+     * order). Entry.key is a
+     * message, Entry.value is the reply(if it exists)
      */
     public List<Map.Entry<Message, Message>> getAllMessagesBetweenTwoUsers(Long userId1, Long userId2) {
         var allMessages = messageRepository.findAll();
         Map<Long, Message> messages = StreamSupport.stream(allMessages.spliterator(), false)
                 .filter(x -> {
                     // creator must be one of the provided users
-                    if (x.getFrom().getId().equals(userId1) || x.getFrom().getId().equals(userId2)) {
-                        return true;
-                    }
-                    return false;
+                    return x.getFrom().getId().equals(userId1) || x.getFrom().getId().equals(userId2);
                 })
                 .filter(x -> {
                     // message must have one of the users in the recipients list
@@ -334,13 +358,12 @@ public class Service {
                     boolean from2to1 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId2));
                     return from1to2 || from2to1;
                 })
-                .collect(Collectors.toMap(x -> x.getId(), x -> x));
+                .collect(Collectors.toMap(Entity::getId, x -> x));
 
         HashMap<Message, Message> messageReply = getMessageReplyPairs(messages);
 
         var conversations = messageReply.entrySet().stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey,
-                        (a, b) -> a.getDate().compareTo(b.getDate())))
+                .sorted(Map.Entry.comparingByKey(Comparator.comparing(Message::getDate)))
                 .collect(Collectors.toList());
         return conversations;
     }
@@ -352,7 +375,7 @@ public class Service {
      * @param messages a map of messages, key is the message id, value is the
      *                 message itself
      * @return HashMap<Message, Message> where key is a message, and value is the
-     *         message that replies to the key(null otherwise)
+     * message that replies to the key(null otherwise)
      */
     private HashMap<Message, Message> getMessageReplyPairs(Map<Long, Message> messages) {
         HashMap<Message, Message> messageReply = new HashMap<>();
@@ -374,26 +397,38 @@ public class Service {
     }
 
     /**
-     * Adds a friend request using the save() from the repository
-     * 
+     * Adds a friend request using the save() from the socialnetwork.repository
+     *
      * @param request to be saved
      * @return the saved friend request
      */
     public FriendRequest addFriendRequest(FriendRequest request) {
         request.setStatus("PENDING");
         request.setLocalDateTime(LocalDateTime.now());
-        return this.friendRequestRepository.save(request);
+        if(verifyPendingRequest(request).isPresent()) {
+            return null;
+        }
+        var requestResult = friendRequestRepository.save(request);
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+        return requestResult;
     }
 
+    /**
+     * Finds and returns a pending friend request
+     *
+     * @param request: the request you're searching for
+     * @return optional of request if the request exists, empty optional otherwise.
+     */
     public Optional<FriendRequest> verifyPendingRequest(FriendRequest request) {
-        return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(), false).filter(req -> {
-            if (req.getSender() == request.getReceiver() && req.getReceiver() == request.getSender()
-                    && req.getStatus().equals("PENDING"))
-                return true;
-            return false;
-        }).findFirst();
+        return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(), false)
+                .filter(req -> req.getSender().equals(request.getReceiver()) && req.getReceiver().equals(request.getSender())
+                        && req.getStatus().equals("PENDING")).findFirst();
     }
 
+    /**
+     * @param userID: a user's id
+     * @return true of the user exists, false otherwise
+     */
     public boolean checkIfUserExists(Long userID) {
         try {
             userRepository.findOne(userID);
@@ -404,14 +439,31 @@ public class Service {
     }
 
     /**
-     *
      * @param userID id of a user
      * @return returns a list of friend requests of a user
+     */
+    public List<FriendRequest> getPendingFriendRequests(Long userID) {
+        List<FriendRequest> friendRequests = new ArrayList<>();
+        this.friendRequestRepository.findAll().forEach(req -> {
+            if (req.getReceiver().equals(userID) && req.getStatus().equals("PENDING"))
+                friendRequests.add(req);
+        });
+        return friendRequests;
+    }
+
+    /**
+     * Returns all accepted or pending friend requests for a user.
+     *
+     * @param userID: id of a user
+     * @return a list of accepted and pending friend requests for a user
      */
     public List<FriendRequest> getFriendRequests(Long userID) {
         List<FriendRequest> friendRequests = new ArrayList<>();
         this.friendRequestRepository.findAll().forEach(req -> {
-            if (req.getReceiver().equals(userID) && req.getStatus().equals("PENDING"))
+            if ((req.getReceiver().equals(userID) || req.getSender().equals(userID))
+                    && req.getStatus().equals("ACCEPTED")) {
+                friendRequests.add(req);
+            } else if (req.getReceiver().equals(userID) && req.getStatus().equals("PENDING"))
                 friendRequests.add(req);
         });
         return friendRequests;
@@ -422,7 +474,7 @@ public class Service {
      * - if accepted, the friendship will be stored and the friend request will be
      * updated with the status ACCEPTED
      * - if denied, the friend request will be updated with the status REJECTED
-     * 
+     *
      * @param requestID the ID of a request
      * @param decision  whether a user accepts or rejects a friend request
      */
@@ -440,10 +492,24 @@ public class Service {
             fr.setStatus("ACCEPTED");
             fr.setLocalDateTime(LocalDateTime.now());
             friendRequestRepository.update(fr);
+            notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+
         } else {
             fr.setStatus("REJECTED");
             fr.setLocalDateTime(LocalDateTime.now());
             friendRequestRepository.delete(requestID);
+            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
         }
+    }
+
+    @Override
+    public void addObserver(Observer<ChangeEvent> e) {
+        observers.add(e);
+    }
+
+    @Override
+    public void notifyObservers(ChangeEvent t) {
+        observers.stream().forEach(x -> x.update(t));
     }
 }
