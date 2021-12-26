@@ -1,23 +1,35 @@
 package socialnetwork.service;
 
-import socialnetwork.Util.events.ChangeEvent;
-import socialnetwork.Util.events.ChangeEventType;
-import socialnetwork.Util.observer.Observable;
-import socialnetwork.Util.observer.Observer;
-import socialnetwork.domain.*;
-import socialnetwork.repository.Repository;
-import socialnetwork.repository.RepositoryException;
-
 import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import socialnetwork.Util.events.ChangeEvent;
+import socialnetwork.Util.events.ChangeEventType;
+import socialnetwork.Util.observer.Observable;
+import socialnetwork.Util.observer.Observer;
+import socialnetwork.domain.Entity;
+import socialnetwork.domain.Friend;
+import socialnetwork.domain.FriendRequest;
+import socialnetwork.domain.Message;
+import socialnetwork.domain.Prietenie;
+import socialnetwork.domain.UserCredentials;
+import socialnetwork.domain.Utilizator;
+import socialnetwork.domain.validators.ValidationException;
+import socialnetwork.repository.Repository;
+import socialnetwork.repository.RepositoryException;
 
 /**
  * Service class that implements all methods
@@ -43,26 +55,32 @@ public class Service implements Observable<ChangeEvent> {
     }
 
     /**
-     * Adds a user via save() method from the socialnetwork.repository
+     * Adds a user via save() method from the userRepsitory.
      *
      * @param user entity to be stored
      * @return the user if it already exists, null otherwise
+     *
+     * @throws ValidationException if the user in invalid
+     * @throws RepositoryException if the email address already exists or if the
+     *                             user is null.
      */
     public Utilizator addUser(Utilizator user) {
         String plainTextPassword = user.getPassword();
-        if (plainTextPassword.isBlank()) {
-            throw new ServiceException("Password can't be blank");
-        }
         String hashedPassword = BCrypt.hashpw(plainTextPassword, BCrypt.gensalt(BCryptNumberOfRounds));
         user.setPassword(hashedPassword);
 
         return this.userRepository.save(user);
     }
 
+    /**
+     * Returns the user id for the provided user credentials.
+     *
+     * @return the user id if the email, and password match an existing user.
+     * @throws RepositoryException if the email does't exist
+     */
     public Long login(UserCredentials credentials) {
         try {
             UserCredentials storedCredentials = userCredentialsRepository.findOne(credentials.getEmail());
-            System.out.printf("Stored hash: %s\n", storedCredentials.getPassword());
             if (!BCrypt.checkpw(credentials.getPassword(), storedCredentials.getPassword())) {
                 return null;
             }
@@ -343,7 +361,6 @@ public class Service implements Observable<ChangeEvent> {
             if (!user.getId().equals(userID)) {
                 var allMessages = getAllMessagesBetweenTwoUsers(userID, user.getId());
                 if (!allMessages.isEmpty()) {
-                    var lastEntry = allMessages.get(allMessages.size() - 1);
                     for (int i = allMessages.size() - 1; i >= 0; i--) {
                         if (allMessages.get(i).getKey().getFrom().getId().equals(userID)) {
                             continue;
@@ -534,11 +551,21 @@ public class Service implements Observable<ChangeEvent> {
         }
     }
 
+    /**
+     * Add 'e' to the list of observers
+     *
+     * @param e : an observer
+     */
     @Override
     public void addObserver(Observer<ChangeEvent> e) {
         observers.add(e);
     }
 
+    /**
+     * Notify all the observers with the provided event
+     *
+     * @param t : an event
+     */
     @Override
     public void notifyObservers(ChangeEvent t) {
         observers.stream().forEach(x -> x.update(t));
