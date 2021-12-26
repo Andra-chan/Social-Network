@@ -8,6 +8,8 @@ import socialnetwork.domain.*;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
 
+import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -15,20 +17,26 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 /**
  * Service class that implements all methods
  */
 public class Service implements Observable<ChangeEvent> {
     private final Repository<Long, Utilizator> userRepository;
     private final Repository<Long, Prietenie> friendshipRepository;
+    private final Repository<String, UserCredentials> userCredentialsRepository;
 
     private final Repository<Long, Message> messageRepository;
     private final Repository<Long, FriendRequest> friendRequestRepository;
     private final List<Observer<ChangeEvent>> observers = new ArrayList<>();
 
-    public Service(Repository<Long, Utilizator> userRepository, Repository<Long, Prietenie> friendshipRepository,
-                   Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
+    public Service(Repository<Long, Utilizator> userRepository,
+            Repository<String, UserCredentials> userCredentialsRepository,
+            Repository<Long, Prietenie> friendshipRepository,
+            Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
         this.userRepository = userRepository;
+        this.userCredentialsRepository = userCredentialsRepository;
         this.friendshipRepository = friendshipRepository;
         this.friendRequestRepository = friendRequestRepository;
         this.messageRepository = messageRepository;
@@ -41,7 +49,27 @@ public class Service implements Observable<ChangeEvent> {
      * @return the user if it already exists, null otherwise
      */
     public Utilizator addUser(Utilizator user) {
+        String plainTextPassword = user.getPassword();
+        if (plainTextPassword.isBlank()) {
+            throw new ServiceException("Password can't be blank");
+        }
+        String hashedPassword = BCrypt.hashpw(plainTextPassword, BCrypt.gensalt(BCryptNumberOfRounds));
+        user.setPassword(hashedPassword);
+
         return this.userRepository.save(user);
+    }
+
+    public Long login(UserCredentials credentials) {
+        try {
+            UserCredentials storedCredentials = userCredentialsRepository.findOne(credentials.getEmail());
+            System.out.printf("Stored hash: %s\n", storedCredentials.getPassword());
+            if (!BCrypt.checkpw(credentials.getPassword(), storedCredentials.getPassword())) {
+                return null;
+            }
+            return storedCredentials.getUserId();
+        } catch (RepositoryException ex) {
+            return null;
+        }
     }
 
     /**
@@ -234,7 +262,7 @@ public class Service implements Observable<ChangeEvent> {
      * @param to          a list of id's representing the message recipients.
      * @param messageBody the message's body.
      * @return null if the message wasn't sent, and the message itself
-     * otherwise.
+     *         otherwise.
      * @throws RepositoryException if the user with the id creatorId doesn't exist,
      *                             or if any of the users in the recipients list
      *                             don't exist
@@ -263,8 +291,8 @@ public class Service implements Observable<ChangeEvent> {
      * @param replyCreatorId the user's id that created the reply
      * @param messageBody    the reply's body
      * @return null if the message wasn't sent(the message you want to reply to,
-     * doesn't exist, or it wasn't sent to replyCreatorId), the message
-     * otherwise
+     *         doesn't exist, or it wasn't sent to replyCreatorId), the message
+     *         otherwise
      */
     public Message replyToMessage(Long messageId, Long replyCreatorId, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
@@ -302,7 +330,8 @@ public class Service implements Observable<ChangeEvent> {
 
     /**
      * reply to all messages sent to a user.
-     * @param userID the user's id
+     * 
+     * @param userID      the user's id
      * @param messageBody reply message body
      */
     public void replyAll(Long userID, String messageBody) {
@@ -310,16 +339,16 @@ public class Service implements Observable<ChangeEvent> {
         Utilizator replyCreator = userRepository.findOne(userID);
 
         var users = getAllUsers();
-        for(var user: users) {
-            if(!user.getId().equals(userID)) {
+        for (var user : users) {
+            if (!user.getId().equals(userID)) {
                 var allMessages = getAllMessagesBetweenTwoUsers(userID, user.getId());
-                if(!allMessages.isEmpty()){
-                    var lastEntry = allMessages.get(allMessages.size()-1);
-                    for (int i = allMessages.size()-1; i>=0;i--){
-                        if(allMessages.get(i).getKey().getFrom().getId().equals(userID)){
+                if (!allMessages.isEmpty()) {
+                    var lastEntry = allMessages.get(allMessages.size() - 1);
+                    for (int i = allMessages.size() - 1; i >= 0; i--) {
+                        if (allMessages.get(i).getKey().getFrom().getId().equals(userID)) {
                             continue;
                         }
-                        if(allMessages.get(i).getValue() != null){
+                        if (allMessages.get(i).getValue() != null) {
                             break;
                         }
                         List<Utilizator> to = new ArrayList<>();
@@ -342,8 +371,8 @@ public class Service implements Observable<ChangeEvent> {
      * @param userId1 the first user's id
      * @param userId2 the second user's id
      * @return a list of entries of all messages between two users(in chronological
-     * order). Entry.key is a
-     * message, Entry.value is the reply(if it exists)
+     *         order). Entry.key is a
+     *         message, Entry.value is the reply(if it exists)
      */
     public List<Map.Entry<Message, Message>> getAllMessagesBetweenTwoUsers(Long userId1, Long userId2) {
         var allMessages = messageRepository.findAll();
@@ -375,7 +404,7 @@ public class Service implements Observable<ChangeEvent> {
      * @param messages a map of messages, key is the message id, value is the
      *                 message itself
      * @return HashMap<Message, Message> where key is a message, and value is the
-     * message that replies to the key(null otherwise)
+     *         message that replies to the key(null otherwise)
      */
     private HashMap<Message, Message> getMessageReplyPairs(Map<Long, Message> messages) {
         HashMap<Message, Message> messageReply = new HashMap<>();
@@ -405,7 +434,7 @@ public class Service implements Observable<ChangeEvent> {
     public FriendRequest addFriendRequest(FriendRequest request) {
         request.setStatus("PENDING");
         request.setLocalDateTime(LocalDateTime.now());
-        if(verifyPendingRequest(request).isPresent()) {
+        if (verifyPendingRequest(request).isPresent()) {
             return null;
         }
         var requestResult = friendRequestRepository.save(request);
@@ -421,8 +450,10 @@ public class Service implements Observable<ChangeEvent> {
      */
     public Optional<FriendRequest> verifyPendingRequest(FriendRequest request) {
         return StreamSupport.stream(this.friendRequestRepository.findAll().spliterator(), false)
-                .filter(req -> req.getSender().equals(request.getReceiver()) && req.getReceiver().equals(request.getSender())
-                        && req.getStatus().equals("PENDING")).findFirst();
+                .filter(req -> req.getSender().equals(request.getReceiver())
+                        && req.getReceiver().equals(request.getSender())
+                        && req.getStatus().equals("PENDING"))
+                .findFirst();
     }
 
     /**
