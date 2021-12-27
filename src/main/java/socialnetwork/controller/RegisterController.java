@@ -44,10 +44,10 @@ public class RegisterController {
 
     /**
      * Click handler for the register button
-     *
+     * <p>
      * When the register button is pressed, collect registration info from text
      * fields and attempt to register a new user.
-     *
+     * <p>
      * If a new user has been created, the window will switch from register window
      * to a login window, otherwise an error message is displayed.
      */

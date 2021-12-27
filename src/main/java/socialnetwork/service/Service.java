@@ -59,7 +59,6 @@ public class Service implements Observable<ChangeEvent> {
      *
      * @param user entity to be stored
      * @return the user if it already exists, null otherwise
-     *
      * @throws ValidationException if the user in invalid
      * @throws RepositoryException if the email address already exists or if the
      *                             user is null.
@@ -348,7 +347,7 @@ public class Service implements Observable<ChangeEvent> {
 
     /**
      * reply to all messages sent to a user.
-     * 
+     *
      * @param userID      the user's id
      * @param messageBody reply message body
      */

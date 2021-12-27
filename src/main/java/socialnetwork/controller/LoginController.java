@@ -11,22 +11,17 @@ import socialnetwork.domain.UserCredentials;
 import socialnetwork.service.Service;
 
 public class LoginController {
-    private Service service;
-
     @FXML
     Button loginButton;
-
     @FXML
     TextField textFieldEmail;
-
     @FXML
     PasswordField textFieldPassword;
-
     @FXML
     Label warnLabel;
-
     @FXML
     Button registerButton;
+    private Service service;
 
     /**
      * Initialize the controller, add listeners for key presses.
@@ -39,7 +34,8 @@ public class LoginController {
 
     /**
      * Click handler for the login button.
-     * If the login information is correct, it enters the application, otherwise it displays an error message.
+     * If the login information is correct, it enters the application, otherwise it
+     * displays an error message.
      */
     public void onLoginButtonClick() {
         String email = textFieldEmail.getText();
@@ -57,7 +53,7 @@ public class LoginController {
      * When the enter key is pressed, collect login info and try to login.
      */
     private void enterKeyPressed(KeyCode keyCode) {
-        if(keyCode == KeyCode.ENTER){
+        if (keyCode == KeyCode.ENTER) {
             onLoginButtonClick();
         }
     }
