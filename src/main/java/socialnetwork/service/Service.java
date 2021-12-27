@@ -298,7 +298,7 @@ public class Service implements Observable<ChangeEvent> {
         if (sentMessage == null) {
             notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
         }
-        return sentMessage;
+        return message;
     }
 
     /**
@@ -411,6 +411,24 @@ public class Service implements Observable<ChangeEvent> {
                 .sorted(Map.Entry.comparingByKey(Comparator.comparing(Message::getDate)))
                 .collect(Collectors.toList());
         return conversations;
+    }
+
+    public List<Message> getMessageListBetweenTwoUsers(Long userId1, Long userId2) {
+        var allMessages = messageRepository.findAll();
+        List<Message> messages = StreamSupport.stream(allMessages.spliterator(), false)
+                .filter(x -> {
+                    // creator must be one of the provided users
+                    return x.getFrom().getId().equals(userId1) || x.getFrom().getId().equals(userId2);
+                })
+                .filter(x -> {
+                    // message must have one of the users in the recipients list
+                    boolean from1to2 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId1));
+                    boolean from2to1 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId2));
+                    return from1to2 || from2to1;
+                })
+                .sorted(Comparator.comparing(Message::getDate))
+                .collect(Collectors.toList());
+        return messages;
     }
 
     /**

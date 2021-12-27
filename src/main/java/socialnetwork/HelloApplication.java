@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import socialnetwork.controller.ApplicationController;
+import socialnetwork.controller.ChatboxController;
 import socialnetwork.controller.LoginController;
 import socialnetwork.controller.RegisterController;
 import socialnetwork.domain.FriendRequest;
@@ -53,17 +54,18 @@ public class HelloApplication extends Application {
                 friendRequestRepository,
                 messageRepo);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Chatbox.fxml"));
         // HBox root = fxmlLoader.load();
         AnchorPane root = fxmlLoader.load();
         // ApplicationController controller = fxmlLoader.getController();
 
-        LoginController controller = fxmlLoader.getController();
-        controller.setService(serviceNetwork);
+        ChatboxController controller = fxmlLoader.getController();
 
         // controller.setService(serviceNetwork);
 
         Scene scene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
+        scene.getStylesheets().add(String.valueOf(getClass().getResource("css/style.css")));
+        controller.setService(serviceNetwork, 7l, 9l);
 
         stage.setTitle("Social Network");
         stage.setScene(scene);

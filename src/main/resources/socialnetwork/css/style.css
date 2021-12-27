@@ -1,0 +1,20 @@
+.message {
+    -fx-background-radius:10;
+    -fx-padding:10;
+}
+
+.sentMessage {
+    -fx-background-color: dodgerblue;
+}
+
+.sentMessageContent {
+    -fx-fill: white;
+}
+
+.receivedMessage {
+    -fx-background-color: lightgray;
+}
+
+.receivedMessageContent {
+    -fx-fill: black;
+}
