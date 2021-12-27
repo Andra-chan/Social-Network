@@ -2,17 +2,21 @@ package socialnetwork.controller;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import socialnetwork.HelloApplication;
 import socialnetwork.Util.message.MessageType;
 import socialnetwork.domain.MessageDTO;
 import socialnetwork.service.Service;
@@ -41,19 +45,37 @@ public class ChatboxController {
         chatScrollPane.vvalueProperty().bind(chatGridPane.heightProperty());
     }
 
-    private void updateModel() {
-        var messages = service.getMessageListBetweenTwoUsers(sender, receiver)
+    private List<MessageDTO> getAllMessages() {
+        return service.getMessageListBetweenTwoUsers(sender, receiver)
                 .stream()
-                .map(x -> new MessageDTO(x.getMessageBody(),
+                .map(x -> new MessageDTO(
+                        x.getId(),
+                        x.getReply() != null ? x.getReply().getId() : null,
+                        x.getMessageBody(),
                         x.getFrom().getId().equals(sender) ? MessageType.SEND : MessageType.RECEIVE,
                         x.getFrom().getFirstName() + " " + x.getFrom().getLastName()))
                 .collect(Collectors.toList());
+    }
+
+    private void updateModel() {
+        var messages = getAllMessages();
         for (var message : messages) {
             addMessageToChat(message);
         }
     }
 
+    private MessageDTO getLastMessage() {
+        var messages = getAllMessages();
+        if (messages.size() == 0) {
+            return null;
+        }
+        return messages.get(messages.size() - 1);
+    }
+
     private void addMessageToChat(MessageDTO message) {
+        if (message == null) {
+            return;
+        }
         final Text agent = message.getType().equals(MessageType.SEND) ? new Text("You") : new Text(message.getFrom());
         Text recordMessage = new Text(message.getMessageBody());
         final var messageFlow = new TextFlow(recordMessage);
@@ -73,7 +95,7 @@ public class ChatboxController {
         final var rowIndex = chatGridPane.getRowCount();
         final var rowSpan = 1;
 
-        final VBox vBox = getVBox(agent, messageFlow);
+        VBox vBox = getVBox(agent, messageFlow);
         chatGridPane.add(vBox, columnIndex, rowIndex, columnSpan, rowSpan);
     }
 
@@ -89,10 +111,8 @@ public class ChatboxController {
             ArrayList<Long> to = new ArrayList<>();
             to.add(receiver);
             var message = service.sendMessage(sender, to, messageText);
-            if (message != null) {
-                String receiverName = message.getTo().get(0).getFirstName() + " "
-                        + message.getTo().get(0).getLastName();
-                addMessageToChat(new MessageDTO(messageText, MessageType.SEND, receiverName));
+            if (message == null) {
+                addMessageToChat(getLastMessage());
             }
             chatTextField.clear();
         }

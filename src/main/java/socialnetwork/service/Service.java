@@ -298,7 +298,7 @@ public class Service implements Observable<ChangeEvent> {
         if (sentMessage == null) {
             notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
         }
-        return message;
+        return sentMessage;
     }
 
     /**

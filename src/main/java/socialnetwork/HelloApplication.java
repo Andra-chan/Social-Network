@@ -1,8 +1,9 @@
 package socialnetwork;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -19,13 +20,15 @@ import socialnetwork.domain.validators.MessageValidator;
 import socialnetwork.domain.validators.UtilizatorValidator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
-import socialnetwork.repository.database.*;
+import socialnetwork.repository.database.FriendRequestDbRepository;
+import socialnetwork.repository.database.FriendshipDbRepository;
+import socialnetwork.repository.database.MessageDbRepository;
+import socialnetwork.repository.database.UserCredentialsDbRepository;
+import socialnetwork.repository.database.UtilizatorDbRepository;
 import socialnetwork.service.Service;
 
-import java.io.IOException;
-
 public class HelloApplication extends Application {
-    private static Stage currentStage;
+    public static Stage currentStage;
 
     @Override
     public void start(Stage stage) throws IOException {
