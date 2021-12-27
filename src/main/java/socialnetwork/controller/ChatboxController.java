@@ -53,7 +53,7 @@ public class ChatboxController {
         }
     }
 
-    private void addMessageToChat(MessageDTO message) {fdasfffffffff
+    private void addMessageToChat(MessageDTO message) {
         final Text agent = message.getType().equals(MessageType.SEND) ? new Text("You") : new Text(message.getFrom());
         Text recordMessage = new Text(message.getMessageBody());
         final var messageFlow = new TextFlow(recordMessage);

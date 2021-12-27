@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="258.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.ChatboxController">
+<AnchorPane prefHeight="306.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.ChatboxController">
    <children>
-      <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" layoutX="72.0" layoutY="39.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="167.0" prefWidth="282.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="68.0" AnchorPane.topAnchor="39.0">
+      <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" layoutX="38.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="358.0" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="10.0">
          <content>
             <GridPane fx:id="chatGridPane" prefHeight="196.0" prefWidth="356.0">
               <columnConstraints>
