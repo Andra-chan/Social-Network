@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         String url = "jdbc:postgresql://localhost:5432/socialnetwork";
         String username = "postgres";
-        String password = "admin";
+        String password = "mypostgres";
 
         Validator<Utilizator> userValidator = new UtilizatorValidator();
 
