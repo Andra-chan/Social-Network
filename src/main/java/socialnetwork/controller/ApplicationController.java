@@ -1,11 +1,20 @@
-package socialnetwork;
+package socialnetwork.controller;
+
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.StringConverter;
+import socialnetwork.HelloApplication;
 import socialnetwork.Util.events.ChangeEvent;
 import socialnetwork.Util.events.ChangeEventType;
 import socialnetwork.Util.observer.Observer;
@@ -14,17 +23,13 @@ import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 public class ApplicationController implements Observer<ChangeEvent> {
 
     ObservableList<Utilizator> modelUsers = FXCollections.observableArrayList();
     ObservableList<FriendDTO> modelFriendships = FXCollections.observableArrayList();
 
     private Service service;
+    private Long userId;
 
     @FXML
     TableColumn<Utilizator, String> tableColumnFirstName;
@@ -57,7 +62,10 @@ public class ApplicationController implements Observer<ChangeEvent> {
     TextField textFieldFriendName;
 
     @FXML
-    ComboBox<Utilizator> comboBoxUsers;
+    Label currentUserLabel;
+
+    @FXML
+    Button logoutButton;
 
     @FXML
     public void initialize() {
@@ -74,13 +82,6 @@ public class ApplicationController implements Observer<ChangeEvent> {
 
         tableViewUsers.setItems(modelUsers);
         tableViewFriends.setItems(modelFriendships);
-        comboBoxUsers.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    Utilizator selectedUser = tableViewUsers.getSelectionModel().getSelectedItem();
-                    addFriendButton.setDisable(selectedUser == null || newValue.getId().equals(selectedUser.getId()));
-                    updateFriendshipModel();
-                    filterFriendships();
-                });
 
         tableViewFriends.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
@@ -98,8 +99,7 @@ public class ApplicationController implements Observer<ChangeEvent> {
             }
         });
         tableViewUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            Utilizator currentUser = comboBoxUsers.getSelectionModel().getSelectedItem();
-            addFriendButton.setDisable(newValue == null || newValue.getId().equals(currentUser.getId()));
+            addFriendButton.setDisable(newValue == null || newValue.getId().equals(userId));
         });
     }
 
@@ -114,9 +114,12 @@ public class ApplicationController implements Observer<ChangeEvent> {
     }
 
     public void handleAddFriendButtonClick() {
-        Utilizator sender = comboBoxUsers.getSelectionModel().getSelectedItem();
         Utilizator receiver = tableViewUsers.getSelectionModel().getSelectedItem();
-        service.addFriendRequest(new FriendRequest(sender.getId(), receiver.getId()));
+        service.addFriendRequest(new FriendRequest(userId, receiver.getId()));
+    }
+
+    public void handleLogoutButtonClick() {
+        HelloApplication.changeSceneToLogin(service);
     }
 
     public void filterUsers() {
@@ -129,8 +132,7 @@ public class ApplicationController implements Observer<ChangeEvent> {
     public void filterFriendships() {
         Predicate<FriendDTO> firstNameFilter = u -> u.getFirstName().startsWith(textFieldFriendName.getText());
         Predicate<FriendDTO> lastNameFilter = u -> u.getLastName().startsWith(textFieldFriendName.getText());
-        Utilizator currentUser = comboBoxUsers.getSelectionModel().getSelectedItem();
-        modelFriendships.setAll(getAllFriendRequestsForUser(currentUser.getId())
+        modelFriendships.setAll(getAllFriendRequestsForUser(userId)
                 .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
     }
 
@@ -159,31 +161,20 @@ public class ApplicationController implements Observer<ChangeEvent> {
     }
 
     private void updateFriendshipModel() {
-        var currentUser = comboBoxUsers.getSelectionModel().getSelectedItem();
-        if (currentUser != null) {
-            modelFriendships.setAll(getAllFriendRequestsForUser(currentUser.getId()));
-        }
+        modelFriendships.setAll(getAllFriendRequestsForUser(userId));
     }
 
-    public void setService(Service service) {
+    public void initData(Service service, Long userId) {
         this.service = service;
+        this.userId = userId;
+
         service.addObserver(this);
         updateUserModel();
 
-        comboBoxUsers.getItems().setAll(modelUsers);
-        comboBoxUsers.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(Utilizator object) {
-                return object.getFirstName() + " " + object.getLastName();
-            }
-
-            @Override
-            public Utilizator fromString(String string) {
-                return null;
-            }
-        });
-        comboBoxUsers.getSelectionModel().selectFirst();
         updateFriendshipModel();
+
+        Utilizator currentUser = service.getUser(userId);
+        currentUserLabel.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
     }
 
     @Override
