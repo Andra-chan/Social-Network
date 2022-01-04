@@ -144,6 +144,10 @@ public class Service implements Observable<ChangeEvent> {
      */
     public Prietenie removeFriendship(Long id) {
         notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+        var friendship =  friendshipRepository.findOne(id);
+        friendRequestRepository.delete(getFriendRequest(friendship.getFirstUser(),
+                friendship.getSecondUser()).get().getId());
+
         return this.friendshipRepository.delete(id);
     }
 
@@ -441,7 +445,7 @@ public class Service implements Observable<ChangeEvent> {
         if (verifyPendingRequest(request).isPresent()) {
             return null;
         }
-        if(areFriends(request.getSender(), request.getReceiver())){
+        if (areFriends(request.getSender(), request.getReceiver())) {
             return null;
         }
         var requestResult = friendRequestRepository.save(request);
@@ -449,7 +453,7 @@ public class Service implements Observable<ChangeEvent> {
         return requestResult;
     }
 
-    public boolean areFriends(Long userId1, Long userId2){
+    public boolean areFriends(Long userId1, Long userId2) {
         var friendList = getFriends(userId1);
         return friendList.stream().anyMatch(x -> x.getId().equals(userId2));
     }
@@ -524,6 +528,20 @@ public class Service implements Observable<ChangeEvent> {
             friendRequestRepository.delete(requestID);
         }
         notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+    }
+
+    public Optional<Prietenie> getFriendship(Long userId1, Long userId2){
+        return StreamSupport.stream(friendshipRepository.findAll().spliterator(), false)
+                .filter(x -> x.getFirstUser().equals(userId1) && x.getSecondUser().equals(userId2))
+                .filter(x -> x.getFirstUser().equals(userId2) && x.getSecondUser().equals(userId1))
+                .findAny();
+    }
+
+    public Optional<FriendRequest> getFriendRequest(Long userId1, Long userId2){
+        return StreamSupport.stream(friendRequestRepository.findAll().spliterator(), false)
+                .filter(x -> x.getSender().equals(userId1) && x.getReceiver().equals(userId2))
+                .filter(x -> x.getSender().equals(userId2) && x.getReceiver().equals(userId1))
+                .findAny();
     }
 
     /**

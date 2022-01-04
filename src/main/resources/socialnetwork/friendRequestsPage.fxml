@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="787.0" prefWidth="1072.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.MainPage">
+<AnchorPane prefHeight="787.0" prefWidth="1072.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendRequestsController">
    <children>
       <AnchorPane prefHeight="109.0" prefWidth="1072.0" style="-fx-background-color: teal;">
          <children>
@@ -63,56 +63,56 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="109.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4c99cf;">
+      <AnchorPane fx:id="friendsPane" layoutY="109.0" onMouseClicked="#onMenuFriendsClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4c99cf;">
          <children>
-            <Label fx:id="friendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" onMouseClicked="#onMenuFriendsClick" prefHeight="64.0" prefWidth="200.0" text="Friends" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" prefHeight="64.0" prefWidth="200.0" text="Friends" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="friendsImage" blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="31.0" layoutY="59.0" onMouseClicked="#onMenuFriendsClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="31.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/download%20(1).png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="278.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4873a6;">
+      <AnchorPane fx:id="friendRequestsPane" layoutY="278.0" onMouseClicked="#onMenuFriendRequestsClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4873a6;">
          <children>
-            <Label fx:id="friendRequestsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" onMouseClicked="#onMenuFriendRequestsClick" prefHeight="64.0" prefWidth="240.0" text="Friend Requests" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" prefHeight="64.0" prefWidth="240.0" text="Friend Requests" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="friendRequestsImage" blendMode="MULTIPLY" fitHeight="74.0" fitWidth="106.0" layoutX="4.0" layoutY="48.0" onMouseClicked="#onMenuFriendRequestsClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="MULTIPLY" fitHeight="74.0" fitWidth="106.0" layoutX="4.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/download.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="448.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #5a5387;">
+      <AnchorPane fx:id="messagesPane" layoutY="448.0" onMouseClicked="#onMenuMessagesClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #5a5387;">
          <children>
-            <Label fx:id="MessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" onMouseClicked="#onMenuMessagesClick" prefHeight="64.0" prefWidth="200.0" text="Messages" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" prefHeight="64.0" prefWidth="200.0" text="Messages" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="messagesImage" blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="30.0" layoutY="58.0" onMouseClicked="#onMenuMessagesClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="30.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/text-message-2161287-1843748.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="618.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #524364;">
+      <AnchorPane fx:id="settingsPane" layoutY="618.0" onMouseClicked="#onMenuSettingsClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #524364;">
          <children>
-            <Label fx:id="settingsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="64.0" onMouseClicked="#onMenuMessagesClick" prefHeight="64.0" prefWidth="200.0" text="Settings" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="64.0" prefHeight="64.0" prefWidth="200.0" text="Settings" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="settingsImage" blendMode="DARKEN" cache="true" fitHeight="63.0" fitWidth="55.0" layoutX="30.0" layoutY="65.0" onMouseClicked="#onMenuSettingsClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="DARKEN" cache="true" fitHeight="63.0" fitWidth="55.0" layoutX="30.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/settings-button-svg-icon-free-download-comments-settings-button-in-machine-gear-transparent-png-47703.png" />
                </image>

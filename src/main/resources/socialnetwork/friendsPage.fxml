@@ -2,13 +2,15 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="787.0" prefWidth="1072.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.MainPage">
+<AnchorPane prefHeight="787.0" prefWidth="1072.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendsController">
    <children>
       <AnchorPane prefHeight="109.0" prefWidth="1072.0" style="-fx-background-color: teal;">
          <children>
@@ -63,58 +65,84 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="109.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4c99cf;">
+      <AnchorPane fx:id="friendsPane" layoutY="109.0" onMouseClicked="#onMenuFriendsClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4c99cf;">
          <children>
-            <Label fx:id="friendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" onMouseClicked="#onMenuFriendsClick" prefHeight="64.0" prefWidth="200.0" text="Friends" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" prefHeight="64.0" prefWidth="200.0" text="Friends" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="friendsImage" blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="31.0" layoutY="59.0" onMouseClicked="#onMenuFriendsClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="31.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/download%20(1).png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="278.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4873a6;">
+      <AnchorPane fx:id="friendRequestsPane" layoutY="278.0" onMouseClicked="#onMenuFriendRequestsClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #4873a6;">
          <children>
-            <Label fx:id="friendRequestsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" onMouseClicked="#onMenuFriendRequestsClick" prefHeight="64.0" prefWidth="240.0" text="Friend Requests" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" prefHeight="64.0" prefWidth="240.0" text="Friend Requests" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="friendRequestsImage" blendMode="MULTIPLY" fitHeight="74.0" fitWidth="106.0" layoutX="4.0" layoutY="48.0" onMouseClicked="#onMenuFriendRequestsClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="MULTIPLY" fitHeight="74.0" fitWidth="106.0" layoutX="4.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/download.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="448.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #5a5387;">
+      <AnchorPane fx:id="messagesPane" layoutY="448.0" onMouseClicked="#onMenuMessagesClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #5a5387;">
          <children>
-            <Label fx:id="MessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" onMouseClicked="#onMenuMessagesClick" prefHeight="64.0" prefWidth="200.0" text="Messages" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="53.0" prefHeight="64.0" prefWidth="200.0" text="Messages" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="messagesImage" blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="30.0" layoutY="58.0" onMouseClicked="#onMenuMessagesClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="MULTIPLY" fitHeight="55.0" fitWidth="65.0" layoutX="30.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/text-message-2161287-1843748.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="618.0" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #524364;">
+      <AnchorPane fx:id="settingsPane" layoutY="618.0" onMouseClicked="#onMenuSettingsClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #524364;">
          <children>
-            <Label fx:id="settingsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="64.0" onMouseClicked="#onMenuMessagesClick" prefHeight="64.0" prefWidth="200.0" text="Settings" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="64.0" prefHeight="64.0" prefWidth="200.0" text="Settings" textFill="WHITE">
                <font>
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <ImageView fx:id="settingsImage" blendMode="DARKEN" cache="true" fitHeight="63.0" fitWidth="55.0" layoutX="30.0" layoutY="65.0" onMouseClicked="#onMenuSettingsClick" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="DARKEN" cache="true" fitHeight="63.0" fitWidth="55.0" layoutX="30.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/settings-button-svg-icon-free-download-comments-settings-button-in-machine-gear-transparent-png-47703.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <ListView fx:id="friendList" blendMode="DARKEN" layoutX="314.0" layoutY="109.0" prefHeight="679.0" prefWidth="265.0" style="-fx-background-color: white;" styleClass="list-cell" stylesheets="@css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="109.0" />
+      <AnchorPane layoutX="578.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
+         <children>
+            <ImageView fx:id="friendImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="173.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/defaultUserImage.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="friendNameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="123.0" layoutY="208.0" prefHeight="64.0" prefWidth="249.0" text="Name" textAlignment="CENTER" textFill="#1b3455" wrapText="true" AnchorPane.leftAnchor="123.0">
+               <font>
+                  <Font name="Berlin Sans FB" size="25.0" />
+               </font>
+            </Label>
+            <Separator layoutX="24.0" layoutY="337.0" prefHeight="3.0" prefWidth="447.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
+            <Button fx:id="removeButton" alignment="CENTER_RIGHT" layoutX="375.0" layoutY="275.0" mnemonicParsing="false" onAction="#onRemoveButtonPress" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #2a9482; -fx-background-radius: 15px;" text="Remove" textAlignment="RIGHT" AnchorPane.bottomAnchor="365.0" AnchorPane.rightAnchor="14.0">
+               <font>
+                  <Font name="Berlin Sans FB" size="16.0" />
+               </font>
+            </Button>
+            <ImageView blendMode="DARKEN" fitHeight="45.0" fitWidth="63.0" layoutX="372.0" layoutY="272.0" onMouseClicked="#onRemoveButtonPress" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="362.0" AnchorPane.rightAnchor="78.0">
+               <image>
+                  <Image url="@images/removeFriendImage.png" />
                </image>
             </ImageView>
          </children>

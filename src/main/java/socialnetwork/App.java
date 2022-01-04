@@ -79,6 +79,8 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setWidth(root.getPrefWidth());
+            App.currentStage.setHeight(root.getPrefHeight());
             MainPageController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -93,6 +95,8 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setWidth(root.getPrefWidth());
+            App.currentStage.setHeight(root.getPrefHeight());
             FriendsController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -107,6 +111,8 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setWidth(root.getPrefWidth());
+            App.currentStage.setHeight(root.getPrefHeight());
             FriendRequestsController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -121,6 +127,8 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setWidth(root.getPrefWidth());
+            App.currentStage.setHeight(root.getPrefHeight());
             MessagesController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -135,6 +143,8 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setWidth(root.getPrefWidth());
+            App.currentStage.setHeight(root.getPrefHeight());
             SettingsController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -174,7 +184,6 @@ public class App extends Application {
             ex.printStackTrace();
         }
     }
-
 
 
     public static void main(String[] args) {
