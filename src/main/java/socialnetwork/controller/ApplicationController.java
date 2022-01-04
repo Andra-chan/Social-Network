@@ -1,18 +1,9 @@
 package socialnetwork.controller;
 
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import socialnetwork.App;
 import socialnetwork.Util.events.ChangeEvent;
@@ -23,14 +14,15 @@ import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 public class ApplicationController implements Observer<ChangeEvent> {
 
     ObservableList<Utilizator> modelUsers = FXCollections.observableArrayList();
     ObservableList<FriendDTO> modelFriendships = FXCollections.observableArrayList();
-
-    private Service service;
-    private Long userId;
-
     @FXML
     TableColumn<Utilizator, String> tableColumnFirstName;
     @FXML
@@ -43,29 +35,26 @@ public class ApplicationController implements Observer<ChangeEvent> {
     TableColumn<FriendDTO, String> tableColumnFrStatus;
     @FXML
     TableColumn<FriendDTO, String> tableColumnFrDate;
-
     @FXML
     Button deleteButton;
     @FXML
     Button addFriendButton;
     @FXML
     Button acceptButton;
-
     @FXML
     TableView<Utilizator> tableViewUsers;
     @FXML
     TableView<FriendDTO> tableViewFriends;
-
     @FXML
     TextField textFieldUserName;
     @FXML
     TextField textFieldFriendName;
-
     @FXML
     Label currentUserLabel;
-
     @FXML
     Button logoutButton;
+    private Service service;
+    private Long userId;
 
     @FXML
     public void initialize() {
@@ -97,6 +86,10 @@ public class ApplicationController implements Observer<ChangeEvent> {
                 deleteButton.setDisable(false);
                 acceptButton.setDisable(false);
             }
+            if (newValue.getStatus().equals("OUTGOING")) {
+                deleteButton.setDisable(false);
+                acceptButton.setDisable(true);
+            }
         });
         tableViewUsers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             addFriendButton.setDisable(newValue == null || newValue.getId().equals(userId));
@@ -105,7 +98,13 @@ public class ApplicationController implements Observer<ChangeEvent> {
 
     public void handleDeleteButtonClick() {
         var friendDTO = tableViewFriends.getSelectionModel().getSelectedItem();
-        service.handleFriendRequest(friendDTO.getRequestId(), "R");
+        if (friendDTO != null) {
+            if (friendDTO.getStatus().equals("ACCEPTED") || friendDTO.getStatus().equals("PENDING")) {
+                service.handleFriendRequest(friendDTO.getRequestId(), "R");
+            } else if (friendDTO.getStatus().equals("OUTGOING")) {
+                service.stopFriendRequest(friendDTO.getRequestId());
+            }
+        }
     }
 
     public void handleAcceptButtonClick() {

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="648.0" prefWidth="589.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.RegisterController">
+<AnchorPane prefHeight="677.0" prefWidth="633.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.RegisterController">
    <children>
       <AnchorPane prefHeight="82.0" prefWidth="563.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -62,12 +62,12 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="registerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="135.0" layoutY="552.0" mnemonicParsing="false" onAction="#onRegisterButtonPress" prefHeight="33.0" prefWidth="278.0" style="-fx-background-radius: 15px; -fx-text-fill: #ffffff; -fx-background-color: #2a9482;" text="Register" textFill="WHITE" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="135.0" AnchorPane.rightAnchor="150.0">
+      <Button fx:id="registerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="148.0" layoutY="552.0" mnemonicParsing="false" onAction="#onRegisterButtonPress" prefHeight="33.0" prefWidth="278.0" style="-fx-background-radius: 15px; -fx-text-fill: #ffffff; -fx-background-color: #2a9482;" text="Register" textFill="WHITE" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="163.0">
          <font>
             <Font name="Berlin Sans FB" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="returnButton" alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="604.0" mnemonicParsing="false" onAction="#onReturnButtonPress" prefHeight="30.0" prefWidth="82.0" style="-fx-background-radius: 15px; -fx-text-fill: #ffffff; -fx-background-color: #2a9482;" text="Return" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="233.0" AnchorPane.rightAnchor="248.0">
+      <Button fx:id="returnButton" alignment="CENTER" contentDisplay="CENTER" layoutX="246.0" layoutY="604.0" mnemonicParsing="false" onAction="#onReturnButtonPress" prefHeight="30.0" prefWidth="82.0" style="-fx-background-radius: 15px; -fx-text-fill: #ffffff; -fx-background-color: #2a9482;" text="Return" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="246.0" AnchorPane.rightAnchor="266.0">
          <font>
             <Font name="Berlin Sans FB" size="12.0" />
          </font>
@@ -82,7 +82,7 @@
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </PasswordField>
-      <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="111.0" layoutY="507.0" prefHeight="45.0" prefWidth="351.0" text="Warning" textAlignment="CENTER" textFill="#d70707" wrapText="true">
+      <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="166.0" layoutY="514.0" prefHeight="45.0" prefWidth="351.0" text="Warning" textAlignment="CENTER" textFill="#d70707" wrapText="true" AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="166.0" AnchorPane.rightAnchor="180.0">
          <font>
             <Font name="Berlin Sans FB" size="15.0" />
          </font>

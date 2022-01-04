@@ -6,15 +6,17 @@ import java.time.LocalDateTime;
  * Friend class
  */
 public class Friend {
-    public String firstName;
-    public String lastName;
-    public LocalDateTime dateTime;
+    private String firstName;
+    private String lastName;
+    private LocalDateTime dateTime;
+    private final Long id;
 
 
-    public Friend(String firstName, String lastName, LocalDateTime dateTime) {
+    public Friend(String firstName, String lastName, LocalDateTime dateTime, Long id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateTime = dateTime;
+        this.id = id;
     }
 
     /**
@@ -27,14 +29,6 @@ public class Friend {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
     /**
      * Setters which modify a friend
      *
@@ -45,8 +39,16 @@ public class Friend {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
@@ -56,5 +58,9 @@ public class Friend {
     @Override
     public String toString() {
         return lastName + " " + firstName + " |";
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -120,11 +120,10 @@ public class FriendRequestDbRepository implements Repository<Long, FriendRequest
         if (id == null)
             throw new RepositoryException("ID must not be null!");
 
-        String sql = "UPDATE friendrequests SET status ='REJECTED', date = ? WHERE id =?";
+        String sql = "DELETE FROM friendrequests WHERE id=?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-            ps.setLong(2, id);
+            ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException("SQL exception!");

@@ -1,35 +1,23 @@
 package socialnetwork.service;
 
-import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import socialnetwork.Util.events.ChangeEvent;
+import socialnetwork.Util.events.ChangeEventType;
+import socialnetwork.Util.observer.Observable;
+import socialnetwork.Util.observer.Observer;
+import socialnetwork.domain.*;
+import socialnetwork.domain.validators.ValidationException;
+import socialnetwork.repository.Repository;
+import socialnetwork.repository.RepositoryException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
-
-import socialnetwork.Util.events.ChangeEvent;
-import socialnetwork.Util.events.ChangeEventType;
-import socialnetwork.Util.observer.Observable;
-import socialnetwork.Util.observer.Observer;
-import socialnetwork.domain.Entity;
-import socialnetwork.domain.Friend;
-import socialnetwork.domain.FriendRequest;
-import socialnetwork.domain.Message;
-import socialnetwork.domain.Prietenie;
-import socialnetwork.domain.UserCredentials;
-import socialnetwork.domain.Utilizator;
-import socialnetwork.domain.validators.ValidationException;
-import socialnetwork.repository.Repository;
-import socialnetwork.repository.RepositoryException;
+import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
 
 /**
  * Service class that implements all methods
@@ -44,9 +32,9 @@ public class Service implements Observable<ChangeEvent> {
     private final List<Observer<ChangeEvent>> observers = new ArrayList<>();
 
     public Service(Repository<Long, Utilizator> userRepository,
-            Repository<String, UserCredentials> userCredentialsRepository,
-            Repository<Long, Prietenie> friendshipRepository,
-            Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
+                   Repository<String, UserCredentials> userCredentialsRepository,
+                   Repository<Long, Prietenie> friendshipRepository,
+                   Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
         this.userRepository = userRepository;
         this.userCredentialsRepository = userCredentialsRepository;
         this.friendshipRepository = friendshipRepository;
@@ -256,7 +244,7 @@ public class Service implements Observable<ChangeEvent> {
                     } else {
                         user = userRepository.findOne(fr.getFirstUser());
                     }
-                    return new Friend(user.getFirstName(), user.getLastName(), fr.getDate());
+                    return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId());
                 })
                 .collect(Collectors.toList());
     }
@@ -279,7 +267,7 @@ public class Service implements Observable<ChangeEvent> {
      * @param to          a list of id's representing the message recipients.
      * @param messageBody the message's body.
      * @return null if the message wasn't sent, and the message itself
-     *         otherwise.
+     * otherwise.
      * @throws RepositoryException if the user with the id creatorId doesn't exist,
      *                             or if any of the users in the recipients list
      *                             don't exist
@@ -308,8 +296,8 @@ public class Service implements Observable<ChangeEvent> {
      * @param replyCreatorId the user's id that created the reply
      * @param messageBody    the reply's body
      * @return null if the message wasn't sent(the message you want to reply to,
-     *         doesn't exist, or it wasn't sent to replyCreatorId), the message
-     *         otherwise
+     * doesn't exist, or it wasn't sent to replyCreatorId), the message
+     * otherwise
      */
     public Message replyToMessage(Long messageId, Long replyCreatorId, String messageBody) {
         Message message = new Message(null, null, messageBody, LocalDateTime.now(), null);
@@ -387,8 +375,8 @@ public class Service implements Observable<ChangeEvent> {
      * @param userId1 the first user's id
      * @param userId2 the second user's id
      * @return a list of entries of all messages between two users(in chronological
-     *         order). Entry.key is a
-     *         message, Entry.value is the reply(if it exists)
+     * order). Entry.key is a
+     * message, Entry.value is the reply(if it exists)
      */
     public List<Map.Entry<Message, Message>> getAllMessagesBetweenTwoUsers(Long userId1, Long userId2) {
         var allMessages = messageRepository.findAll();
@@ -420,7 +408,7 @@ public class Service implements Observable<ChangeEvent> {
      * @param messages a map of messages, key is the message id, value is the
      *                 message itself
      * @return HashMap<Message, Message> where key is a message, and value is the
-     *         message that replies to the key(null otherwise)
+     * message that replies to the key(null otherwise)
      */
     private HashMap<Message, Message> getMessageReplyPairs(Map<Long, Message> messages) {
         HashMap<Message, Message> messageReply = new HashMap<>();
@@ -453,10 +441,19 @@ public class Service implements Observable<ChangeEvent> {
         if (verifyPendingRequest(request).isPresent()) {
             return null;
         }
+        if(areFriends(request.getSender(), request.getReceiver())){
+            return null;
+        }
         var requestResult = friendRequestRepository.save(request);
         notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
         return requestResult;
     }
+
+    public boolean areFriends(Long userId1, Long userId2){
+        var friendList = getFriends(userId1);
+        return friendList.stream().anyMatch(x -> x.getId().equals(userId2));
+    }
+
 
     /**
      * Finds and returns a pending friend request
@@ -510,10 +507,23 @@ public class Service implements Observable<ChangeEvent> {
             if ((req.getReceiver().equals(userID) || req.getSender().equals(userID))
                     && req.getStatus().equals("ACCEPTED")) {
                 friendRequests.add(req);
-            } else if (req.getReceiver().equals(userID) && req.getStatus().equals("PENDING"))
+            } else if (req.getReceiver().equals(userID) && req.getStatus().equals("PENDING")) {
                 friendRequests.add(req);
+            } else if (req.getSender().equals(userID) && req.getStatus().equals("PENDING")) {
+                req.setStatus("OUTGOING");
+                friendRequests.add(req);
+            }
+
         });
         return friendRequests;
+    }
+
+    public void stopFriendRequest(Long requestID) {
+        FriendRequest fr = friendRequestRepository.findOne(requestID);
+        if (fr != null) {
+            friendRequestRepository.delete(requestID);
+        }
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
     }
 
     /**
@@ -545,7 +555,7 @@ public class Service implements Observable<ChangeEvent> {
         } else {
             fr.setStatus("REJECTED");
             fr.setLocalDateTime(LocalDateTime.now());
-            friendRequestRepository.delete(requestID);
+            friendRequestRepository.update(fr);
             notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
         }
     }

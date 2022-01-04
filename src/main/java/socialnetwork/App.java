@@ -95,8 +95,8 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            //HelloApplication.currentStage.setMaxHeight(root.getPrefHeight());
-            //HelloApplication.currentStage.setMaxWidth(root.getPrefWidth());
+            App.currentStage.setMaxHeight(1000);
+            App.currentStage.setMaxWidth(1000);
             RegisterController controller = fxmlLoader.getController();
             controller.setService(service);
         } catch (IOException ex) {
