@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
@@ -255,6 +256,13 @@ public class Service implements Observable<ChangeEvent> {
                 .collect(Collectors.toList());
     }
 
+    public List<Utilizator> getAllUsersThatAreNotFriends(Long userId){
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .filter(x -> !areFriends(userId, x.getId()))
+                .filter(x -> !x.getId().equals(userId))
+                .collect(Collectors.toList());
+    }
+
     /**
      * @param userID the ID of a user
      * @param month  the month which corresponds to the friend request
@@ -489,6 +497,19 @@ public class Service implements Observable<ChangeEvent> {
     }
 
     /**
+     * Returns a pending friend request from userId2 to userId1 if it exists.
+     * @param userId1 first user's id
+     * @param userId2 second user's id
+     * @return pending friend erquest from userId2 to userId1 or empty optional if no pending requests exists,
+     */
+    public Optional<FriendRequest> getPendingFriendRequest(Long userId1, Long userId2){
+        return getPendingFriendRequests(userId1).stream()
+                .filter(x -> x.getSender().equals(userId2))
+                .filter(x -> x.getStatus().equals("PENDING"))
+                .findAny();
+    }
+
+    /**
      * @param userID id of a user
      * @return returns a list of friend requests of a user
      */
@@ -524,6 +545,10 @@ public class Service implements Observable<ChangeEvent> {
         return friendRequests;
     }
 
+    /**
+     * Deletes the friend request with id requestId
+     * @param requestID the friend requests id.
+     */
     public void stopFriendRequest(Long requestID) {
         FriendRequest fr = friendRequestRepository.findOne(requestID);
         if (fr != null) {
@@ -532,6 +557,12 @@ public class Service implements Observable<ChangeEvent> {
         notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
     }
 
+    /**
+     * Returns a friendship(if any) between two users
+     * @param userId1 first user's id
+     * @param userId2 second user's id
+     * @return returns a friendship between the two users or an empty optional if there isn't one.
+     */
     public Optional<Prietenie> getFriendship(Long userId1, Long userId2){
         return StreamSupport.stream(friendshipRepository.findAll().spliterator(), false)
                 .filter(x -> (x.getFirstUser().equals(userId1) && x.getSecondUser().equals(userId2)) ||
@@ -539,6 +570,12 @@ public class Service implements Observable<ChangeEvent> {
                 .findAny();
     }
 
+    /**
+     * Returns a friend request(if any) between two users
+     * @param userId1 first user's id
+     * @param userId2 second user's id
+     * @return returns a friend request between the two users or an empty optional if there isn't one.
+     */
     public Optional<FriendRequest> getFriendRequest(Long userId1, Long userId2){
         return StreamSupport.stream(friendRequestRepository.findAll().spliterator(), false)
                 .filter(x -> (x.getSender().equals(userId1) && x.getReceiver().equals(userId2)) ||

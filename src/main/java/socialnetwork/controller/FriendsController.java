@@ -80,12 +80,13 @@ public class FriendsController implements Observer<ChangeEvent> {
         removeButton.setVisible(false);
         separator.setVisible(false);
         removeFriendImage.setVisible(false);
-        friendList.setCellFactory(param ->  new ListCell<Friend>(){
-            private ImageView profileImage =  new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
+        friendList.setCellFactory(param -> new ListCell<>() {
+            private ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
+
             @Override
-            public void updateItem(Friend friend, boolean empty){
+            public void updateItem(Friend friend, boolean empty) {
                 super.updateItem(friend, empty);
-                if(empty){
+                if (empty) {
                     setGraphic(null);
                     setText(null);
                     setStyle("-fx-background-color: #243142");
@@ -99,6 +100,8 @@ public class FriendsController implements Observer<ChangeEvent> {
                     setTextFill(Color.WHITE);
                     if(isSelected())
                         setStyle("-fx-background-color: #1c2a36");
+                    else
+                        setStyle("-fx-background-color: #243142");
                 }
             }
         });
@@ -121,6 +124,7 @@ public class FriendsController implements Observer<ChangeEvent> {
                 removeFriendImage.setVisible(true);
                 noFriendSelectedImage.setVisible(false);
                 noFriendSelectedLabel.setVisible(false);
+                friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
             }
 
                 });

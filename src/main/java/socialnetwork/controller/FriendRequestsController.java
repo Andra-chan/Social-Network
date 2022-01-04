@@ -28,7 +28,6 @@ public class FriendRequestsController {
     @FXML
     Button logoutButton;
 
-
     @FXML
     public void initialize(){
     }

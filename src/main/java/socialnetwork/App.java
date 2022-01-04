@@ -30,7 +30,7 @@ public class App extends Application {
 
         String url = "jdbc:postgresql://localhost:5432/socialnetwork";
         String username = "postgres";
-        String password = "mypostgres";
+        String password = "admin";
 
         Validator<Utilizator> userValidator = new UtilizatorValidator();
 
@@ -67,6 +67,8 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setMinHeight(root.getPrefHeight());
         stage.setMinWidth(root.getPrefWidth());
+        stage.setMaxHeight(root.getPrefHeight());
+        stage.setMaxWidth(root.getPrefWidth());
         stage.setResizable(false);
         stage.show();
     }

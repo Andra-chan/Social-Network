@@ -16,3 +16,8 @@
     -fx-background-color: #243142;
     -fx-text-fill: white;
 }
+
+.fancyButton{
+    -fx-background-color:  #2a9482;
+    -fx-background-radius:  15px;
+}
