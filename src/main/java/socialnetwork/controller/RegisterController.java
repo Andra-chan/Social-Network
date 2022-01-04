@@ -68,11 +68,13 @@ public class RegisterController {
         String confirmPassword = textFieldConfirmPassword.getText();
 
         if(password.isBlank()){
+            errorLabel.setVisible(true);
             errorLabel.setText("Password cannot be blank");
             return;
         }
 
         if(!password.equals(confirmPassword)){
+            errorLabel.setVisible(true);
             errorLabel.setText("Passwords do not match");
             return;
         }
