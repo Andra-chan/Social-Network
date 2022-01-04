@@ -1,15 +1,13 @@
 package socialnetwork;
 
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import socialnetwork.controller.ApplicationController;
-import socialnetwork.controller.ChatboxController;
 import socialnetwork.controller.LoginController;
 import socialnetwork.controller.RegisterController;
 import socialnetwork.domain.FriendRequest;
@@ -20,15 +18,13 @@ import socialnetwork.domain.validators.MessageValidator;
 import socialnetwork.domain.validators.UtilizatorValidator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
-import socialnetwork.repository.database.FriendRequestDbRepository;
-import socialnetwork.repository.database.FriendshipDbRepository;
-import socialnetwork.repository.database.MessageDbRepository;
-import socialnetwork.repository.database.UserCredentialsDbRepository;
-import socialnetwork.repository.database.UtilizatorDbRepository;
+import socialnetwork.repository.database.*;
 import socialnetwork.service.Service;
 
+import java.io.IOException;
+
 public class HelloApplication extends Application {
-    public static Stage currentStage;
+    private static Stage currentStage;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -57,18 +53,17 @@ public class HelloApplication extends Application {
                 friendRequestRepository,
                 messageRepo);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Chatbox.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         // HBox root = fxmlLoader.load();
         AnchorPane root = fxmlLoader.load();
         // ApplicationController controller = fxmlLoader.getController();
 
-        ChatboxController controller = fxmlLoader.getController();
+        LoginController controller = fxmlLoader.getController();
+        controller.setService(serviceNetwork);
 
         // controller.setService(serviceNetwork);
 
         Scene scene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
-        scene.getStylesheets().add(String.valueOf(getClass().getResource("css/style.css")));
-        controller.setService(serviceNetwork, 7l, 9l);
 
         stage.setTitle("Social Network");
         stage.setScene(scene);
