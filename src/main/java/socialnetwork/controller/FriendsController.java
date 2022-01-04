@@ -136,7 +136,6 @@ public class FriendsController implements Observer<ChangeEvent> {
         Predicate<Friend> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
         modelFriendships.setAll(service.getFriends(userId)
                 .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
-
     }
 
     public void initData(Service service, Long userId) {

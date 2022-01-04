@@ -30,7 +30,7 @@ public class App extends Application {
 
         String url = "jdbc:postgresql://localhost:5432/socialnetwork";
         String username = "postgres";
-        String password = "admin";
+        String password = "mypostgres";
 
         Validator<Utilizator> userValidator = new UtilizatorValidator();
 

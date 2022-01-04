@@ -86,12 +86,12 @@
                </font>
             </Label>
             <Separator fx:id="separator" layoutX="24.0" layoutY="337.0" prefHeight="3.0" prefWidth="447.0" visible="false" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
-            <Button fx:id="removeButton" alignment="CENTER_RIGHT" layoutX="375.0" layoutY="275.0" mnemonicParsing="false" onAction="#onRemoveButtonPress" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #2a9482; -fx-background-radius: 15px;" text="Remove" textAlignment="RIGHT" visible="false" AnchorPane.bottomAnchor="365.0" AnchorPane.rightAnchor="14.0">
+            <Button fx:id="removeButton" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="282.0" mnemonicParsing="false" onAction="#onRemoveButtonPress" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #2a9482; -fx-background-radius: 15px;" text="Remove" textAlignment="RIGHT" visible="false" AnchorPane.bottomAnchor="525.0" AnchorPane.rightAnchor="24.0">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
             </Button>
-            <ImageView fx:id="removeFriendImage" blendMode="DARKEN" fitHeight="45.0" fitWidth="63.0" layoutX="372.0" layoutY="272.0" onMouseClicked="#onRemoveButtonPress" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="362.0" AnchorPane.rightAnchor="78.0">
+            <ImageView fx:id="removeFriendImage" blendMode="DARKEN" fitHeight="45.0" fitWidth="63.0" layoutX="365.0" layoutY="279.0" onMouseClicked="#onRemoveButtonPress" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="522.0" AnchorPane.rightAnchor="88.0">
                <image>
                   <Image url="@images/removeFriendImage.png" />
                </image>

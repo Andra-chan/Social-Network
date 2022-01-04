@@ -53,11 +53,11 @@
                <font>
                   <Font name="Berlin Sans FB" size="12.0" />
                </font></TextField>
-            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="325.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: #2a9482; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" text="Sign In" textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="116.0">
+            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="334.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: #2a9482; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" text="Sign In" textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="104.0">
                <font>
                   <Font name="Berlin Sans FB" size="13.0" />
                </font></Button>
-            <Label fx:id="warnLabel" alignment="CENTER" layoutX="34.0" layoutY="291.0" prefHeight="18.0" prefWidth="298.0" text="Invalid Login. Please try again." textFill="RED" visible="false">
+            <Label fx:id="warnLabel" alignment="CENTER" layoutX="83.0" layoutY="306.0" prefHeight="19.0" prefWidth="308.0" text="Invalid Login. Please try again." textFill="RED" visible="false">
                <font>
                   <Font size="13.0" />
                </font>

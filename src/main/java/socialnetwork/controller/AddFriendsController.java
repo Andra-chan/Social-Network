@@ -135,32 +135,39 @@ public class AddFriendsController implements Observer<ChangeEvent> {
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue == null) {
                 setButtonsToDefaultState();
-            } else{
+            } else {
                 setVisibleUserInfo();
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
-                var maybePending = service.getPendingFriendRequest(userId, newValue.getId());
-                if(maybePending.isPresent()){
-                    //you have a friend request from the selected user.
-                    acceptRequestButton.setVisible(true);
-                    denyRequestButton.setVisible(true);
+                var maybePending = service.getFriendRequest(userId, newValue.getId());
+                if (maybePending.isPresent()) {
+                    var pendingRequest = maybePending.get();
+                    if (pendingRequest.getStatus().equals("REJECTED")) {
+                        acceptRequestButton.setVisible(false);
+                        denyRequestButton.setVisible(false);
+                        cancelRequestButton.setVisible(false);
+                        addButton.setVisible(false);
+                        return;
+                    }
+                    if (pendingRequest.getSender().equals(userId)) {
+                        cancelRequestButton.setVisible(true);
+                        acceptRequestButton.setVisible(false);
+                        denyRequestButton.setVisible(false);
+                        addButton.setVisible(false);
+                        return;
+                    }
+                    if (pendingRequest.getReceiver().equals(userId)) {
+                        acceptRequestButton.setVisible(true);
+                        denyRequestButton.setVisible(true);
+                        cancelRequestButton.setVisible(false);
+                        addButton.setVisible(false);
+                        return;
+                    }
+                } else {
+                    addButton.setVisible(true);
                     cancelRequestButton.setVisible(false);
-                    addButton.setVisible(false);
-                    return;
-                }
-                var maybeOutgoing = service.getPendingFriendRequest(newValue.getId(), userId);
-                if(maybeOutgoing.isPresent()){
-                    //you have outgoing request to selected user.
-                    cancelRequestButton.setVisible(true);
-                    acceptRequestButton.setVisible(false);
                     denyRequestButton.setVisible(false);
-                    addButton.setVisible(false);
-                    return;
+                    acceptRequestButton.setVisible(false);
                 }
-                //you and the selected user are not friends.
-                addButton.setVisible(true);
-                cancelRequestButton.setVisible(false);
-                denyRequestButton.setVisible(false);
-                acceptRequestButton.setVisible(false);
             }
         });
         userList.setItems(modelUsers);
@@ -234,9 +241,9 @@ public class AddFriendsController implements Observer<ChangeEvent> {
             var maybeIncoming = service.getPendingFriendRequest(userId, selectedUser.getId());
             if(maybeIncoming.isPresent()){
                 service.handleFriendRequest(maybeIncoming.get().getId(), "A");
+                setButtonsToDefaultState();
             }
         }
-        userList.getSelectionModel().select(selectedUser);
 
     }
 
@@ -246,9 +253,9 @@ public class AddFriendsController implements Observer<ChangeEvent> {
             var maybeIncoming = service.getPendingFriendRequest(userId, selectedUser.getId());
             if(maybeIncoming.isPresent()){
                 service.handleFriendRequest(maybeIncoming.get().getId(), "R");
+                setButtonsToDefaultState();
             }
         }
-        userList.getSelectionModel().select(selectedUser);
 
     }
 

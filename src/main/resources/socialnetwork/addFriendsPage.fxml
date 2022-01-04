@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="950.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.AddFriendsController">
    <children>
-      <AnchorPane prefHeight="106.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="21.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -168,7 +168,7 @@
                </font>
             </Label>
             <Separator fx:id="separator" layoutX="24.0" layoutY="337.0" prefHeight="3.0" prefWidth="447.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
-            <Button fx:id="addButton" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="275.0" mnemonicParsing="false" onAction="#onAddButtonPress" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Add friend" textAlignment="RIGHT" visible="false" AnchorPane.bottomAnchor="532.0" AnchorPane.rightAnchor="24.0">
+            <Button fx:id="addButton" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="275.0" mnemonicParsing="false" onAction="#onAddButtonPress" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Add friend" textAlignment="RIGHT" visible="false" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="275.2">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
@@ -188,17 +188,17 @@
                   <Image url="@images/29461-200.png" />
                </image>
             </ImageView>
-            <Button fx:id="acceptRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onAcceptRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Accept" visible="false" AnchorPane.bottomAnchor="532.0" AnchorPane.rightAnchor="24.0">
+            <Button fx:id="acceptRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onAcceptRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Accept" visible="false" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="275.0">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="denyRequestButton" alignment="CENTER_RIGHT" layoutX="211.0" layoutY="275.0" mnemonicParsing="false" onAction="#onDenyRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Decline" visible="false" AnchorPane.bottomAnchor="532.0" AnchorPane.rightAnchor="159.0">
+            <Button fx:id="denyRequestButton" alignment="CENTER_RIGHT" layoutX="211.0" layoutY="275.0" mnemonicParsing="false" onAction="#onDenyRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Decline" visible="false" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="275.0">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="cancelRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onCancelRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Cancel" visible="false" AnchorPane.bottomAnchor="532.0" AnchorPane.rightAnchor="24.0">
+            <Button fx:id="cancelRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onCancelRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Cancel" visible="false" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="275.0">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
