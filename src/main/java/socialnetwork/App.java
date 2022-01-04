@@ -7,9 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import socialnetwork.controller.ApplicationController;
-import socialnetwork.controller.LoginController;
-import socialnetwork.controller.RegisterController;
+import socialnetwork.controller.*;
 import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Prietenie;
 import socialnetwork.domain.UserCredentials;
@@ -76,12 +74,68 @@ public class App extends Application {
 
     public static void changeSceneToMainWindow(Service service, Long userId) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("hello-view.fxml"));
-            HBox root = fxmlLoader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("mainPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            ApplicationController controller = fxmlLoader.getController();
+            MainPageController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void changeSceneToFriendsWindow(Service service, Long userId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("friendsPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            FriendsController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void changeSceneToFriendRequestsWindow(Service service, Long userId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("friendRequestsPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            FriendRequestsController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void changeSceneToMessagesWindow(Service service, Long userId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("messagesPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            MessagesController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void changeSceneToSettingsWindow(Service service, Long userId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("settingsPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            SettingsController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -120,6 +174,8 @@ public class App extends Application {
             ex.printStackTrace();
         }
     }
+
+
 
     public static void main(String[] args) {
         launch();
