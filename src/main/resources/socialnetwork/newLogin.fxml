@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="674.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.LoginController">
    <right>
       <AnchorPane prefHeight="407.0" prefWidth="228.0" BorderPane.alignment="CENTER">
          <children>
@@ -37,23 +37,23 @@
       </AnchorPane>
    </right>
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="365.0" style="-fx-background-color: #243142;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="400.0" prefWidth="448.0" style="-fx-background-color: #243142;" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="37.0" layoutY="253.0" text="Password" textFill="WHITE" wrapText="true">
+            <Label layoutX="38.0" layoutY="261.0" text="Password" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="38.0">
                <font>
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="49.0" layoutY="204.0" text="Email" textFill="WHITE" wrapText="true">
+            <Label layoutX="49.0" layoutY="212.0" styleClass="labelAuth" stylesheets="@css/style.css" text="Email" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="49.0">
                <font>
                   <Font name="Berlin Sans FB" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="textFieldEmail" layoutX="109.0" layoutY="200.0" prefHeight="26.0" prefWidth="205.0" promptText="Email">
+            <TextField fx:id="textFieldEmail" layoutX="109.0" layoutY="200.0" prefHeight="39.0" prefWidth="270.0" promptText="Email" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="69.0">
                <font>
                   <Font name="Berlin Sans FB" size="12.0" />
                </font></TextField>
-            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" layoutX="63.0" layoutY="322.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: #2a9482; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" text="Sign In" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="325.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: #2a9482; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" text="Sign In" textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="116.0">
                <font>
                   <Font name="Berlin Sans FB" size="13.0" />
                </font></Button>
@@ -62,17 +62,17 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="53.0" layoutY="85.0" prefHeight="101.0" prefWidth="259.0" text="STARFALL" textFill="#0a0000">
+            <Label alignment="CENTER" layoutX="107.0" layoutY="81.0" prefHeight="101.0" prefWidth="259.0" text="STARFALL" textFill="#0a0000" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="82.0">
                <font>
-                  <Font name="Castellar" size="36.0" />
+                  <Font name="Castellar"  size="36.0" />
                </font>
             </Label>
-            <ImageView blendMode="DARKEN" fitHeight="129.0" fitWidth="107.0" layoutX="129.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="DARKEN" fitHeight="129.0" fitWidth="107.0" layoutX="183.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="183.0" AnchorPane.rightAnchor="158.0">
                <image>
                   <Image url="@images/star_icon.jpg" />
                </image>
             </ImageView>
-            <PasswordField fx:id="textFieldPassword" layoutX="109.0" layoutY="249.0" prefHeight="26.0" prefWidth="205.0" promptText="Password">
+            <PasswordField fx:id="textFieldPassword" layoutX="109.0" layoutY="249.0" prefHeight="39.0" prefWidth="270.0" promptText="Password" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="69.0">
                <font>
                   <Font name="Berlin Sans FB" size="13.0" />
                </font></PasswordField>

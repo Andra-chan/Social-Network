@@ -65,7 +65,7 @@ public class App extends Application {
 
         Scene scene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
 
-        stage.setTitle("Social Network");
+        stage.setTitle("Starfall");
         stage.setScene(scene);
         stage.setMinHeight(root.getPrefHeight());
         stage.setMinWidth(root.getPrefWidth());
@@ -113,6 +113,7 @@ public class App extends Application {
             App.currentStage.setMinWidth(root.getPrefWidth());
             App.currentStage.setMaxHeight(root.getPrefHeight());
             App.currentStage.setMaxWidth(root.getPrefWidth());
+
             LoginController controller = fxmlLoader.getController();
             controller.setService(service);
         } catch (IOException ex) {

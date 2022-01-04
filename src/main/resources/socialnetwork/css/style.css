@@ -1,0 +1,8 @@
+.fancyTextField {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-padding: 10;
+    -fx-text-fill: grey;
+    -fx-font-size: 15;
+}

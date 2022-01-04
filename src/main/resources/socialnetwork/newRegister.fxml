@@ -30,7 +30,7 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="textFieldFirstName" layoutX="91.0" layoutY="156.0" prefHeight="25.0" prefWidth="365.0" promptText="First Name" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
+      <TextField fx:id="textFieldFirstName" layoutX="91.0" layoutY="156.0" prefHeight="25.0" prefWidth="365.0" promptText="First Name" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font></TextField>
@@ -39,7 +39,7 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="textFieldLastName" layoutX="91.0" layoutY="242.0" prefHeight="25.0" prefWidth="365.0" promptText="Last name" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
+      <TextField fx:id="textFieldLastName" layoutX="91.0" layoutY="242.0" prefHeight="25.0" prefWidth="365.0" promptText="Last name" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font></TextField>
@@ -48,7 +48,7 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="textFieldEmail" layoutX="91.0" layoutY="322.0" prefHeight="25.0" prefWidth="365.0" promptText="address@email.com" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
+      <TextField fx:id="textFieldEmail" layoutX="91.0" layoutY="322.0" prefHeight="25.0" prefWidth="365.0" promptText="address@email.com" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font></TextField>
@@ -72,12 +72,12 @@
             <Font name="Berlin Sans FB" size="12.0" />
          </font>
       </Button>
-      <PasswordField fx:id="textFieldPassword" layoutX="91.0" layoutY="390.0" prefHeight="25.0" prefWidth="365.0" promptText="Password" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
+      <PasswordField fx:id="textFieldPassword" layoutX="91.0" layoutY="390.0" prefHeight="25.0" prefWidth="365.0" promptText="Password" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </PasswordField>
-      <PasswordField fx:id="textFieldConfirmPassword" layoutX="91.0" layoutY="461.0" prefHeight="25.0" prefWidth="365.0" promptText="Confirm Password" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
+      <PasswordField fx:id="textFieldConfirmPassword" layoutX="91.0" layoutY="461.0" prefHeight="25.0" prefWidth="365.0" promptText="Confirm Password" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="107.0">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
