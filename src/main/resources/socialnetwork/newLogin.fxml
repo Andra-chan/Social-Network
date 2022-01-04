@@ -1,14 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="560.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <right>
+      <AnchorPane prefHeight="407.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="407.0" fitWidth="228.0" layoutX="14.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/stars_starry_sky_gradient_181398_2160x3840.jpg" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" layoutX="33.0" layoutY="139.0" prefHeight="104.0" prefWidth="190.0" text="Here to watch the stars?" textAlignment="CENTER" textFill="#0a0000" wrapText="true">
+               <font>
+                  <Font name="Castellar" size="24.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="80.0" layoutY="256.0" text="Register now!" textFill="#0a0000">
+               <font>
+                  <Font name="Berlin Sans FB" size="17.0" />
+               </font>
+            </Label>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" style="-fx-background-color: #243142; -fx-background-radius: 15px; -fx-text-fill: #ffffff;" text="Sign Up" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Berlin Sans FB" size="13.0" />
+               </font></Button>
+         </children>
+      </AnchorPane>
+   </right>
+   <left>
+      <AnchorPane prefHeight="400.0" prefWidth="332.0" style="-fx-background-color: #243142;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="37.0" layoutY="253.0" text="Password" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Label>
+            <TextField layoutX="109.0" layoutY="250.0" prefHeight="26.0" prefWidth="173.0" promptText="Password">
+               <font>
+                  <Font name="Berlin Sans FB" size="12.0" />
+               </font></TextField>
+            <Label layoutX="49.0" layoutY="204.0" text="Email" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Berlin Sans FB" size="14.0" />
+               </font>
+            </Label>
+            <TextField layoutX="109.0" layoutY="200.0" prefHeight="26.0" prefWidth="173.0" promptText="Email">
+               <font>
+                  <Font name="Berlin Sans FB" size="12.0" />
+               </font></TextField>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="323.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="240.0" style="-fx-background-color: #2a9482; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" text="Sign In" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Berlin Sans FB" size="13.0" />
+               </font></Button>
+            <Label alignment="CENTER" layoutX="17.0" layoutY="292.0" prefHeight="18.0" prefWidth="298.0" text="Invalid Login. Please try again." textFill="RED">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="37.0" layoutY="82.0" prefHeight="101.0" prefWidth="259.0" text="STARFALL" textFill="#0a0000">
+               <font>
+                  <Font name="Castellar" size="36.0" />
+               </font>
+            </Label>
+            <ImageView blendMode="DARKEN" fitHeight="129.0" fitWidth="107.0" layoutX="113.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/star_icon.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+</BorderPane>
