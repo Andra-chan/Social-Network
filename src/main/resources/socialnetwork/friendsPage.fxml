@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -12,9 +13,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="950.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendsController">
+<AnchorPane prefHeight="955.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.FriendsController">
    <children>
-      <AnchorPane prefHeight="106.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="21.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -108,7 +109,7 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <Separator layoutX="574.0" layoutY="95.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />
+      <Separator layoutX="574.0" layoutY="105.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />
       <TextField fx:id="searchField" layoutX="356.0" layoutY="123.0" onKeyTyped="#updateModel" promptText="Search" styleClass="fancyTextField" stylesheets="@css/style.css">
          <font>
             <Font name="Berlin Sans FB" size="12.0" />
@@ -189,5 +190,23 @@
             </ImageView>
          </children>
       </AnchorPane>
+      <Label fx:id="noFriendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="359.0" layoutY="583.0" prefHeight="64.0" prefWidth="183.0" stylesheets="@css/style.css" text="Don't see any friends? Start adding them now!" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="noFriendsImage" blendMode="MULTIPLY" fitHeight="144.0" fitWidth="134.0" layoutX="381.0" layoutY="378.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/images%20(2).png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nowLabel" layoutX="503.0" layoutY="615.0" onMouseClicked="#onNowClick" prefHeight="17.0" prefWidth="39.0" text="now!" textFill="WHITE" underline="true">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>

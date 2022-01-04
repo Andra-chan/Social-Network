@@ -81,6 +81,13 @@ public class AddFriendsController implements Observer<ChangeEvent> {
     @FXML
     Button denyRequestButton;
 
+    @FXML
+    ImageView noUsersImage;
+
+    @FXML
+    Label noUsersLabel;
+
+
     private void setButtonsToDefaultState(){
         friendImage.setVisible(false);
         friendNameLabel.setVisible(false);
@@ -92,6 +99,14 @@ public class AddFriendsController implements Observer<ChangeEvent> {
         cancelRequestButton.setVisible(false);
         denyRequestButton.setVisible(false);
         acceptRequestButton.setVisible(false);
+        if(modelUsers.isEmpty()){
+            noUsersImage.setVisible(true);
+            noUsersLabel.setVisible(true);
+        }
+        else{
+            noUsersImage.setVisible(false);
+            noUsersLabel.setVisible(false);
+        }
     }
 
     private void setVisibleUserInfo(){
@@ -256,7 +271,6 @@ public class AddFriendsController implements Observer<ChangeEvent> {
                 setButtonsToDefaultState();
             }
         }
-
     }
 
     @Override
