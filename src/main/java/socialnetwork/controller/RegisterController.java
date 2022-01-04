@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import socialnetwork.HelloApplication;
+import socialnetwork.App;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
@@ -26,6 +26,12 @@ public class RegisterController {
     PasswordField textFieldPassword;
 
     @FXML
+    PasswordField textFieldConfirmPassword;
+
+    @FXML
+    Button returnButton;
+
+    @FXML
     Button registerButton;
 
     @FXML
@@ -36,10 +42,13 @@ public class RegisterController {
      */
     @FXML
     public void initialize() {
+        errorLabel.setStyle("-fx-text-fill: red");
+        errorLabel.setVisible(false);
         textFieldFirstName.setOnKeyPressed(event -> enterKeyPressed(event.getCode()));
         textFieldLastName.setOnKeyPressed(event -> enterKeyPressed(event.getCode()));
         textFieldEmail.setOnKeyPressed(event -> enterKeyPressed(event.getCode()));
         textFieldPassword.setOnKeyPressed(event -> enterKeyPressed(event.getCode()));
+        textFieldConfirmPassword.setOnKeyPressed(event -> enterKeyPressed(event.getCode()));
     }
 
     /**
@@ -56,13 +65,28 @@ public class RegisterController {
         String lastName = textFieldLastName.getText();
         String email = textFieldEmail.getText();
         String password = textFieldPassword.getText();
+        String confirmPassword = textFieldConfirmPassword.getText();
+
+        if(password.isBlank()){
+            errorLabel.setText("Password cannot be blank");
+            return;
+        }
+
+        if(!password.equals(confirmPassword)){
+            errorLabel.setText("Passwords do not match");
+            return;
+        }
+
         try {
             var user = service.addUser(new Utilizator(firstName, lastName, email, password));
             if (user == null) {
-                HelloApplication.changeSceneToLogin(service);
+                errorLabel.setStyle("-fx-text-fill: green");
+                errorLabel.setText("Register successful");
+                errorLabel.setVisible(true);
             }
         } catch (Exception ex) {
             errorLabel.setText(ex.getMessage());
+            errorLabel.setVisible(true);
         }
 
     }
@@ -76,6 +100,10 @@ public class RegisterController {
         if (keyCode == KeyCode.ENTER) {
             onRegisterButtonPress();
         }
+    }
+
+    public void onReturnButtonPress(){
+        App.changeSceneToLogin(service);
     }
 
     /**

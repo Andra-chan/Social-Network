@@ -2,9 +2,9 @@ package socialnetwork;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import socialnetwork.controller.ApplicationController;
@@ -23,16 +23,16 @@ import socialnetwork.service.Service;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class App extends Application {
     private static Stage currentStage;
 
     @Override
     public void start(Stage stage) throws IOException {
-        HelloApplication.currentStage = stage;
+        App.currentStage = stage;
 
         String url = "jdbc:postgresql://localhost:5432/socialnetwork";
         String username = "postgres";
-        String password = "mypostgres";
+        String password = "admin";
 
         Validator<Utilizator> userValidator = new UtilizatorValidator();
 
@@ -53,9 +53,9 @@ public class HelloApplication extends Application {
                 friendRequestRepository,
                 messageRepo);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newLogin.fxml"));
         // HBox root = fxmlLoader.load();
-        AnchorPane root = fxmlLoader.load();
+        BorderPane root = fxmlLoader.load();
         // ApplicationController controller = fxmlLoader.getController();
 
         LoginController controller = fxmlLoader.getController();
@@ -69,16 +69,18 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.setMinHeight(root.getPrefHeight());
         stage.setMinWidth(root.getPrefWidth());
+        stage.setMaxHeight(root.getPrefHeight());
+        stage.setMaxWidth(root.getPrefWidth());
         stage.show();
     }
 
     public static void changeSceneToMainWindow(Service service, Long userId) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("hello-view.fxml"));
             HBox root = fxmlLoader.load();
-            HelloApplication.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
-            HelloApplication.currentStage.setMinHeight(root.getPrefHeight());
-            HelloApplication.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
             ApplicationController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -88,11 +90,13 @@ public class HelloApplication extends Application {
 
     public static void changeSceneToRegister(Service service) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("register.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newRegister.fxml"));
             AnchorPane root = fxmlLoader.load();
-            HelloApplication.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
-            HelloApplication.currentStage.setMinHeight(root.getPrefHeight());
-            HelloApplication.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            //HelloApplication.currentStage.setMaxHeight(root.getPrefHeight());
+            //HelloApplication.currentStage.setMaxWidth(root.getPrefWidth());
             RegisterController controller = fxmlLoader.getController();
             controller.setService(service);
         } catch (IOException ex) {
@@ -102,11 +106,13 @@ public class HelloApplication extends Application {
 
     public static void changeSceneToLogin(Service service) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login.fxml"));
-            AnchorPane root = fxmlLoader.load();
-            HelloApplication.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
-            HelloApplication.currentStage.setMinHeight(root.getPrefHeight());
-            HelloApplication.currentStage.setMinWidth(root.getPrefWidth());
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newLogin.fxml"));
+            BorderPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setMaxHeight(root.getPrefHeight());
+            App.currentStage.setMaxWidth(root.getPrefWidth());
             LoginController controller = fxmlLoader.getController();
             controller.setService(service);
         } catch (IOException ex) {

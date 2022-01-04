@@ -14,7 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import socialnetwork.HelloApplication;
+import socialnetwork.App;
 import socialnetwork.Util.events.ChangeEvent;
 import socialnetwork.Util.events.ChangeEventType;
 import socialnetwork.Util.observer.Observer;
@@ -119,7 +119,7 @@ public class ApplicationController implements Observer<ChangeEvent> {
     }
 
     public void handleLogoutButtonClick() {
-        HelloApplication.changeSceneToLogin(service);
+        App.changeSceneToLogin(service);
     }
 
     public void filterUsers() {

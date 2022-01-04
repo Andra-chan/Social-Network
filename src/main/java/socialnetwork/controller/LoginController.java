@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import socialnetwork.HelloApplication;
+import socialnetwork.App;
 import socialnetwork.domain.UserCredentials;
 import socialnetwork.service.Service;
 
@@ -45,7 +45,7 @@ public class LoginController {
             warnLabel.setVisible(true);
             return;
         }
-        HelloApplication.changeSceneToMainWindow(service, userId);
+        App.changeSceneToMainWindow(service, userId);
     }
 
     /**
@@ -62,7 +62,7 @@ public class LoginController {
      * Switch to register window
      */
     public void onRegisterButtonClick() {
-        HelloApplication.changeSceneToRegister(service);
+        App.changeSceneToRegister(service);
     }
 
     /**
