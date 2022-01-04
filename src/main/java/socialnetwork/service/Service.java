@@ -143,12 +143,14 @@ public class Service implements Observable<ChangeEvent> {
      * @return the deleted entity
      */
     public Prietenie removeFriendship(Long id) {
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
         var friendship =  friendshipRepository.findOne(id);
         friendRequestRepository.delete(getFriendRequest(friendship.getFirstUser(),
                 friendship.getSecondUser()).get().getId());
 
-        return this.friendshipRepository.delete(id);
+        var rez = this.friendshipRepository.delete(id);
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+        notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+        return rez;
     }
 
     /**
@@ -532,15 +534,15 @@ public class Service implements Observable<ChangeEvent> {
 
     public Optional<Prietenie> getFriendship(Long userId1, Long userId2){
         return StreamSupport.stream(friendshipRepository.findAll().spliterator(), false)
-                .filter(x -> x.getFirstUser().equals(userId1) && x.getSecondUser().equals(userId2))
-                .filter(x -> x.getFirstUser().equals(userId2) && x.getSecondUser().equals(userId1))
+                .filter(x -> (x.getFirstUser().equals(userId1) && x.getSecondUser().equals(userId2)) ||
+                        (x.getFirstUser().equals(userId2) && x.getSecondUser().equals(userId1)))
                 .findAny();
     }
 
     public Optional<FriendRequest> getFriendRequest(Long userId1, Long userId2){
         return StreamSupport.stream(friendRequestRepository.findAll().spliterator(), false)
-                .filter(x -> x.getSender().equals(userId1) && x.getReceiver().equals(userId2))
-                .filter(x -> x.getSender().equals(userId2) && x.getReceiver().equals(userId1))
+                .filter(x -> (x.getSender().equals(userId1) && x.getReceiver().equals(userId2)) ||
+                        (x.getSender().equals(userId2) && x.getReceiver().equals(userId1)))
                 .findAny();
     }
 
@@ -596,5 +598,9 @@ public class Service implements Observable<ChangeEvent> {
     @Override
     public void notifyObservers(ChangeEvent t) {
         observers.stream().forEach(x -> x.update(t));
+    }
+
+    public void clearObservers() {
+        observers.clear();
     }
 }

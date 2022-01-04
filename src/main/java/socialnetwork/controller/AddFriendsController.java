@@ -2,22 +2,13 @@ package socialnetwork.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import socialnetwork.App;
 import socialnetwork.service.Service;
 
-public class MainPageController {
+public class AddFriendsController {
     Service service;
     Long userId;
-
-    @FXML
-    Label usernameLabel;
-
-    @FXML
-    ImageView userImageView;
 
     @FXML
     AnchorPane friendsPane;
@@ -37,16 +28,14 @@ public class MainPageController {
     @FXML
     Button logoutButton;
 
+
     @FXML
     public void initialize(){
     }
-    
 
     public void initData(Service service, Long userId) {
-        this.service = service;
+        this.service=service;
         this.userId=userId;
-        var user = service.getUser(userId);
-        usernameLabel.setText(user.getFirstName() + " " + user.getLastName());
     }
 
     public void onMenuFriendsClick() {
@@ -73,3 +62,4 @@ public class MainPageController {
         App.changeSceneToLogin(service);
     }
 }
+

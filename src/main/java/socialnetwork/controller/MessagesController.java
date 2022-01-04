@@ -1,6 +1,7 @@
 package socialnetwork.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import socialnetwork.App;
 import socialnetwork.service.Service;
@@ -16,10 +17,16 @@ public class MessagesController {
     AnchorPane friendRequestsPane;
 
     @FXML
+    AnchorPane addFriendsPane;
+
+    @FXML
     AnchorPane messagesPane;
 
     @FXML
     AnchorPane settingsPane;
+
+    @FXML
+    Button logoutButton;
 
     @FXML
     public void initialize(){
@@ -38,11 +45,19 @@ public class MessagesController {
         App.changeSceneToFriendRequestsWindow(service, userId);
     }
 
+    public void onMenuAddFriendsClick(){
+        App.changeSceneToAddFriendsWindow(service, userId);
+    }
+
     public void onMenuMessagesClick() {
         App.changeSceneToMessagesWindow(service, userId);
     }
 
     public void onMenuSettingsClick(){
         App.changeSceneToSettingsWindow(service, userId);
+    }
+
+    public void onLogoutButtonClick(){
+        App.changeSceneToLogin(service);
     }
 }

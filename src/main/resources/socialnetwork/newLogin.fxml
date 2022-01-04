@@ -37,7 +37,7 @@
       </AnchorPane>
    </right>
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="448.0" style="-fx-background-color: #243142;" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="400.0" maxWidth="448.0" minHeight="400.0" minWidth="448.0" prefHeight="400.0" prefWidth="448.0" style="-fx-background-color: #243142;" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="38.0" layoutY="261.0" text="Password" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="38.0">
                <font>
@@ -64,7 +64,7 @@
             </Label>
             <Label alignment="CENTER" layoutX="107.0" layoutY="81.0" prefHeight="101.0" prefWidth="259.0" text="STARFALL" textFill="#0a0000" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="82.0">
                <font>
-                  <Font name="Castellar"  size="36.0" />
+                  <Font name="Castellar" size="36.0" />
                </font>
             </Label>
             <ImageView blendMode="DARKEN" fitHeight="129.0" fitWidth="107.0" layoutX="183.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="183.0" AnchorPane.rightAnchor="158.0">

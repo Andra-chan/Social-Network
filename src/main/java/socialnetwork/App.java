@@ -30,7 +30,7 @@ public class App extends Application {
 
         String url = "jdbc:postgresql://localhost:5432/socialnetwork";
         String username = "postgres";
-        String password = "admin";
+        String password = "mypostgres";
 
         Validator<Utilizator> userValidator = new UtilizatorValidator();
 
@@ -67,8 +67,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setMinHeight(root.getPrefHeight());
         stage.setMinWidth(root.getPrefWidth());
-        stage.setMaxHeight(root.getPrefHeight());
-        stage.setMaxWidth(root.getPrefWidth());
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -79,8 +78,9 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setWidth(root.getPrefWidth());
-            App.currentStage.setHeight(root.getPrefHeight());
+            App.currentStage.setResizable(true);
+            service.clearObservers();
+
             MainPageController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -95,8 +95,9 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setWidth(root.getPrefWidth());
-            App.currentStage.setHeight(root.getPrefHeight());
+            App.currentStage.setResizable(true);
+            service.clearObservers();
+
             FriendsController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -111,9 +112,27 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setWidth(root.getPrefWidth());
-            App.currentStage.setHeight(root.getPrefHeight());
+            App.currentStage.setResizable(true);
+            service.clearObservers();
+
             FriendRequestsController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void changeSceneToAddFriendsWindow(Service service, Long userId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("addFriendsPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setResizable(true);
+            service.clearObservers();
+
+            AddFriendsController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -127,8 +146,9 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setWidth(root.getPrefWidth());
-            App.currentStage.setHeight(root.getPrefHeight());
+            App.currentStage.setResizable(true);
+            service.clearObservers();
+
             MessagesController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -143,8 +163,9 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setWidth(root.getPrefWidth());
-            App.currentStage.setHeight(root.getPrefHeight());
+            App.currentStage.setResizable(true);
+            service.clearObservers();
+
             SettingsController controller = fxmlLoader.getController();
             controller.initData(service, userId);
         } catch (IOException ex) {
@@ -159,8 +180,9 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setMaxHeight(1000);
-            App.currentStage.setMaxWidth(1000);
+            App.currentStage.setResizable(true);
+            service.clearObservers();
+
             RegisterController controller = fxmlLoader.getController();
             controller.setService(service);
         } catch (IOException ex) {
@@ -175,8 +197,11 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setMaxHeight(root.getPrefHeight());
-            App.currentStage.setMaxWidth(root.getPrefWidth());
+            App.currentStage.setResizable(false);
+            App.currentStage.setMaximized(false);
+            App.currentStage.setHeight(root.getPrefHeight());
+            App.currentStage.setWidth(root.getPrefWidth());
+            service.clearObservers();
 
             LoginController controller = fxmlLoader.getController();
             controller.setService(service);
