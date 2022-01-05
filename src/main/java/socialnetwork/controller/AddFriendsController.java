@@ -81,6 +81,13 @@ public class AddFriendsController implements Observer<ChangeEvent> {
     @FXML
     Button denyRequestButton;
 
+    @FXML
+    ImageView noUsersImage;
+
+    @FXML
+    Label noUsersLabel;
+
+
     /**
      * Sets visibility of all required objects to the default one
      */
@@ -95,6 +102,14 @@ public class AddFriendsController implements Observer<ChangeEvent> {
         cancelRequestButton.setVisible(false);
         denyRequestButton.setVisible(false);
         acceptRequestButton.setVisible(false);
+        if(modelUsers.isEmpty()){
+            noUsersImage.setVisible(true);
+            noUsersLabel.setVisible(true);
+        }
+        else{
+            noUsersImage.setVisible(false);
+            noUsersLabel.setVisible(false);
+        }
     }
 
     /**

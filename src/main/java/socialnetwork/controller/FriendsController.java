@@ -71,6 +71,15 @@ public class FriendsController implements Observer<ChangeEvent> {
     Button logoutButton;
 
     @FXML
+    ImageView noFriendsImage;
+
+    @FXML
+    Label noFriendsLabel;
+
+    @FXML
+    Label nowLabel;
+
+    @FXML
     public void initialize(){
 
         noFriendSelectedImage.setVisible(true);
@@ -80,6 +89,16 @@ public class FriendsController implements Observer<ChangeEvent> {
         removeButton.setVisible(false);
         separator.setVisible(false);
         removeFriendImage.setVisible(false);
+        if(modelFriendships.isEmpty()){
+            noFriendsImage.setVisible(true);
+            noFriendsLabel.setVisible(true);
+            nowLabel.setVisible(true);
+        }
+        else{
+            noFriendsImage.setVisible(false);
+            noFriendsLabel.setVisible(false);
+            nowLabel.setVisible(false);
+        }
         friendList.setCellFactory(param -> new ListCell<>() {
             private ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
 
@@ -153,6 +172,10 @@ public class FriendsController implements Observer<ChangeEvent> {
                 service.removeFriendship(friendship.get().getId());
             }
         }
+    }
+
+    public void onNowClick(){
+        App.changeSceneToAddFriendsWindow(service, userId);
     }
 
     public void onMenuFriendsClick() {
