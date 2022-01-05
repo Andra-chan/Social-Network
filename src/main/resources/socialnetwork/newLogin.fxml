@@ -62,7 +62,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="107.0" layoutY="81.0" prefHeight="101.0" prefWidth="259.0" text="STARFALL" textFill="#0a0000" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="82.0">
+            <Label alignment="CENTER" layoutX="107.0" layoutY="93.0" prefHeight="101.0" prefWidth="259.0" text="STARFALL" textFill="WHITE" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="82.0">
                <font>
                   <Font name="Castellar" size="36.0" />
                </font>
