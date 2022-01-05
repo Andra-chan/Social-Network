@@ -78,6 +78,9 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
     ImageView userImage;
 
 
+    /**
+     * Initialize UI elements.
+     */
     @FXML
     public void initialize(){
 
@@ -145,6 +148,11 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
         userList.setItems(modelUsersWithFriendRequests);
     }
 
+    /**
+     * Initialize data using the service, and logged-in user
+     * @param service the Service
+     * @param userId the logged-in users' id
+     */
     public void initData(Service service, Long userId) {
         this.service=service;
         this.userId=userId;
@@ -152,6 +160,9 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
         service.addObserver(this);
     }
 
+    /**
+     * Update the data model with new data from the service.
+     */
     public void updateModel(){
         Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
         Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
@@ -159,35 +170,60 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
                 .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
     }
 
+    /**
+     * Get the list of users directed to the logged in user
+     * @return a list of users with friend requests directed to the logged in user
+     */
     public List<Utilizator> getUsersListWithFriendRequests(){
         return service.getPendingFriendRequests(userId).stream().map(x -> service.getUser(x.getSender()))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * When the user clicks on the friends button, switch the scene
+     */
     public void onMenuFriendsClick() {
         App.changeSceneToFriendsWindow(service, userId);
     }
 
+    /**
+     * When the user clicks on the friend requests button, switch the scene
+     */
     public void onMenuFriendRequestsClick() {
         App.changeSceneToFriendRequestsWindow(service, userId);
     }
 
+    /**
+     * When the user clicks on the add friendsbutton, switch the scene
+     */
     public void onMenuAddFriendsClick(){
         App.changeSceneToAddFriendsWindow(service, userId);
     }
 
+    /**
+     * When the user clicks on the messages button, switch the scene
+     */
     public void onMenuMessagesClick() {
         App.changeSceneToMessagesWindow(service, userId);
     }
 
+    /**
+     * When the user clicks on the settings button, switch the scene
+     */
     public void onMenuSettingsClick(){
         App.changeSceneToSettingsWindow(service, userId);
     }
 
+    /**
+     * When the user clicks on the logout button, switch the scene
+     */
     public void onLogoutButtonClick(){
         App.changeSceneToLogin(service);
     }
 
+    /**
+     * When the user clicks on the accept button, accept the friend request from the selected user.
+     */
     public void onAcceptButtonClick(){
         var selectedFriend = userList.getSelectionModel().getSelectedItem();
         if(selectedFriend!=null) {
@@ -198,6 +234,9 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
         }
     }
 
+    /**
+     * When the user clicks on the decline button, decline the friend request from the selected user.
+     */
     public void onDeclineButtonClick(){
         var selectedFriend = userList.getSelectionModel().getSelectedItem();
         if(selectedFriend!=null) {
@@ -208,6 +247,10 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
         }
     }
 
+    /**
+     * Update data with new friend request data from the service.
+     * @param event the event type.
+     */
     @Override
     public void update(ChangeEvent event) {
         if (event.getType().equals(ChangeEventType.FRIEND_REQUEST)) {

@@ -256,6 +256,11 @@ public class Service implements Observable<ChangeEvent> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get all users that are not friends with a certain user
+     * @param userId a users' id
+     * @return a list of all users that are not friends with the users with id userId
+     */
     public List<Utilizator> getAllUsersThatAreNotFriends(Long userId){
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .filter(x -> !areFriends(userId, x.getId()))
@@ -413,6 +418,30 @@ public class Service implements Observable<ChangeEvent> {
                 .sorted(Map.Entry.comparingByKey(Comparator.comparing(Message::getDate)))
                 .collect(Collectors.toList());
         return conversations;
+    }
+
+    /**
+     * Get a list with all the mssages between two users, sorted in chronological order
+     * @param userId1 the first ussers' id
+     * @param userId2 the second users' id
+     * @return list with the messages between the users with id userId1 and userId2
+     */
+    public List<Message> getMessageListBetweenTwoUsers(Long userId1, Long userId2) {
+        var allMessages = messageRepository.findAll();
+        List<Message> messages = StreamSupport.stream(allMessages.spliterator(), false)
+                .filter(x -> {
+                    // creator must be one of the provided users
+                    return x.getFrom().getId().equals(userId1) || x.getFrom().getId().equals(userId2);
+                })
+                .filter(x -> {
+                    // message must have one of the users in the recipients list
+                    boolean from1to2 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId1));
+                    boolean from2to1 = x.getTo().stream().anyMatch(y -> y.getId().equals(userId2));
+                    return from1to2 || from2to1;
+                })
+                .sorted(Comparator.comparing(Message::getDate))
+                .collect(Collectors.toList());
+        return messages;
     }
 
     /**

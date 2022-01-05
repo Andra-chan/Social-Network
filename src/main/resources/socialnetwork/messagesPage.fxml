@@ -142,7 +142,7 @@
                 </ImageView>
             </children>
         </AnchorPane>
-          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" layoutX="578.0" layoutY="219.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="498.0" style="-fx-border-color: #243142; -fx-background-color: #243142;" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="219.0">
+          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" layoutX="578.0" layoutY="219.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="498.0" style="-fx-border-color: #243142; -fx-background-color: #243142;" visible="false" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="219.0">
          <content>
                   <GridPane fx:id="chatGridPane" prefHeight="738.0" prefWidth="494.0" style="-fx-background-color: #243142; -fx-border-color: #243142;">
                       <columnConstraints>
@@ -158,8 +158,8 @@
                   </GridPane>
          </content>
           </ScrollPane>
-          <TextField fx:id="chatTextField" layoutX="622.0" layoutY="879.0" onKeyPressed="#onKeyPressed" prefHeight="48.0" prefWidth="335.0" promptText="Type a message" styleClass="fancyTextField" stylesheets="@css/style.css" />
-          <Button fx:id="sendButton" layoutX="989.0" layoutY="890.0" mnemonicParsing="false" onAction="#onSendButtonPress" styleClass="fancyButton" stylesheets="@css/style.css" text="Send">
+          <TextField fx:id="chatTextField" layoutX="622.0" layoutY="879.0" prefHeight="48.0" prefWidth="335.0" promptText="Type a message" styleClass="fancyTextField" stylesheets="@css/style.css" visible="false" />
+          <Button fx:id="sendButton" layoutX="989.0" layoutY="890.0" mnemonicParsing="false" onAction="#onSendButtonPress" styleClass="fancyButton" stylesheets="@css/style.css" text="Send" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -170,7 +170,7 @@
             <String fx:value="list-cell" />
          </styleClass>
       </ListView>
-      <Separator layoutX="574.0" layoutY="95.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />
+      <Separator fx:id="separator3" layoutX="574.0" layoutY="95.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />
       <TextField fx:id="searchField" layoutX="356.0" layoutY="123.0" onKeyTyped="#updateModel" promptText="Search" styleClass="fancyTextField" stylesheets="@css/style.css">
          <font>
             <Font name="Berlin Sans FB" size="12.0" />
@@ -181,17 +181,37 @@
             <Image url="@images/download%20(2).png" />
          </image>
       </ImageView>
-      <Separator layoutX="577.0" layoutY="867.0" prefHeight="0.0" prefWidth="498.0" />
-      <Separator layoutX="577.0" layoutY="218.0" prefHeight="0.0" prefWidth="498.0" />
+      <Separator fx:id="separator1" layoutX="577.0" layoutY="867.0" prefHeight="0.0" prefWidth="498.0" visible="false" />
+      <Separator fx:id="separator2" layoutX="577.0" layoutY="218.0" prefHeight="0.0" prefWidth="498.0" visible="false" />
       <Label text="Label" />
       <Label fx:id="userNameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="730.0" layoutY="138.0" prefHeight="48.0" prefWidth="200.0" stylesheets="@css/style.css" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
       </Label>
-      <ImageView fx:id="userNameImage" blendMode="DARKEN" fitHeight="94.0" fitWidth="94.0" layoutX="630.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="userNameImage" blendMode="DARKEN" fitHeight="94.0" fitWidth="94.0" layoutX="630.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/defaultUserImage.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="noFriendSelectedLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="656.0" layoutY="502.0" prefHeight="128.0" prefWidth="340.0" text="Select a friend in order to see your conversations with them!" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="noFriendSelectedImage" fitHeight="150.0" fitWidth="200.0" layoutX="755.0" layoutY="326.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/29461-200.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="noMessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="660.0" layoutY="502.0" prefHeight="128.0" prefWidth="340.0" text="Start sending messages now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="noMessagesImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="755.0" layoutY="326.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/cancel-chat-close-message-no-ui-notification-no-notification-icon-symbol-logo-trademark-label-transparent-png-1220879.png" />
          </image>
       </ImageView>
     </children>

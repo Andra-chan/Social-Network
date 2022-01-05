@@ -145,7 +145,10 @@ public class App extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("messagesPage.fxml"));
             AnchorPane root = fxmlLoader.load();
-            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            Scene scene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
+            scene.getStylesheets().add(String.valueOf(App.class.getResource("css/style.css")));
+
+            App.currentStage.setScene(scene);
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
             App.currentStage.setResizable(true);

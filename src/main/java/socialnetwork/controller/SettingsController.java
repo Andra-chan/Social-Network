@@ -37,27 +37,45 @@ public class SettingsController {
         this.userId=userId;
     }
 
+    /**
+     * When the user clicks on the friends button, switch the scene
+     */
     public void onMenuFriendsClick() {
         App.changeSceneToFriendsWindow(service, userId);
     }
 
+    /**
+     * When the user clicks on the friend requests button, switch the scene
+     */
     public void onMenuFriendRequestsClick() {
         App.changeSceneToFriendRequestsWindow(service, userId);
     }
 
-    public void onMenuAddFriendsClick(){
+    /**
+     * When the user clicks on the add friends button, switch the scene
+     */
+    public void onMenuAddFriendsClick() {
         App.changeSceneToAddFriendsWindow(service, userId);
     }
 
+    /**
+     * When the user clicks on the messages button, switch the scene
+     */
     public void onMenuMessagesClick() {
         App.changeSceneToMessagesWindow(service, userId);
     }
 
-    public void onMenuSettingsClick(){
+    /**
+     * When the user clicks on the settings button, switch the scene
+     */
+    public void onMenuSettingsClick() {
         App.changeSceneToSettingsWindow(service, userId);
     }
 
-    public void onLogoutButtonClick(){
+    /**
+     * When the user clicks on the logout button, switch the scene
+     */
+    public void onLogoutButtonClick() {
         App.changeSceneToLogin(service);
     }
 }
