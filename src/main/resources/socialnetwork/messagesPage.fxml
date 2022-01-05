@@ -183,7 +183,6 @@
       </ImageView>
       <Separator fx:id="separator1" layoutX="577.0" layoutY="867.0" prefHeight="0.0" prefWidth="498.0" visible="false" />
       <Separator fx:id="separator2" layoutX="577.0" layoutY="218.0" prefHeight="0.0" prefWidth="498.0" visible="false" />
-      <Label text="Label" />
       <Label fx:id="userNameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="730.0" layoutY="138.0" prefHeight="48.0" prefWidth="200.0" stylesheets="@css/style.css" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
