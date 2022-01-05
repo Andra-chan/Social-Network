@@ -21,7 +21,7 @@
                   <Image url="@images/star_icon.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="499.0" layoutY="14.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="503.0">
+            <Button fx:id="homeButton" layoutX="501.0" layoutY="18.0" mnemonicParsing="false" onAction="#onHomeButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="501.0">
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="59.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -172,6 +172,13 @@
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/addFriend.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <ImageView fx:id="addFriendImage" blendMode="DARKEN" fitHeight="39.0" fitWidth="31.0" layoutX="357.0" layoutY="279.0" onMouseClicked="#onAddButtonPress" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="536.0" AnchorPane.rightAnchor="110.0">
                <image>
@@ -188,21 +195,43 @@
                   <Image url="@images/29461-200.png" />
                </image>
             </ImageView>
-            <Button fx:id="acceptRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onAcceptRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Accept" visible="false" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="275.0">
+            <Button fx:id="acceptRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onAcceptRequestButtonClick" prefHeight="39.0" prefWidth="103.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Accept" visible="false" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="275.0">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/checked-1319964829840610150.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
-            <Button fx:id="denyRequestButton" alignment="CENTER_RIGHT" layoutX="211.0" layoutY="275.0" mnemonicParsing="false" onAction="#onDenyRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Decline" visible="false" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="275.0">
+            <Button fx:id="denyRequestButton" alignment="CENTER_RIGHT" layoutX="211.0" layoutY="275.0" mnemonicParsing="false" onAction="#onDenyRequestButtonClick" prefHeight="39.0" prefWidth="103.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Decline" visible="false" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="275.0">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="41.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/83972.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
-            <Button fx:id="cancelRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onCancelRequestButtonClick" prefHeight="39.0" prefWidth="128.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Cancel" visible="false" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="275.0">
+            <Button fx:id="cancelRequestButton" alignment="CENTER_RIGHT" layoutX="346.0" layoutY="275.0" mnemonicParsing="false" onAction="#onCancelRequestButtonClick" prefHeight="39.0" prefWidth="103.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Cancel" visible="false" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="275.0">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="29.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/473-4730000_deny-comments-saturation-icon-png.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
       <Label fx:id="noUsersLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="359.0" layoutY="583.0" prefHeight="64.0" prefWidth="183.0" stylesheets="@css/style.css" text="Seems like you're the first one here. Welcome!" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">

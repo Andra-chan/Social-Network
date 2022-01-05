@@ -87,6 +87,9 @@ public class AddFriendsController implements Observer<ChangeEvent> {
     @FXML
     Label noUsersLabel;
 
+    @FXML
+    Button homeButton;
+
 
     /**
      * Sets visibility of all required objects to the default one
@@ -102,14 +105,7 @@ public class AddFriendsController implements Observer<ChangeEvent> {
         cancelRequestButton.setVisible(false);
         denyRequestButton.setVisible(false);
         acceptRequestButton.setVisible(false);
-        if(modelUsers.isEmpty()){
-            noUsersImage.setVisible(true);
-            noUsersLabel.setVisible(true);
-        }
-        else{
-            noUsersImage.setVisible(false);
-            noUsersLabel.setVisible(false);
-        }
+
     }
 
     /**
@@ -207,6 +203,14 @@ public class AddFriendsController implements Observer<ChangeEvent> {
         this.userId=userId;
         service.addObserver(this);
         updateModel();
+        if(modelUsers.isEmpty()){
+            noUsersImage.setVisible(true);
+            noUsersLabel.setVisible(true);
+        }
+        else{
+            noUsersImage.setVisible(false);
+            noUsersLabel.setVisible(false);
+        }
     }
 
     /**
@@ -319,6 +323,10 @@ public class AddFriendsController implements Observer<ChangeEvent> {
             }
         }
 
+    }
+
+    public void onHomeButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
     }
 
     /**

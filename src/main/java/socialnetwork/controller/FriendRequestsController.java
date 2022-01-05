@@ -86,6 +86,9 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
     @FXML
     Label nowLabel;
 
+    @FXML
+    Button homeButton;
+
 
     /**
      * Initialize UI elements.
@@ -102,16 +105,7 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
         separator.setVisible(false);
         declineFriendshipImage.setVisible(false);
         acceptFriendshipImage.setVisible(false);
-        if(modelUsersWithFriendRequests.isEmpty()){
-            noFriendRequestsImage.setVisible(true);
-            noFriendRequestsLabel.setVisible(true);
-            nowLabel.setVisible(true);
-        }
-        else{
-            noFriendRequestsImage.setVisible(false);
-            noFriendRequestsLabel.setVisible(false);
-            nowLabel.setVisible(false);
-        }
+
 
         userList.setCellFactory(param ->  new ListCell<Utilizator>(){
             private ImageView profileImage =  new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
@@ -177,6 +171,16 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
         this.userId=userId;
         updateModel();
         service.addObserver(this);
+        if(modelUsersWithFriendRequests.isEmpty()){
+            noFriendRequestsImage.setVisible(true);
+            noFriendRequestsLabel.setVisible(true);
+            nowLabel.setVisible(true);
+        }
+        else{
+            noFriendRequestsImage.setVisible(false);
+            noFriendRequestsLabel.setVisible(false);
+            nowLabel.setVisible(false);
+        }
     }
 
     /**
@@ -268,6 +272,10 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
 
     public void onNowClick(){
         App.changeSceneToAddFriendsWindow(service, userId);
+    }
+
+    public void onHomeButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
     }
 
     /**

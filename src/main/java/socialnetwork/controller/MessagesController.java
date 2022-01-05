@@ -73,6 +73,8 @@ public class MessagesController {
     ImageView noFriendSelectedImage;
     @FXML
     Label noFriendSelectedLabel;
+    @FXML
+    Button homeButton;
 
     /**
      * Set chat elements to a certain visibility state
@@ -328,6 +330,10 @@ public class MessagesController {
      */
     public void onLogoutButtonClick() {
         App.changeSceneToLogin(service);
+    }
+
+    public void onHomeButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
     }
 
     /**

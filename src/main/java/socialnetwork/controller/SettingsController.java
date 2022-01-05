@@ -29,6 +29,9 @@ public class SettingsController {
     Button logoutButton;
 
     @FXML
+    Button homeButton;
+
+    @FXML
     public void initialize(){
     }
 
@@ -77,5 +80,9 @@ public class SettingsController {
      */
     public void onLogoutButtonClick() {
         App.changeSceneToLogin(service);
+    }
+
+    public void onHomeButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
     }
 }

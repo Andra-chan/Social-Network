@@ -22,7 +22,7 @@
                   <Image url="@images/star_icon.jpg" />
                </image>
             </ImageView>
-            <Button layoutX="499.0" layoutY="14.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="503.0">
+            <Button fx:id="homeButton" layoutX="499.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="503.0">
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="59.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>
