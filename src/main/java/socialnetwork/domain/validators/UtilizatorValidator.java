@@ -23,7 +23,5 @@ public class UtilizatorValidator implements Validator<Utilizator> {
         EmailValidator emailValidator = EmailValidator.getInstance();
         if (!emailValidator.isValid(entity.getEmail()))
             throw new ValidationException("Invalid email");
-        if (entity.getPassword().isBlank())
-            throw new ValidationException("Password can't be blank");
     }
 }
