@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
-
 public class FriendRequestsController implements Observer<ChangeEvent> {
     Service service;
     Long userId;
@@ -120,12 +118,9 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
                     setStyle("-fx-background-color: #243142");
 
                 } else {
-
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
-                    setProfileImage(user, profileImage);
                     setText(user.getFirstName() + " " + user.getLastName());
                     setGraphic(profileImage);
                     setTextFill(Color.WHITE);
@@ -160,7 +155,6 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
                 acceptFriendshipImage.setVisible(true);
                 noUserSelectedImage.setVisible(false);
                 noUserSelectedLabel.setVisible(false);
-                setProfileImage(newValue, userImage);
             }
 
         });

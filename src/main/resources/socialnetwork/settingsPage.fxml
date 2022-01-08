@@ -55,15 +55,15 @@
                         <Glow />
                     </effect>
                 </Button>
-            <Button fx:id="logoutButton" layoutX="1000.0" layoutY="25.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="64.0" prefWidth="63.0" style="-fx-background-color: #243142; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" AnchorPane.rightAnchor="12.0">
-               <graphic>
-                  <ImageView blendMode="DARKEN" fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/Icons8-Windows-8-User-Interface-Logout-1.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+                <Button fx:id="logoutButton" layoutX="1000.0" layoutY="25.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="64.0" prefWidth="63.0" style="-fx-background-color: #243142; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" AnchorPane.rightAnchor="12.0">
+                    <graphic>
+                        <ImageView blendMode="DARKEN" fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@images/Icons8-Windows-8-User-Interface-Logout-1.jpg" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
             </children>
         </AnchorPane>
         <AnchorPane fx:id="friendsPane" layoutY="105.0" onMouseClicked="#onMenuFriendsClick" prefHeight="170.0" prefWidth="314.0" style="-fx-background-color: #40c9c5;">
@@ -136,44 +136,44 @@
                 </ImageView>
             </children>
         </AnchorPane>
-      <ImageView fx:id="profileImage" fitHeight="138.0" fitWidth="182.0" layoutX="592.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="592.0" AnchorPane.topAnchor="204.0" />
-      <Separator layoutX="532.0" layoutY="140.0" orientation="VERTICAL" prefHeight="787.0" prefWidth="5.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="532.0" AnchorPane.topAnchor="140.0" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="253.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="Profile Picture" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="253.0">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Button fx:id="chooseImageButton" layoutX="900.0" layoutY="273.0" mnemonicParsing="false" onAction="#onChooseImageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Choose Image" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="273.0">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Button>
-      <TextField fx:id="firstNameField" layoutX="579.0" layoutY="426.0" prefHeight="39.0" prefWidth="448.0" promptText="First Name" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="579.0" AnchorPane.topAnchor="426.0" />
-      <TextField fx:id="lastNameField" layoutX="579.0" layoutY="596.0" prefHeight="39.0" prefWidth="448.0" promptText="Last Name" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="579.0" AnchorPane.topAnchor="596.0" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="423.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="First Name" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="423.0">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="593.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="Last Name" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="593.0">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="638.0" layoutY="722.0" prefHeight="55.0" prefWidth="287.0" text="Warning" textAlignment="CENTER" textFill="RED" visible="false" wrapText="true" AnchorPane.leftAnchor="638.0" AnchorPane.topAnchor="722.0">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Button fx:id="saveButton" layoutX="720.0" layoutY="823.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="22.0" prefWidth="122.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Save" AnchorPane.leftAnchor="720.0" AnchorPane.topAnchor="823.0">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Button>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="763.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="Update" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="763.0">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
+        <ImageView fx:id="profileImage" fitHeight="138.0" fitWidth="182.0" layoutX="592.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="592.0" AnchorPane.topAnchor="204.0" />
+        <Separator layoutX="532.0" layoutY="140.0" orientation="VERTICAL" prefHeight="787.0" prefWidth="5.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="532.0" AnchorPane.topAnchor="140.0" />
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="253.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="Profile Picture" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="253.0">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Label>
+        <Button fx:id="chooseImageButton" layoutX="900.0" layoutY="273.0" mnemonicParsing="false" onAction="#onChooseImageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Choose Image" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="273.0">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Button>
+        <TextField fx:id="firstNameField" layoutX="579.0" layoutY="426.0" prefHeight="39.0" prefWidth="448.0" promptText="First Name" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="579.0" AnchorPane.topAnchor="426.0" />
+        <TextField fx:id="lastNameField" layoutX="579.0" layoutY="596.0" prefHeight="39.0" prefWidth="448.0" promptText="Last Name" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="579.0" AnchorPane.topAnchor="596.0" />
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="423.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="First Name" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="423.0">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Label>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="593.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="Last Name" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="593.0">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="638.0" layoutY="722.0" prefHeight="55.0" prefWidth="287.0" text="Warning" textAlignment="CENTER" textFill="RED" visible="false" wrapText="true" AnchorPane.leftAnchor="638.0" AnchorPane.topAnchor="722.0">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Label>
+        <Button fx:id="saveButton" layoutX="720.0" layoutY="823.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="22.0" prefWidth="122.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Save" AnchorPane.leftAnchor="720.0" AnchorPane.topAnchor="823.0">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Button>
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="763.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="Update" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="763.0">
+            <font>
+                <Font name="Berlin Sans FB" size="14.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>

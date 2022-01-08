@@ -1,10 +1,16 @@
 package socialnetwork.repository.database;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +41,7 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
 
             Utilizator toReturn = new Utilizator(resultSet.getString("first_name"), resultSet.getString("last_name"),
                     resultSet.getString("email"), "");
-            toReturn.setImagePath(resultSet.getString("image_path"));
+            toReturn.setImage_path(resultSet.getString("image_path"));
             toReturn.setId(resultSet.getLong("id"));
             return toReturn;
         } catch (Exception e) {
@@ -128,7 +134,7 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
              var statement = connection.prepareStatement(updateUserSql)) {
             statement.setString(1, entity.getFirstName());
             statement.setString(2, entity.getLastName());
-            statement.setString(3, entity.getImagePath());
+            statement.setString(3, entity.getImage_path());
             statement.setLong(4, entity.getId());
             if(statement.executeUpdate()!=0){
                 return null;

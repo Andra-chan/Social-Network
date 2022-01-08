@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
@@ -254,7 +255,7 @@ public class Service implements Observable<ChangeEvent> {
                     } else {
                         user = userRepository.findOne(fr.getFirstUser());
                     }
-                    return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId(), user.getImagePath());
+                    return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId());
                 })
                 .collect(Collectors.toList());
     }

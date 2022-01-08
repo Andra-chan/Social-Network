@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
-
 public class MessagesController {
 
     @FXML
@@ -153,8 +151,6 @@ public class MessagesController {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
-                    setProfileImage(friend, profileImage);
                     setText(friend.getFirstName() + " " + friend.getLastName());
                     setGraphic(profileImage);
                     setTextFill(Color.WHITE);
@@ -175,7 +171,6 @@ public class MessagesController {
                 setNotifyUsageVisibility(false);
                 setChatObjectsVisibility(true);
                 setNotifyNoMessagesVisiblity(false);
-                setProfileImage(newValue, userNameImage);
                 userNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 chatGridPane.getChildren().clear();
                 updateMessagesAndUpdateUI();

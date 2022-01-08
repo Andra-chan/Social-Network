@@ -23,7 +23,6 @@ import java.io.IOException;
 
 public class App extends Application {
     public static Stage currentStage;
-    public static String defaultImagePath;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -63,8 +62,6 @@ public class App extends Application {
         // controller.setService(serviceNetwork);
 
         Scene scene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
-
-        defaultImagePath = String.valueOf(getClass().getResource("images/defaultUserImage.png"));
 
         stage.setTitle("Starfall");
         stage.setScene(scene);

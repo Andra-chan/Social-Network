@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Utilizator Entity, main object to be stored
  */
-public class Utilizator extends Entity<Long> implements ImageHolder{
+public class Utilizator extends Entity<Long> {
     private final List<Utilizator> friends;
     private final UserCredentials credentials;
     private String firstName;
@@ -111,11 +111,11 @@ public class Utilizator extends Entity<Long> implements ImageHolder{
         return Objects.hash(getFirstName(), getLastName(), getClass());
     }
 
-    public String getImagePath() {
+    public String getImage_path() {
         return image_path;
     }
 
-    public void setImagePath(String image_path) {
+    public void setImage_path(String image_path) {
         this.image_path = image_path;
     }
 }

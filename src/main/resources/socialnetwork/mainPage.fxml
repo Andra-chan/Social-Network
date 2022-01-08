@@ -65,7 +65,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <ImageView fx:id="userImageView" blendMode="DARKEN" fitHeight="224.0" fitWidth="250.0" layoutX="345.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="userImageView" blendMode="DARKEN" fitHeight="224.0" fitWidth="250.0" layoutX="345.0" layoutY="158.0" pickOnBounds="true">
          <image>
             <Image url="@images/defaultUserImage.png" />
          </image>

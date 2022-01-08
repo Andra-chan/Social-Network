@@ -5,28 +5,18 @@ import java.time.LocalDateTime;
 /**
  * Friend class
  */
-public class Friend implements ImageHolder {
+public class Friend {
     private String firstName;
     private String lastName;
     private LocalDateTime dateTime;
-    private String profileImagePath;
     private final Long id;
 
 
-    public Friend(String firstName, String lastName, LocalDateTime dateTime, Long id, String profileImagePath) {
+    public Friend(String firstName, String lastName, LocalDateTime dateTime, Long id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateTime = dateTime;
         this.id = id;
-        this.profileImagePath = profileImagePath;
-    }
-
-    public String getImagePath() {
-        return profileImagePath;
-    }
-
-    public void setImagePath(String profileImagePath) {
-        this.profileImagePath = profileImagePath;
     }
 
     /**
