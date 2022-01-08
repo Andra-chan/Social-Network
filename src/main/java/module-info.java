@@ -1,6 +1,7 @@
 module socialnetwork {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.swing;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
@@ -12,4 +13,5 @@ module socialnetwork {
     opens socialnetwork to javafx.graphics, javafx.fxml, javafx.base;
     opens socialnetwork.domain to javafx.graphics, javafx.fxml, javafx.base;
     opens socialnetwork.controller to javafx.base, javafx.fxml, javafx.graphics;
+    opens socialnetwork.repository to javafx.base, javafx.fxml, javafx.graphics, javafx.swing;
 }

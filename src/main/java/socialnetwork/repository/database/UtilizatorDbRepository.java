@@ -1,10 +1,16 @@
 package socialnetwork.repository.database;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelFormat;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,17 +32,28 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
     public Utilizator findOne(Long id) {
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement statement = connection.prepareStatement("SELECT * from users WHERE id =?")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * from users WHERE id =?")) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-
             if (!resultSet.next())
                 throw new RepositoryException("Element doesn't exist!");
+
+            byte[] imageBytes = resultSet.getBytes("image");
+            Image image;
+            if (imageBytes != null) {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
+                BufferedImage read = ImageIO.read(inputStream);
+                image = SwingFXUtils.toFXImage(read, null);
+            } else {
+                image = null;
+            }
+
             Utilizator toReturn = new Utilizator(resultSet.getString("first_name"), resultSet.getString("last_name"),
                     "", "");
+            toReturn.setImage(image);
             toReturn.setId(resultSet.getLong("id"));
             return toReturn;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RepositoryException(e.getMessage());
         }
     }
@@ -45,8 +62,8 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
     public Iterable<Utilizator> findAll() {
         Set<Utilizator> users = new HashSet<>();
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement statement = connection.prepareStatement("SELECT * from users");
-                ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * from users");
+             ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");
@@ -76,8 +93,8 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
         String insert_user_sql = "insert into users ( first_name, last_name ) values (?,?)";
         String insert_credentials_sql = "insert into user_credentials (user_id, email, password) values (?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement ps = connection.prepareStatement(insert_user_sql, Statement.RETURN_GENERATED_KEYS);
-                PreparedStatement ps_credentials = connection.prepareStatement(insert_credentials_sql)) {
+             PreparedStatement ps = connection.prepareStatement(insert_user_sql, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement ps_credentials = connection.prepareStatement(insert_credentials_sql)) {
 
             ps.setString(1, entity.getFirstName());
             ps.setString(2, entity.getLastName());
@@ -106,7 +123,7 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
 
         String sql = "DELETE FROM users WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -121,13 +138,24 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
             throw new RepositoryException("Entity must not be null!");
         validator.validate(entity);
 
-        String updateUserSql = "UPDATE users" + " SET first_name =?, last_name =?" + " WHERE id=?";
+        String updateUserSql = "UPDATE users" + " SET first_name =?, last_name =?, image=?" + " WHERE id=?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                var statement = connection.prepareStatement(updateUserSql)) {
+             var statement = connection.prepareStatement(updateUserSql)) {
             statement.setString(1, entity.getFirstName());
             statement.setString(2, entity.getLastName());
-            statement.setLong(3, entity.getId());
-
+            statement.setLong(4, entity.getId());
+            Image image = entity.getImage();
+            if (image != null) {
+                int width = (int) image.getWidth();
+                int height = (int) image.getHeight();
+                byte[] pixelBytes = new byte[width * height * 4];
+                image.getPixelReader().getPixels(0, 0, width, height,
+                        PixelFormat.getByteBgraInstance(), pixelBytes, 0,
+                        width * 4);
+                statement.setBytes(3, pixelBytes);
+            } else {
+                statement.setNull(3, Types.NULL);
+            }
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RepositoryException(e.getMessage());
@@ -140,13 +168,10 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
         String sql = "SELECT * FROM user_credentials WHERE email=?";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
-                var statement = connection.prepareStatement(sql)) {
+             var statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
             ResultSet result = statement.executeQuery();
-            if (result.next()) {
-                return true;
-            }
-            return false;
+            return result.next();
         } catch (SQLException e) {
             throw new RepositoryException(e.getMessage());
         }

@@ -1,5 +1,7 @@
 package socialnetwork.domain;
 
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +13,7 @@ public class Utilizator extends Entity<Long> {
     private String firstName;
     private String lastName;
     private final List<Utilizator> friends;
+    private Image image;
 
     private UserCredentials credentials;
 
@@ -102,5 +105,13 @@ public class Utilizator extends Entity<Long> {
     @Override
     public int hashCode() {
         return Objects.hash(getFirstName(), getLastName(), getClass());
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }
