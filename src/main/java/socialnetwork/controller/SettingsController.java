@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlendMode;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -14,6 +13,8 @@ import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
 import java.io.File;
+
+import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
 public class SettingsController {
     Service service;
@@ -72,14 +73,7 @@ public class SettingsController {
     }
 
     private void update() {
-        if (currentUser.getImage_path() == null) {
-            String path = String.valueOf(App.class.getResource("images/defaultUserImage.png"));
-            profileImage.setImage(new Image(path));
-            profileImage.setBlendMode(BlendMode.DARKEN);
-            currentUser.setImage_path(path);
-        } else {
-            profileImage.setImage(new Image(currentUser.getImage_path()));
-        }
+        setProfileImage(currentUser, profileImage);
         firstNameField.setText(currentUser.getFirstName());
         lastNameField.setText(currentUser.getLastName());
     }
@@ -95,7 +89,7 @@ public class SettingsController {
             return;
         }
         try {
-            currentUser.setImage_path(file.toURI().toURL().toExternalForm());
+            currentUser.setImagePath(file.toURI().toURL().toExternalForm());
             update();
             profileImage.setBlendMode(BlendMode.SRC_OVER);
         } catch (Exception ex) {
@@ -107,7 +101,7 @@ public class SettingsController {
         try {
             Utilizator newUser = new Utilizator(firstNameField.getText(), lastNameField.getText());
             newUser.setEmail(currentUser.getEmail());
-            newUser.setImage_path(currentUser.getImage_path());
+            newUser.setImagePath(currentUser.getImagePath());
             newUser.setId(currentUser.getId());
             if (service.updateUser(newUser) == null) {
                 currentUser = newUser;

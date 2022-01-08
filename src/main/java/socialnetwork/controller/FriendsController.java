@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
+
 public class FriendsController implements Observer<ChangeEvent> {
     Service service;
     Long userId;
@@ -107,6 +109,8 @@ public class FriendsController implements Observer<ChangeEvent> {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
+                    profileImage.setPreserveRatio(true);
+                    setProfileImage(friend, profileImage);
                     setText(friend.getFirstName() + " " + friend.getLastName());
                     setGraphic(profileImage);
                     setTextFill(Color.WHITE);
@@ -137,6 +141,8 @@ public class FriendsController implements Observer<ChangeEvent> {
                 noFriendSelectedImage.setVisible(false);
                 noFriendSelectedLabel.setVisible(false);
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
+                setProfileImage(newValue, friendImage);
+
             }
 
                 });
