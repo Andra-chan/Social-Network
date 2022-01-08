@@ -22,7 +22,7 @@ import socialnetwork.service.Service;
 import java.io.IOException;
 
 public class App extends Application {
-    private static Stage currentStage;
+    public static Stage currentStage;
 
     @Override
     public void start(Stage stage) throws IOException {

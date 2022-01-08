@@ -13,8 +13,16 @@ public class UserCredentials extends Entity<String> {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return this.getId();
+    }
+
+    public void setEmail(String email) {
+        setId(email);
     }
 
     public Long getUserId() {
@@ -23,9 +31,5 @@ public class UserCredentials extends Entity<String> {
 
     public void setUserId(Long id) {
         this.userId = id;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

@@ -119,6 +119,10 @@ public class Service implements Observable<ChangeEvent> {
         return userRepository.findOne(userID);
     }
 
+    public Utilizator updateUser(Utilizator user){
+        return userRepository.update(user);
+    }
+
     /**
      * Adds a friendship via save() method from the socialnetwork.repository
      *

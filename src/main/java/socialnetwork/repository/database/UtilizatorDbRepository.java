@@ -2,7 +2,6 @@ package socialnetwork.repository.database;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelFormat;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.domain.validators.Validator;
 import socialnetwork.repository.Repository;
@@ -11,6 +10,7 @@ import socialnetwork.repository.RepositoryException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,26 +31,17 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
     @Override
     public Utilizator findOne(Long id) {
 
+        String sql ="SELECT u.id as id, u.first_name as first_name, u.last_name as last_name, u.image_path as image_path, uc.email as email from users u inner join user_credentials uc on u.id=uc.user_id WHERE id =?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * from users WHERE id =?")) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next())
                 throw new RepositoryException("Element doesn't exist!");
 
-            byte[] imageBytes = resultSet.getBytes("image");
-            Image image;
-            if (imageBytes != null) {
-                ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
-                BufferedImage read = ImageIO.read(inputStream);
-                image = SwingFXUtils.toFXImage(read, null);
-            } else {
-                image = null;
-            }
-
             Utilizator toReturn = new Utilizator(resultSet.getString("first_name"), resultSet.getString("last_name"),
-                    "", "");
-            toReturn.setImage(image);
+                    resultSet.getString("email"), "");
+            toReturn.setImage_path(resultSet.getString("image_path"));
             toReturn.setId(resultSet.getLong("id"));
             return toReturn;
         } catch (Exception e) {
@@ -138,30 +129,23 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
             throw new RepositoryException("Entity must not be null!");
         validator.validate(entity);
 
-        String updateUserSql = "UPDATE users" + " SET first_name =?, last_name =?, image=?" + " WHERE id=?";
+        String updateUserSql = "UPDATE users" + " SET first_name =?, last_name =?, image_path=?" + " WHERE id=?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              var statement = connection.prepareStatement(updateUserSql)) {
             statement.setString(1, entity.getFirstName());
             statement.setString(2, entity.getLastName());
+            statement.setString(3, entity.getImage_path());
             statement.setLong(4, entity.getId());
-            Image image = entity.getImage();
-            if (image != null) {
-                int width = (int) image.getWidth();
-                int height = (int) image.getHeight();
-                byte[] pixelBytes = new byte[width * height * 4];
-                image.getPixelReader().getPixels(0, 0, width, height,
-                        PixelFormat.getByteBgraInstance(), pixelBytes, 0,
-                        width * 4);
-                statement.setBytes(3, pixelBytes);
-            } else {
-                statement.setNull(3, Types.NULL);
+            if(statement.executeUpdate()!=0){
+                return null;
+            }else{
+                return entity;
             }
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RepositoryException(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            //throw new RepositoryException(e.getMessage());
         }
-        return null;
-
+        return entity;
     }
 
     private boolean checkIfEmailExists(String email) {
@@ -175,6 +159,5 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
         } catch (SQLException e) {
             throw new RepositoryException(e.getMessage());
         }
-
     }
 }

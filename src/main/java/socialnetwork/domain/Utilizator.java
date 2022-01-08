@@ -10,12 +10,12 @@ import java.util.Objects;
  * Utilizator Entity, main object to be stored
  */
 public class Utilizator extends Entity<Long> {
+    private final List<Utilizator> friends;
+    private final UserCredentials credentials;
     private String firstName;
     private String lastName;
-    private final List<Utilizator> friends;
-    private Image image;
 
-    private UserCredentials credentials;
+    private String image_path;
 
     public Utilizator(String firstName, String lastName) {
         this.firstName = firstName;
@@ -43,6 +43,10 @@ public class Utilizator extends Entity<Long> {
         return credentials.getEmail();
     }
 
+    public void setEmail(String email) {
+        this.credentials.setEmail(email);
+    }
+
     /**
      * Getters
      *
@@ -51,14 +55,6 @@ public class Utilizator extends Entity<Long> {
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public List<Utilizator> getFriends() {
-        return friends;
     }
 
     /**
@@ -71,8 +67,16 @@ public class Utilizator extends Entity<Long> {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Utilizator> getFriends() {
+        return friends;
     }
 
     /**
@@ -107,11 +111,11 @@ public class Utilizator extends Entity<Long> {
         return Objects.hash(getFirstName(), getLastName(), getClass());
     }
 
-    public Image getImage() {
-        return image;
+    public String getImage_path() {
+        return image_path;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImage_path(String image_path) {
+        this.image_path = image_path;
     }
 }
