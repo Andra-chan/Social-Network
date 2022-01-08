@@ -1,6 +1,5 @@
 package socialnetwork.controller;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,8 +13,6 @@ import socialnetwork.App;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class SettingsController {
@@ -76,7 +73,7 @@ public class SettingsController {
 
     private void update() {
         if (currentUser.getImage_path() == null) {
-            String path =  String.valueOf(App.class.getResource("images/defaultUserImage.png"));
+            String path = String.valueOf(App.class.getResource("images/defaultUserImage.png"));
             profileImage.setImage(new Image(path));
             profileImage.setBlendMode(BlendMode.DARKEN);
             currentUser.setImage_path(path);
@@ -92,8 +89,11 @@ public class SettingsController {
         FileChooser choose = new FileChooser();
         FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG", "*.JPEG");
         FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-        //choose.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+        choose.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
         File file = choose.showOpenDialog(null);
+        if (file == null) {
+            return;
+        }
         try {
             currentUser.setImage_path(file.toURI().toURL().toExternalForm());
             update();
