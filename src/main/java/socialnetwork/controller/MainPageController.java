@@ -42,6 +42,12 @@ public class MainPageController {
     Button logoutButton;
 
     @FXML
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
+
+    @FXML
     public void initialize(){
     }
 
@@ -101,5 +107,13 @@ public class MainPageController {
      */
     public void onLogoutButtonClick(){
         App.changeSceneToLogin(service);
+    }
+
+    public void onEventsButtonClick(){
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
     }
 }

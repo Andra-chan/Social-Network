@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,7 +18,7 @@
    <children>
       <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="21.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
                <image>
                   <Image url="@images/star_icon.jpg" />
                </image>
@@ -46,7 +47,7 @@
                   <Glow />
                </effect>
             </Button>
-            <Button layoutX="342.0" layoutY="17.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
+            <Button fx:id="eventsButton" layoutX="342.0" layoutY="17.0" mnemonicParsing="false" onAction="#onEventsButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -141,7 +142,7 @@
       </AnchorPane>
       <AnchorPane layoutX="988.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
          <children>
-            <ImageView fx:id="userImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="164.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="userImage" blendMode="DARKEN" fitHeight="134.0" fitWidth="166.0" layoutX="165.0" layoutY="63.0" pickOnBounds="true" visible="false">
                <image>
                   <Image url="@images/defaultUserImage.png" />
                </image>
@@ -152,12 +153,12 @@
                </font>
             </Label>
             <Separator fx:id="separator" layoutX="24.0" layoutY="337.0" prefHeight="3.0" prefWidth="447.0" visible="false" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
-            <Button fx:id="declineButton" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="275.0" mnemonicParsing="false" onAction="#onDeclineButtonClick" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #2a9482; -fx-background-radius: 15px;" text="Decline" textAlignment="RIGHT" visible="false" AnchorPane.bottomAnchor="532.0" AnchorPane.rightAnchor="24.0">
+            <Button fx:id="declineButton" alignment="CENTER_RIGHT" layoutX="239.0" layoutY="276.0" mnemonicParsing="false" onAction="#onDeclineButtonClick" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #2a9482; -fx-background-radius: 15px;" text="Decline" textAlignment="RIGHT" visible="false">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
             </Button>
-            <ImageView fx:id="declineFriendshipImage" blendMode="DARKEN" fitHeight="31.0" fitWidth="31.0" layoutX="379.0" layoutY="280.0" onMouseClicked="#onDeclineButtonClick" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="535.0" AnchorPane.rightAnchor="89.40909004211426">
+            <ImageView fx:id="declineFriendshipImage" blendMode="DARKEN" fitHeight="31.0" fitWidth="31.0" layoutX="247.0" layoutY="280.0" onMouseClicked="#onDeclineButtonClick" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@images/473-4730000_deny-comments-saturation-icon-png.png" />
                </image>
@@ -172,12 +173,12 @@
                   <Image url="@images/29461-200.png" />
                </image>
             </ImageView>
-            <Button fx:id="acceptButton" alignment="CENTER_RIGHT" layoutX="239.0" layoutY="275.0" mnemonicParsing="false" onAction="#onAcceptButtonClick" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #2a9482; -fx-background-radius: 15px;" text="Accept" textAlignment="RIGHT" visible="false">
+            <Button fx:id="acceptButton" alignment="CENTER_RIGHT" layoutX="368.0" layoutY="276.0" mnemonicParsing="false" onAction="#onAcceptButtonClick" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #2a9482; -fx-background-radius: 15px;" text="Accept" textAlignment="RIGHT" visible="false">
                <font>
                   <Font name="Berlin Sans FB" size="16.0" />
                </font>
             </Button>
-            <ImageView fx:id="acceptFriendshipImage" blendMode="DARKEN" fitHeight="31.0" fitWidth="30.0" layoutX="249.0" layoutY="280.0" onMouseClicked="#onAcceptButtonClick" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="acceptFriendshipImage" blendMode="DARKEN" fitHeight="31.0" fitWidth="30.0" layoutX="379.0" layoutY="281.0" onMouseClicked="#onAcceptButtonClick" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@images/checked-1319964829840610150.png" />
                </image>
@@ -219,5 +220,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
+      <Button fx:id="notificationsButton" layoutX="129.0" layoutY="35.0" mnemonicParsing="false" onAction="#onNotificationsButtonClick" prefHeight="45.0" prefWidth="55.0" styleClass="fancyButton" stylesheets="@css/style.css" AnchorPane.leftAnchor="129.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/941-9416917_notifications-bell-button-free-icon-svg-psd-png.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

@@ -9,7 +9,7 @@
 }
 
 .list-view:focused.list-cell:selected{
-    -fx-background-color: pink;
+    -fx-background-color: #243142;
 }
 
 .list-view.list-cell{
@@ -44,4 +44,27 @@
 
 .messageAgent {
     -fx-fill: white;
+}
+
+.text-area.content{
+    -fx-background-color:  transparent;
+    -fx-border-color: grey;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-padding: 10;
+    -fx-text-fill: grey;
+    -fx-font-size: 15;
+    -fx-font-family: "Berlin Sans FB";
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
 }

@@ -91,6 +91,12 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
     @FXML
     Button homeButton;
 
+    @FXML
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
+
 
     /**
      * Initialize UI elements.
@@ -124,7 +130,7 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
+                    //profileImage.setPreserveRatio(true);
                     setProfileImage(user, profileImage);
                     setText(user.getFirstName() + " " + user.getLastName());
                     setGraphic(profileImage);
@@ -248,6 +254,14 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
      */
     public void onLogoutButtonClick(){
         App.changeSceneToLogin(service);
+    }
+
+    public void onEventsButtonClick(){
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
     }
 
     /**
