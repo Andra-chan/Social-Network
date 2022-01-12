@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import socialnetwork.App;
 import socialnetwork.Util.events.ChangeObserverEvent;
+import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.Event;
 import socialnetwork.service.Service;
@@ -66,12 +67,15 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     @FXML
     ImageView noNotificationsImage;
 
+    @FXML
+    Button noNotificationsButton;
+
     public EventsController() {
         userAttendance = new HashSet<>();
         userEventsWithNotifications = new HashSet<>();
     }
 
-    private void setNoEventsState(boolean state){
+    private void setNoEventsState(boolean state) {
         eventsList.setVisible(!state);
         noEventsImage.setVisible(state);
         noEventsLabel.setVisible(state);
@@ -129,18 +133,7 @@ public class EventsController implements Observer<ChangeObserverEvent> {
             }
         });
         eventsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue==null){
-                setNoEventsState(true);
-                return;
-            }
-            setNoEventsState(false)
-            updateModel();
-            if(userAttendance.contains(newValue.getId())){
-                leaveEventButton.setVisible(true);
-            }
-            if(userEventsWithNotifications.contains(newValue.getId())){
-                noNotificationsImage.setImage(App.class.getResource("images/"));
-            }
+            reloadEventStatus();
         });
     }
 
@@ -162,10 +155,37 @@ public class EventsController implements Observer<ChangeObserverEvent> {
      * Update the data model with new data from the service.
      */
     public void updateModel() {
+        modelEvents.setAll(service.getEvents());
+        updateCache();
+    }
+
+    private void reloadEventStatus(){
+        var selectedEvent = eventsList.getSelectionModel().getSelectedItem();
+        if (selectedEvent == null) {
+            setNoEventsState(true);
+            return;
+        }
+        setNoEventsState(false);
+        if (userAttendance.contains(selectedEvent.getId())) {
+            leaveEventButton.setVisible(true);
+            joinEventButton.setVisible(false);
+            noNotificationsButton.setVisible(true);
+        } else {
+            noNotificationsButton.setVisible(false);
+            leaveEventButton.setVisible(false);
+            joinEventButton.setVisible(true);
+            return;
+        }
+        if (userEventsWithNotifications.contains(selectedEvent.getId())) {
+            noNotificationsImage.setImage(new Image(String.valueOf(App.class.getResource("images/notificationsImage.png"))));
+        } else {
+            noNotificationsImage.setImage(new Image(String.valueOf(App.class.getResource("images/noNotificationsImage.png"))));
+        }
+    }
+
+    private void updateCache(){
         userAttendance.clear();
         userEventsWithNotifications.clear();
-        userEventsWithNotifications.clear();
-        modelEvents.setAll(service.getEvents());
         service.getEventsForUser(userId)
                 .stream()
                 .forEach(x -> {
@@ -177,15 +197,24 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     }
 
     public void onJoinEventButtonClick() {
-
+        var selectedEvent = eventsList.getSelectionModel().getSelectedItem();
+        if (!userAttendance.contains(selectedEvent.getId())) {
+            service.addAttendance(selectedEvent.getId(), userId);
+        }
     }
 
     public void onLeaveEventButtonClick() {
-
+        var selectedEvent = eventsList.getSelectionModel().getSelectedItem();
+        if (userAttendance.contains(selectedEvent.getId())) {
+            service.cancelAttendance(selectedEvent.getId(), userId);
+        }
     }
 
     public void onNoNotificationsButtonClick() {
-
+        var selectedEvent = eventsList.getSelectionModel().getSelectedItem();
+        if (userAttendance.contains(selectedEvent.getId())) {
+            service.setNotificationsForEvent(userId, selectedEvent.getId(), !userEventsWithNotifications.contains(selectedEvent.getId()));
+        }
     }
 
     public void onLogoutButtonClick() {
@@ -209,7 +238,10 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     }
 
     @Override
-    public void update(ChangeObserverEvent ChangeObserverEvent) {
-
+    public void update(ChangeObserverEvent event) {
+        if(event.getType().equals(ChangeObserverEventType.EVENT_ATTENDANCE)){
+            updateCache();
+            reloadEventStatus();
+        }
     }
 }

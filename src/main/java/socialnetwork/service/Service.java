@@ -101,13 +101,24 @@ public class Service implements Observable<ChangeObserverEvent> {
         attendance.setId(new Pair<Long, Long>(eventId, userId));
         attendance.setNotifications(wantNotifications);
         eventAttendanceRepository.update(attendance);
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
     }
 
     public EventAttendance addAttendance(Long eventId, Long userId){
         EventAttendance attendance = new EventAttendance(null, null);
         attendance.setId(new Pair<Long, Long>(eventId, userId));
         attendance.setNotifications(true);
-        return eventAttendanceRepository.save(attendance);
+        var retVal = eventAttendanceRepository.save(attendance);
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
+        return retVal;
+
+    }
+
+    public void cancelAttendance(Long eventId, Long userId){
+        EventAttendance attendance = new EventAttendance(null, null);
+        attendance.setId(new Pair<Long, Long>(eventId, userId));
+        eventAttendanceRepository.delete(attendance.getId());
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
     }
 
     public List<EventAttendance> getEventsForUser(Long userId) {

@@ -149,7 +149,7 @@ public class EventAttendanceDbRepository implements Repository<Pair<Long, Long>,
         if (entity == null) {
             throw new RepositoryException("Entity must not be null!");
         }
-        String sql = "update events_users set notifications=? where entity_id=? and user_id=?";
+        String sql = "update events_users set notifications=? where event_id=? and user_id=?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setBoolean(1, entity.hasNotifications());

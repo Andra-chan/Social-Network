@@ -71,7 +71,7 @@
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/941-9416917_notifications-bell-button-free-icon-svg-psd-png.png" />
+                        <Image url="@images/notificationsImage.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -112,7 +112,7 @@
          <graphic>
             <ImageView fx:id="noNotificationsImage" blendMode="DARKEN" fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/357659-200.png" />
+                  <Image url="@images/noNotificationsImage.png" />
                </image>
             </ImageView>
          </graphic>
