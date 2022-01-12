@@ -3,11 +3,15 @@ package socialnetwork.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import socialnetwork.App;
 import socialnetwork.service.Service;
+
+import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
 public class MainPageController {
     Service service;
@@ -52,6 +56,8 @@ public class MainPageController {
         this.userId=userId;
         var user = service.getUser(userId);
         usernameLabel.setText(user.getFirstName() + " " + user.getLastName());
+        setProfileImage(user, userImageView);
+
     }
 
 
