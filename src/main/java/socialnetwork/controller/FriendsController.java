@@ -83,6 +83,12 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     Button homeButton;
 
     @FXML
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
+
+    @FXML
     public void initialize(){
 
         noFriendSelectedImage.setVisible(true);
@@ -107,7 +113,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
+                    //profileImage.setPreserveRatio(true);
                     setProfileImage(friend, profileImage);
                     setText(friend.getFirstName() + " " + friend.getLastName());
                     setGraphic(profileImage);
@@ -210,6 +216,14 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     }
 
     public void onHomeButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onEventsButtonClick(){
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick(){
         App.changeSceneToMainWindow(service, userId);
     }
 

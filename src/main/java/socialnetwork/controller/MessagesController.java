@@ -29,54 +29,81 @@ import java.util.stream.Collectors;
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
 public class MessagesController {
-
-    @FXML
-    public ScrollPane chatScrollPane;
-    @FXML
-    public GridPane chatGridPane;
-    @FXML
-    public ListView<Friend> friendList;
-    @FXML
-    public TextField chatTextField;
-    @FXML
-    public TextField searchField;
-    @FXML
-    public Label userNameLabel;
-    @FXML
-    public ImageView userNameImage;
-    @FXML
-    public Separator separator1;
-    @FXML
-    public Separator separator2;
-    @FXML
-    public Separator separator3;
-    @FXML
-    public Label noMessagesLabel;
-    @FXML
-    public ImageView noMessagesImage;
     Service service;
     Long userId;
     ObservableList<Friend> modelFriendships = FXCollections.observableArrayList();
+
+    @FXML
+    public ScrollPane chatScrollPane;
+
+    @FXML
+    public GridPane chatGridPane;
+
+    @FXML
+    public ListView<Friend> friendList;
+
+    @FXML
+    public TextField chatTextField;
+
+    @FXML
+    public TextField searchField;
+
+    @FXML
+    public Label userNameLabel;
+
+    @FXML
+    public ImageView userNameImage;
+
+    @FXML
+    public Separator separator1;
+
+    @FXML
+    public Separator separator2;
+
+    @FXML
+    public Separator separator3;
+
+    @FXML
+    public Label noMessagesLabel;
+
+    @FXML
+    public ImageView noMessagesImage;
+
     @FXML
     AnchorPane friendsPane;
+
     @FXML
     AnchorPane friendRequestsPane;
+
     @FXML
     AnchorPane addFriendsPane;
+
     @FXML
     AnchorPane messagesPane;
+
     @FXML
     AnchorPane settingsPane;
+
     @FXML
     Button logoutButton;
+
     @FXML
     Button sendButton;
+
     @FXML
     ImageView noFriendSelectedImage;
+
     @FXML
     Label noFriendSelectedLabel;
+
     @FXML
     Button homeButton;
+
+    @FXML
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
 
     /**
      * Set chat elements to a certain visibility state
@@ -153,7 +180,7 @@ public class MessagesController {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
+                    //profileImage.setPreserveRatio(true);
                     setProfileImage(friend, profileImage);
                     setText(friend.getFirstName() + " " + friend.getLastName());
                     setGraphic(profileImage);
@@ -338,6 +365,14 @@ public class MessagesController {
     }
 
     public void onHomeButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onEventsButtonClick(){
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick(){
         App.changeSceneToMainWindow(service, userId);
     }
 

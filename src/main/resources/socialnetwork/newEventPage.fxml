@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane blendMode="MULTIPLY" prefHeight="955.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.NewEventController">
+   <children>
+      <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+               <image>
+                  <Image url="@images/star_icon.jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="logoutButton" layoutX="1000.0" layoutY="25.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="64.0" prefWidth="63.0" style="-fx-background-color: #243142; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" AnchorPane.rightAnchor="12.0">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/Icons8-Windows-8-User-Interface-Logout-1.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="homeButton" layoutX="499.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="503.0">
+               <graphic>
+                  <ImageView blendMode="MULTIPLY" fitHeight="59.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button layoutX="660.0" layoutY="14.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="337.0">
+               <graphic>
+                  <ImageView blendMode="MULTIPLY" fitHeight="64.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/mobile-application-report-function-web-button-menu-digital-silhouette-style-icon-free-vector.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button fx:id="eventsButton" layoutX="342.0" layoutY="17.0" mnemonicParsing="false" onAction="#onEventsButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/45533.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button fx:id="notificationsButton" layoutX="129.0" layoutY="35.0" mnemonicParsing="false" onAction="#onNotificationsButtonClick" prefHeight="45.0" prefWidth="55.0" styleClass="fancyButton" stylesheets="@css/style.css" AnchorPane.leftAnchor="129.0">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/941-9416917_notifications-bell-button-free-icon-svg-psd-png.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="207.0" prefHeight="37.0" prefWidth="125.0" stylesheets="@css/style.css" text="Event name" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="eventNameTextField" layoutX="539.0" layoutY="206.0" prefHeight="30.0" prefWidth="377.0" promptText="Title" styleClass="fancyTextField" stylesheets="@css/style.css" />
+      <DatePicker fx:id="eventStartDatePicker" blendMode="MULTIPLY" layoutX="539.0" layoutY="309.0" prefHeight="30.0" prefWidth="377.0" promptText="Choose a date" styleClass="jfx-date-picker" />
+      <Spinner fx:id="eventStartHourSpinner" blendMode="MULTIPLY" editable="true" layoutX="539.0" layoutY="400.0" prefHeight="30.0" prefWidth="377.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="305.0" prefHeight="37.0" prefWidth="125.0" stylesheets="@css/style.css" text="Start date" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="434.0" prefHeight="37.0" prefWidth="125.0" stylesheets="@css/style.css" text="Start time" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <Spinner fx:id="eventStartMinuteSpinner" blendMode="MULTIPLY" editable="true" layoutX="539.0" layoutY="472.0" prefHeight="30.0" prefWidth="377.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="380.0" layoutY="397.0" prefHeight="37.0" prefWidth="125.0" stylesheets="@css/style.css" text="Hour" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="380.0" layoutY="469.0" prefHeight="37.0" prefWidth="125.0" stylesheets="@css/style.css" text="Minute" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="581.0" prefHeight="37.0" prefWidth="125.0" stylesheets="@css/style.css" text="Image" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="uploadImageButton" layoutX="798.0" layoutY="586.0" mnemonicParsing="false" styleClass="fancyButton" stylesheets="@css/style.css" text="Upload Image">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="708.0" prefHeight="37.0" prefWidth="125.0" stylesheets="@css/style.css" text="Description" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <Separator layoutX="336.0" layoutY="168.0" orientation="VERTICAL" prefHeight="632.0" prefWidth="2.0" />
+      <Button fx:id="createEventButton" layoutX="471.0" layoutY="884.0" mnemonicParsing="false" onAction="#onCreateEventButtonClick" prefHeight="45.0" prefWidth="136.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Create Event">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Button>
+      <TextArea fx:id="insertDescriptionTextArea" layoutX="539.0" layoutY="674.0" prefHeight="105.0" prefWidth="377.0" promptText="Insert Description" stylesheets="@css/style.css" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <styleClass>
+            <String fx:value="content" />
+            <String fx:value="scroll-pane" />
+            <String fx:value="viewport" />
+         </styleClass>
+      </TextArea>
+      <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="437.0" layoutY="821.0" prefHeight="45.0" prefWidth="202.0" text="Warning" textAlignment="CENTER" textFill="RED" visible="false" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="eventImage" blendMode="DARKEN" fitHeight="90.0" fitWidth="160.0" layoutX="538.0" layoutY="555.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/105-1055674_event-icon-png-transparent-png.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

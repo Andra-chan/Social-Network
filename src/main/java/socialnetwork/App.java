@@ -52,7 +52,7 @@ public class App extends Application {
                 friendRequestRepository,
                 messageRepo);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("newLogin.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         // HBox root = fxmlLoader.load();
         BorderPane root = fxmlLoader.load();
         // ApplicationController controller = fxmlLoader.getController();
@@ -83,7 +83,7 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(true);
+            App.currentStage.setResizable(false);
             service.clearObservers();
 
             MainPageController controller = fxmlLoader.getController();
@@ -100,7 +100,7 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(true);
+            App.currentStage.setResizable(false);
             service.clearObservers();
 
             FriendsController controller = fxmlLoader.getController();
@@ -117,7 +117,7 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(true);
+            App.currentStage.setResizable(false);
             service.clearObservers();
 
             FriendRequestsController controller = fxmlLoader.getController();
@@ -134,7 +134,7 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(true);
+            App.currentStage.setResizable(false);
             service.clearObservers();
 
             AddFriendsController controller = fxmlLoader.getController();
@@ -154,7 +154,7 @@ public class App extends Application {
             App.currentStage.setScene(scene);
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(true);
+            App.currentStage.setResizable(false);
             service.clearObservers();
 
             MessagesController controller = fxmlLoader.getController();
@@ -171,7 +171,7 @@ public class App extends Application {
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(true);
+            App.currentStage.setResizable(false);
             service.clearObservers();
 
             SettingsController controller = fxmlLoader.getController();
@@ -181,14 +181,48 @@ public class App extends Application {
         }
     }
 
-    public static void changeSceneToRegister(Service service) {
+    public static void changeSceneToEventsWindow(Service service, Long userId) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newRegister.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("eventsPage.fxml"));
             AnchorPane root = fxmlLoader.load();
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(true);
+            App.currentStage.setResizable(false);
+            service.clearObservers();
+
+            EventsController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void changeSceneToNewEventWindow(Service service, Long userId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newEventPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setResizable(false);
+            service.clearObservers();
+
+            NewEventController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void changeSceneToRegister(Service service) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("register.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setResizable(false);
             service.clearObservers();
 
             RegisterController controller = fxmlLoader.getController();
@@ -200,15 +234,13 @@ public class App extends Application {
 
     public static void changeSceneToLogin(Service service) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("newLogin.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("login.fxml"));
             BorderPane root = fxmlLoader.load();
             App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
             App.currentStage.setResizable(false);
             App.currentStage.setMaximized(false);
-            App.currentStage.setHeight(root.getPrefHeight());
-            App.currentStage.setWidth(root.getPrefWidth());
             service.clearObservers();
 
             LoginController controller = fxmlLoader.getController();

@@ -9,8 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import socialnetwork.App;
-import socialnetwork.Util.events.ChangeObserverEvent;
-import socialnetwork.Util.events.ChangeObserverEventType;
+import socialnetwork.Util.events.ChangeEvent;
+import socialnetwork.Util.events.ChangeEventType;
 import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Utilizator;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
-public class AddFriendsController implements Observer<ChangeObserverEvent> {
+public class AddFriendsController implements Observer<ChangeEvent> {
     Service service;
     Long userId;
     ObservableList<Utilizator> modelUsers = FXCollections.observableArrayList();
@@ -90,11 +90,17 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button homeButton;
 
+    @FXML
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
+
 
     /**
      * Sets visibility of all required objects to the default one
      */
-    private void setButtonsToDefaultState(){
+    private void setButtonsToDefaultState() {
         friendImage.setVisible(false);
         friendNameLabel.setVisible(false);
         addButton.setVisible(false);
@@ -111,7 +117,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     /**
      * Sets the visibility of user into
      */
-    private void setVisibleUserInfo(){
+    private void setVisibleUserInfo() {
         friendImage.setVisible(true);
         friendNameLabel.setVisible(true);
         separator.setVisible(true);
@@ -123,9 +129,9 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
      * Initializes the controller
      */
     @FXML
-    public void initialize(){
+    public void initialize() {
         setButtonsToDefaultState();
-        userList.setCellFactory(param -> new ListCell<>(){
+        userList.setCellFactory(param -> new ListCell<>() {
             private ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
 
             @Override
@@ -140,14 +146,14 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
+                    //profileImage.setPreserveRatio(true);
                     setProfileImage(user, profileImage);
                     setText(user.getFirstName() + " " + user.getLastName());
                     setGraphic(profileImage);
                     setTextFill(Color.WHITE);
-                    if(isSelected())
+                    if (isSelected())
                         setStyle("-fx-background-color: #1c2a36");
-                    else{
+                    else {
                         setStyle("-fx-background-color: #243142");
                     }
                 }
@@ -155,7 +161,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
         });
 
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue == null) {
+            if (newValue == null) {
                 setButtonsToDefaultState();
             } else {
                 setVisibleUserInfo();
@@ -198,19 +204,19 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
 
     /**
      * Initialize the data inside the controller
+     *
      * @param service a Service
-     * @param userId the logged in user's id
+     * @param userId  the logged in user's id
      */
     public void initData(Service service, Long userId) {
-        this.service=service;
-        this.userId=userId;
+        this.service = service;
+        this.userId = userId;
         service.addObserver(this);
         updateModel();
-        if(modelUsers.isEmpty()){
+        if (modelUsers.isEmpty()) {
             noUsersImage.setVisible(true);
             noUsersLabel.setVisible(true);
-        }
-        else{
+        } else {
             noUsersImage.setVisible(false);
             noUsersLabel.setVisible(false);
         }
@@ -244,21 +250,33 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     /**
      * When the user clicks on the settings button, switch the scene
      */
-    public void onMenuSettingsClick(){
+    public void onMenuSettingsClick() {
         App.changeSceneToSettingsWindow(service, userId);
     }
 
     /**
      * When the user clicks on the logout button, switch the scene to the login scene
      */
-    public void onLogoutButtonClick(){
+    public void onLogoutButtonClick() {
         App.changeSceneToLogin(service);
+    }
+
+    public void onEventsButtonClick() {
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick() {
+        App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onHomeButtonClick() {
+        App.changeSceneToMainWindow(service, userId);
     }
 
     /**
      * @return a list of users that are not friends with the logged-in user
      */
-    private List<Utilizator> getUserList(){
+    private List<Utilizator> getUserList() {
         return service.getAllUsersThatAreNotFriends(userId);
     }
 
@@ -277,7 +295,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
      */
     public void onAddButtonPress() {
         var selectedUser = userList.getSelectionModel().getSelectedItem();
-        if(selectedUser!=null){
+        if (selectedUser != null) {
             service.addFriendRequest(new FriendRequest(userId, selectedUser.getId()));
         }
         userList.getSelectionModel().select(selectedUser);
@@ -289,9 +307,9 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
      */
     public void onCancelRequestButtonClick() {
         var selectedUser = userList.getSelectionModel().getSelectedItem();
-        if(selectedUser!=null){
+        if (selectedUser != null) {
             var maybeOutgoing = service.getPendingFriendRequest(selectedUser.getId(), userId);
-            if(maybeOutgoing.isPresent()) {
+            if (maybeOutgoing.isPresent()) {
                 service.stopFriendRequest(maybeOutgoing.get().getId());
             }
         }
@@ -303,9 +321,9 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
      */
     public void onAcceptRequestButtonClick() {
         var selectedUser = userList.getSelectionModel().getSelectedItem();
-        if(selectedUser!=null) {
+        if (selectedUser != null) {
             var maybeIncoming = service.getPendingFriendRequest(userId, selectedUser.getId());
-            if(maybeIncoming.isPresent()){
+            if (maybeIncoming.isPresent()) {
                 service.handleFriendRequest(maybeIncoming.get().getId(), "A");
                 setButtonsToDefaultState();
             }
@@ -318,9 +336,9 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
      */
     public void onDenyRequestButtonClick() {
         var selectedUser = userList.getSelectionModel().getSelectedItem();
-        if(selectedUser!=null) {
+        if (selectedUser != null) {
             var maybeIncoming = service.getPendingFriendRequest(userId, selectedUser.getId());
-            if(maybeIncoming.isPresent()){
+            if (maybeIncoming.isPresent()) {
                 service.handleFriendRequest(maybeIncoming.get().getId(), "R");
                 setButtonsToDefaultState();
             }
@@ -328,18 +346,15 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
 
     }
 
-    public void onHomeButtonClick(){
-        App.changeSceneToMainWindow(service, userId);
-    }
-
     /**
      * Updates friend data with new data from the service.
+     *
      * @param event the event type
      */
     @Override
-    public void update(ChangeObserverEvent event) {
-        if (event.getType().equals(ChangeObserverEventType.FRIEND_REQUEST) ||
-                event.getType().equals(ChangeObserverEventType.FRIENDSHIP)) {
+    public void update(ChangeEvent event) {
+        if (event.getType().equals(ChangeEventType.FRIEND_REQUEST) ||
+                event.getType().equals(ChangeEventType.FRIENDSHIP)) {
             updateModel();
             return;
         }

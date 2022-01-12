@@ -12,12 +12,12 @@ public class Helpers {
         if (holder.getImagePath() == null) {
             String path = App.defaultImagePath;
             view.setImage(new Image(path));
-            view.setBlendMode(BlendMode.DARKEN);
+            view.setBlendMode(BlendMode.MULTIPLY);
             holder.setImagePath(path);
         } else {
             view.setImage(new Image(holder.getImagePath()));
             if(holder.getImagePath().equals(App.defaultImagePath))
-                view.setBlendMode(BlendMode.DARKEN);
+                view.setBlendMode(BlendMode.MULTIPLY);
             else
                 view.setBlendMode(BlendMode.SRC_OVER);
 
