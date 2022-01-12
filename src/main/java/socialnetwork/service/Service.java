@@ -1,8 +1,8 @@
 package socialnetwork.service;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import socialnetwork.Util.events.ChangeEvent;
-import socialnetwork.Util.events.ChangeEventType;
+import socialnetwork.Util.events.ChangeObserverEvent;
+import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observable;
 import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.*;
@@ -22,14 +22,14 @@ import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
 /**
  * Service class that implements all methods
  */
-public class Service implements Observable<ChangeEvent> {
+public class Service implements Observable<ChangeObserverEvent> {
     private final Repository<Long, Utilizator> userRepository;
     private final Repository<Long, Prietenie> friendshipRepository;
     private final Repository<String, UserCredentials> userCredentialsRepository;
 
     private final Repository<Long, Message> messageRepository;
     private final Repository<Long, FriendRequest> friendRequestRepository;
-    private final List<Observer<ChangeEvent>> observers = new ArrayList<>();
+    private final List<Observer<ChangeObserverEvent>> observers = new ArrayList<>();
 
     public Service(Repository<Long, Utilizator> userRepository,
                    Repository<String, UserCredentials> userCredentialsRepository,
@@ -104,9 +104,9 @@ public class Service implements Observable<ChangeEvent> {
             if (fr.getFirstUser().equals(userID) || fr.getSecondUser().equals(userID))
                 friendshipRepository.delete(fr.getId());
         });
-        notifyObservers(new ChangeEvent(ChangeEventType.USER));
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
-        notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.USER));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIENDSHIP));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.MESSAGE));
         return toBeReturned;
     }
 
@@ -129,7 +129,7 @@ public class Service implements Observable<ChangeEvent> {
      * @return the stored entity
      */
     public Prietenie addFriendship(Prietenie prietenie) {
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIENDSHIP));
         return friendshipRepository.save(prietenie);
     }
 
@@ -152,8 +152,8 @@ public class Service implements Observable<ChangeEvent> {
                 friendship.getSecondUser()).get().getId());
 
         var rez = this.friendshipRepository.delete(id);
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIENDSHIP));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIEND_REQUEST));
         return rez;
     }
 
@@ -306,7 +306,7 @@ public class Service implements Observable<ChangeEvent> {
         message.setTo(toUsers);
         var sentMessage = messageRepository.save(message);
         if (sentMessage == null) {
-            notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
+            notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.MESSAGE));
         }
         return sentMessage;
     }
@@ -350,7 +350,7 @@ public class Service implements Observable<ChangeEvent> {
 
         var replyResult = messageRepository.save(message);
         if (replyResult == null) {
-            notifyObservers(new ChangeEvent(ChangeEventType.MESSAGE));
+            notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.MESSAGE));
         }
         return replyResult;
     }
@@ -491,7 +491,7 @@ public class Service implements Observable<ChangeEvent> {
             return null;
         }
         var requestResult = friendRequestRepository.save(request);
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIEND_REQUEST));
         return requestResult;
     }
 
@@ -586,7 +586,7 @@ public class Service implements Observable<ChangeEvent> {
         if (fr != null) {
             friendRequestRepository.delete(requestID);
         }
-        notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIEND_REQUEST));
     }
 
     /**
@@ -638,14 +638,14 @@ public class Service implements Observable<ChangeEvent> {
             fr.setStatus("ACCEPTED");
             fr.setLocalDateTime(LocalDateTime.now());
             friendRequestRepository.update(fr);
-            notifyObservers(new ChangeEvent(ChangeEventType.FRIENDSHIP));
-            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+            notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIENDSHIP));
+            notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIEND_REQUEST));
 
         } else {
             fr.setStatus("REJECTED");
             fr.setLocalDateTime(LocalDateTime.now());
             friendRequestRepository.update(fr);
-            notifyObservers(new ChangeEvent(ChangeEventType.FRIEND_REQUEST));
+            notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.FRIEND_REQUEST));
         }
     }
 
@@ -655,7 +655,7 @@ public class Service implements Observable<ChangeEvent> {
      * @param e : an observer
      */
     @Override
-    public void addObserver(Observer<ChangeEvent> e) {
+    public void addObserver(Observer<ChangeObserverEvent> e) {
         observers.add(e);
     }
 
@@ -665,7 +665,7 @@ public class Service implements Observable<ChangeEvent> {
      * @param t : an event
      */
     @Override
-    public void notifyObservers(ChangeEvent t) {
+    public void notifyObservers(ChangeObserverEvent t) {
         observers.stream().forEach(x -> x.update(t));
     }
 

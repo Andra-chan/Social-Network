@@ -9,11 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import socialnetwork.App;
-import socialnetwork.Util.events.ChangeEvent;
-import socialnetwork.Util.events.ChangeEventType;
+import socialnetwork.Util.events.ChangeObserverEvent;
+import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
-import socialnetwork.domain.Friend;
-import socialnetwork.domain.FriendRequest;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
 
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
-public class FriendRequestsController implements Observer<ChangeEvent> {
+public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     Service service;
     Long userId;
     ObservableList<Utilizator> modelUsersWithFriendRequests = FXCollections.observableArrayList();
@@ -289,8 +287,8 @@ public class FriendRequestsController implements Observer<ChangeEvent> {
      * @param event the event type.
      */
     @Override
-    public void update(ChangeEvent event) {
-        if (event.getType().equals(ChangeEventType.FRIEND_REQUEST)) {
+    public void update(ChangeObserverEvent event) {
+        if (event.getType().equals(ChangeObserverEventType.FRIEND_REQUEST)) {
             updateModel();
             return;
         }

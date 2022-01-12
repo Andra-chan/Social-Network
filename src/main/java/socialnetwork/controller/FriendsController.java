@@ -9,20 +9,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import socialnetwork.App;
-import socialnetwork.Util.events.ChangeEvent;
-import socialnetwork.Util.events.ChangeEventType;
+import socialnetwork.Util.events.ChangeObserverEvent;
+import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.Friend;
-import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
-import java.net.URL;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
-public class FriendsController implements Observer<ChangeEvent> {
+public class FriendsController implements Observer<ChangeObserverEvent> {
     Service service;
     Long userId;
     ObservableList<Friend> modelFriendships = FXCollections.observableArrayList();
@@ -216,8 +214,8 @@ public class FriendsController implements Observer<ChangeEvent> {
     }
 
     @Override
-    public void update(ChangeEvent event) {
-        if (event.getType().equals(ChangeEventType.FRIENDSHIP)) {
+    public void update(ChangeObserverEvent event) {
+        if (event.getType().equals(ChangeObserverEventType.FRIENDSHIP)) {
             updateModel();
             return;
         }
