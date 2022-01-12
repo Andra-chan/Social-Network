@@ -5,13 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import socialnetwork.controller.*;
-import socialnetwork.domain.FriendRequest;
-import socialnetwork.domain.Prietenie;
-import socialnetwork.domain.UserCredentials;
-import socialnetwork.domain.Utilizator;
+import socialnetwork.domain.*;
+import socialnetwork.domain.validators.EventValidator;
 import socialnetwork.domain.validators.MessageValidator;
 import socialnetwork.domain.validators.UtilizatorValidator;
 import socialnetwork.domain.validators.Validator;
@@ -20,6 +18,7 @@ import socialnetwork.repository.database.*;
 import socialnetwork.service.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class App extends Application {
     public static Stage currentStage;
@@ -31,7 +30,7 @@ public class App extends Application {
 
         String url = "jdbc:postgresql://localhost:5432/socialnetwork";
         String username = "postgres";
-        String password = "mypostgres";
+        String password = "admin";
 
         Validator<Utilizator> userValidator = new UtilizatorValidator();
 
@@ -48,9 +47,12 @@ public class App extends Application {
         Repository<Long, FriendRequest> friendRequestRepository = new FriendRequestDbRepository(url, username,
                 password);
 
+        Repository<Long, Event> eventRepo = new EventDbRepository(url, username, password, new EventValidator());
+        Repository<Pair<Long, Long>, EventAttendance> eventAttendanceRepo = new EventAttendanceDbRepository(url, username, password);
+
         Service serviceNetwork = new Service(userRepository, userCredentialsRepository, friendshipRepository,
                 friendRequestRepository,
-                messageRepo);
+                messageRepo, eventRepo, eventAttendanceRepo);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         // HBox root = fxmlLoader.load();
@@ -185,7 +187,9 @@ public class App extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("eventsPage.fxml"));
             AnchorPane root = fxmlLoader.load();
-            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            Scene scene = new Scene(root, root.getPrefWidth(), root.getPrefHeight());
+            scene.getStylesheets().add(String.valueOf(App.class.getResource("css/style.css")));
+            App.currentStage.setScene(scene);
             App.currentStage.setMinHeight(root.getPrefHeight());
             App.currentStage.setMinWidth(root.getPrefWidth());
             App.currentStage.setResizable(false);

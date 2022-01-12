@@ -110,7 +110,7 @@
             <DropShadow />
          </effect>
          <graphic>
-            <ImageView blendMode="DARKEN" fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="noNotificationsImage" blendMode="DARKEN" fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/357659-200.png" />
                </image>

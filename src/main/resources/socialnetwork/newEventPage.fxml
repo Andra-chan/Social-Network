@@ -116,7 +116,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="uploadImageButton" layoutX="798.0" layoutY="586.0" mnemonicParsing="false" styleClass="fancyButton" stylesheets="@css/style.css" text="Upload Image">
+      <Button fx:id="uploadImageButton" layoutX="798.0" layoutY="586.0" mnemonicParsing="false" onAction="#onUploadImageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Upload Image">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>

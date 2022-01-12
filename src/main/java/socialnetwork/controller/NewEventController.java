@@ -4,17 +4,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import socialnetwork.App;
-import socialnetwork.Util.events.ChangeEvent;
+import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.observer.Observer;
+import socialnetwork.domain.Event;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
-public class NewEventController implements Observer<ChangeEvent> {
+import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+public class NewEventController{
     Service service;
     Long userId;
-    ObservableList<Utilizator> modelNewEvent = FXCollections.observableArrayList();
+    String currentImageURL;
 
     @FXML
     Button notificationsButton;
@@ -35,10 +44,10 @@ public class NewEventController implements Observer<ChangeEvent> {
     DatePicker eventStartDatePicker;
 
     @FXML
-    Spinner eventStartHourSpinner;
+    Spinner<Integer> eventStartHourSpinner;
 
     @FXML
-    Spinner eventStartMinuteSpinner;
+    Spinner<Integer> eventStartMinuteSpinner;
 
     @FXML
     Button uploadImageButton;
@@ -57,7 +66,8 @@ public class NewEventController implements Observer<ChangeEvent> {
 
     @FXML
     public void initialize(){
-
+        eventStartHourSpinner.valueFactoryProperty().setValue(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0, 1));
+        eventStartMinuteSpinner.valueFactoryProperty().setValue(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0, 1));
     }
 
     /**
@@ -68,21 +78,59 @@ public class NewEventController implements Observer<ChangeEvent> {
     public void initData(Service service, Long userId) {
         this.service=service;
         this.userId=userId;
-        updateModel();
-        service.addObserver(this);
+        currentImageURL="";
     }
 
-    /**
-     * Update the data model with new data from the service.
-     */
-    public void updateModel(){
-
-    }
 
     public void onCreateEventButtonClick(){
-
+        String title =  eventNameTextField.getText();
+        LocalDate date = eventStartDatePicker.getValue();
+        int hour = eventStartHourSpinner.getValue();
+        int minute = eventStartMinuteSpinner.getValue();
+        LocalTime time = LocalTime.of(hour, minute);
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+        LocalDateTime now = LocalDateTime.now();
+        if(dateTime.isBefore(now)){
+            warningLabel.setVisible(true);
+            warningLabel.setText("Invalid event time");
+            return;
+        }
+        String description = insertDescriptionTextArea.getText();
+        if(currentImageURL.isBlank()){
+            warningLabel.setVisible(true);
+            warningLabel.setText("Invalid image");
+            return;
+        }
+        try {
+            service.addEvent(new Event(currentImageURL, title, description, dateTime));
+        }catch(Exception ex){
+            warningLabel.setVisible(true);
+            warningLabel.setText(ex.getMessage());
+            return;
+        }
     }
 
+    private void updateImage(){
+        eventImage.setImage(new Image(currentImageURL));
+    }
+
+    public void onUploadImageButtonClick(){
+        FileChooser choose = new FileChooser();
+        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG", "*.JPEG");
+        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+        choose.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+        File file = choose.showOpenDialog(null);
+        if (file == null) {
+            return;
+        }
+        try {
+            currentImageURL = file.toURI().toURL().toExternalForm();
+            updateImage();
+            eventImage.setBlendMode(BlendMode.SRC_OVER);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public void onLogoutButtonClick() {
         App.changeSceneToLogin(service);
@@ -100,8 +148,4 @@ public class NewEventController implements Observer<ChangeEvent> {
         App.changeSceneToEventsWindow(service, userId);
     }
 
-    @Override
-    public void update(ChangeEvent changeEvent) {
-
-    }
 }

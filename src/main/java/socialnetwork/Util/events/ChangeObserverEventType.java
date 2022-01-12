@@ -1,5 +1,5 @@
 package socialnetwork.Util.events;
 
 public enum ChangeObserverEventType {
-    MESSAGE, FRIENDSHIP, FRIEND_REQUEST, USER
+    MESSAGE, FRIENDSHIP, FRIEND_REQUEST, USER, EVENT
 }
