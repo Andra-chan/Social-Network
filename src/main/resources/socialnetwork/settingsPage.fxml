@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,9 +13,9 @@
 
 <AnchorPane prefHeight="955.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.SettingsController">
     <children>
-        <AnchorPane prefHeight="73.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="21.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
                     <image>
                         <Image url="@images/star_icon.jpg" />
                     </image>
@@ -43,7 +44,7 @@
                         <Glow />
                     </effect>
                 </Button>
-                <Button layoutX="342.0" layoutY="17.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
+                <Button fx:id="eventsButton" layoutX="342.0" layoutY="17.0" mnemonicParsing="false" onAction="#onEventsButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
                     <graphic>
                         <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -136,14 +137,17 @@
                 </ImageView>
             </children>
         </AnchorPane>
-      <ImageView fx:id="profileImage" fitHeight="138.0" fitWidth="182.0" layoutX="592.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="592.0" AnchorPane.topAnchor="204.0" />
+      <ImageView fx:id="profileImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="150.0" layoutX="605.0" layoutY="201.0" pickOnBounds="true" AnchorPane.leftAnchor="605.0" AnchorPane.topAnchor="201.0">
+         <image>
+            <Image url="@images/defaultUserImage.png" />
+         </image></ImageView>
       <Separator layoutX="532.0" layoutY="140.0" orientation="VERTICAL" prefHeight="787.0" prefWidth="5.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="532.0" AnchorPane.topAnchor="140.0" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="349.0" layoutY="253.0" prefHeight="45.0" prefWidth="148.0" stylesheets="@css/style.css" text="Profile Picture" textFill="WHITE" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="253.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="chooseImageButton" layoutX="900.0" layoutY="273.0" mnemonicParsing="false" onAction="#onChooseImageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Choose Image" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="273.0">
+      <Button fx:id="chooseImageButton" layoutX="900.0" layoutY="263.0" mnemonicParsing="false" onAction="#onChooseImageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Choose Image" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="263.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -175,5 +179,17 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
+      <Button fx:id="notificationsButton" layoutX="129.0" layoutY="35.0" mnemonicParsing="false" onAction="#onNotificationsButtonClick" prefHeight="45.0" prefWidth="55.0" styleClass="fancyButton" stylesheets="@css/style.css" AnchorPane.leftAnchor="129.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/notificationsImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

@@ -89,6 +89,27 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button homeButton;
 
+    @FXML
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
+
+    @FXML
+    Label noMutualFriendsLabel;
+
+    @FXML
+    ImageView noMutualFriendsImage;
+
+    @FXML
+    ListView mutualFriendsList;
+
+    @FXML
+    Label mutualFriendsLabel;
+
+    @FXML
+    Label mutualNowLabel;
+
 
     /**
      * Initialize UI elements.
@@ -105,6 +126,11 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         separator.setVisible(false);
         declineFriendshipImage.setVisible(false);
         acceptFriendshipImage.setVisible(false);
+        noMutualFriendsLabel.setVisible(false);
+        noMutualFriendsImage.setVisible(false);
+        mutualFriendsList.setVisible(false);
+        mutualFriendsLabel.setVisible(false);
+        mutualNowLabel.setVisible(false);
 
 
         userList.setCellFactory(param ->  new ListCell<Utilizator>(){
@@ -122,7 +148,7 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
+                    //profileImage.setPreserveRatio(true);
                     setProfileImage(user, profileImage);
                     setText(user.getFirstName() + " " + user.getLastName());
                     setGraphic(profileImage);
@@ -248,6 +274,14 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         App.changeSceneToLogin(service);
     }
 
+    public void onEventsButtonClick(){
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick(){
+        App.changeSceneToMainWindow(service, userId);
+    }
+
     /**
      * When the user clicks on the accept button, accept the friend request from the selected user.
      */
@@ -281,6 +315,8 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     public void onHomeButtonClick(){
         App.changeSceneToMainWindow(service, userId);
     }
+
+
 
     /**
      * Update data with new friend request data from the service.

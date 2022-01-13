@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,7 +18,7 @@
    <children>
       <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="21.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
                <image>
                   <Image url="@images/star_icon.jpg" />
                </image>
@@ -46,7 +47,7 @@
                   <Glow />
                </effect>
             </Button>
-            <Button layoutX="342.0" layoutY="17.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
+            <Button fx:id="eventsButton" layoutX="342.0" layoutY="17.0" mnemonicParsing="false" onAction="#onEventsButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -76,7 +77,7 @@
          </styleClass></ListView>
       <AnchorPane layoutX="578.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
          <children>
-            <ImageView fx:id="friendImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="173.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="friendImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="150.0" layoutX="164.0" layoutY="47.0" pickOnBounds="true" visible="false">
                <image>
                   <Image url="@images/defaultUserImage.png" />
                </image>
@@ -105,6 +106,18 @@
             <ImageView fx:id="noFriendSelectedImage" fitHeight="150.0" fitWidth="200.0" layoutX="174.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="174.0">
                <image>
                   <Image url="@images/29461-200.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="mutualEventsLabel" layoutX="35.0" layoutY="347.0" prefHeight="31.0" prefWidth="249.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Your mutual events:" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Berlin Sans FB" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="noMutualEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="674.0" prefHeight="81.0" prefWidth="288.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Looks like there are no mutual events. Go join an event now!" textAlignment="CENTER" visible="false" wrapText="true" />
+            <Label fx:id="mutualNowLabel" layoutX="337.0" layoutY="715.0" onMouseClicked="#onMutualNowClick" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" underline="true" visible="false" />
+            <ImageView fx:id="noMutualEventsImage" fitHeight="161.0" fitWidth="160.0" layoutX="168.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@images/noEvents.png" />
                </image>
             </ImageView>
          </children>
@@ -208,5 +221,18 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
+      <Button fx:id="notificationsButton" layoutX="129.0" layoutY="35.0" mnemonicParsing="false" onAction="#onNotificationsButtonClick" prefHeight="45.0" prefWidth="55.0" styleClass="fancyButton" stylesheets="@css/style.css" AnchorPane.leftAnchor="129.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/notificationsImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ListView fx:id="mutualEventsList" layoutX="605.0" layoutY="500.0" prefHeight="437.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
    </children>
 </AnchorPane>

@@ -1,5 +1,6 @@
 package socialnetwork.service;
 
+import javafx.util.Pair;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.events.ChangeObserverEventType;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
+import static socialnetwork.Util.Constants.eventNotificationTimeMinutes;
 
 /**
  * Service class that implements all methods
@@ -29,17 +31,21 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     private final Repository<Long, Message> messageRepository;
     private final Repository<Long, FriendRequest> friendRequestRepository;
+    private final Repository<Long, Event> eventRepository;
+    private final Repository<Pair<Long, Long>, EventAttendance> eventAttendanceRepository;
     private final List<Observer<ChangeObserverEvent>> observers = new ArrayList<>();
 
     public Service(Repository<Long, Utilizator> userRepository,
                    Repository<String, UserCredentials> userCredentialsRepository,
                    Repository<Long, Prietenie> friendshipRepository,
-                   Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository) {
+                   Repository<Long, FriendRequest> friendRequestRepository, Repository<Long, Message> messageRepository, Repository<Long, Event> eventRepository, Repository<Pair<Long, Long>, EventAttendance> eventAttendanceRepository) {
         this.userRepository = userRepository;
         this.userCredentialsRepository = userCredentialsRepository;
         this.friendshipRepository = friendshipRepository;
         this.friendRequestRepository = friendRequestRepository;
         this.messageRepository = messageRepository;
+        this.eventRepository = eventRepository;
+        this.eventAttendanceRepository = eventAttendanceRepository;
     }
 
     /**
@@ -75,6 +81,105 @@ public class Service implements Observable<ChangeObserverEvent> {
         } catch (RepositoryException ex) {
             return null;
         }
+    }
+
+    public Event addEvent(Event event){
+        var ret = eventRepository.save(event);
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT));
+        return ret;
+    }
+
+    public List<Event> getEvents(){
+        LocalDateTime now = LocalDateTime.now();
+        return StreamSupport.stream(eventRepository.findAll().spliterator(), false)
+                .filter(x -> x.getDate().isAfter(now))
+                .sorted(Comparator.comparing(Event::getDate))
+                .collect(Collectors.toList());
+    }
+
+    public void setNotificationsForEvent(Long userId, Long eventId, boolean wantNotifications){
+        EventAttendance attendance = new EventAttendance(null, null);
+        attendance.setId(new Pair<Long, Long>(eventId, userId));
+        attendance.setNotifications(wantNotifications);
+        eventAttendanceRepository.update(attendance);
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
+    }
+
+    public EventAttendance addAttendance(Long eventId, Long userId){
+        EventAttendance attendance = new EventAttendance(null, null);
+        attendance.setId(new Pair<Long, Long>(eventId, userId));
+        attendance.setNotifications(true);
+        var retVal = eventAttendanceRepository.save(attendance);
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
+        return retVal;
+
+    }
+
+    public List<EventAttendance> getUpcomingEventsForUser(Long userId){
+        var now = LocalDateTime.now();
+        return getEventsForUser(userId)
+                .stream()
+                .filter(x ->
+                        ((x.getEvent().getDate().isAfter(now)) &&
+                        (x.getEvent().getDate().isBefore(now.plusMinutes(eventNotificationTimeMinutes)))))
+                .collect(Collectors.toList());
+    }
+
+    public void cancelAttendance(Long eventId, Long userId){
+        EventAttendance attendance = new EventAttendance(null, null);
+        attendance.setId(new Pair<Long, Long>(eventId, userId));
+        eventAttendanceRepository.delete(attendance.getId());
+        notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
+    }
+
+    public List<EventAttendance> getEventsForUser(Long userId) {
+        return StreamSupport.stream(eventAttendanceRepository.findAll().spliterator(), false)
+                .filter(x -> x.getId().getValue().equals(userId))
+                .collect(Collectors.toList());
+    }
+
+    public List<Event> getCommonEvents(Long userId1, Long userId2) {
+        var allAttendances = eventAttendanceRepository.findAll();
+        Set<Long> firstUserEventIds = new HashSet<>();
+        StreamSupport.stream(allAttendances.spliterator(), false)
+                .filter(x -> x.getId().getValue().equals(userId1))
+                .map(x -> x.getId().getKey())
+                .forEach(firstUserEventIds::add);
+        return StreamSupport.stream(allAttendances.spliterator(), false)
+                .filter(x -> x.getId().getValue().equals(userId2))
+                .filter(x -> firstUserEventIds.contains(x.getId().getKey()))
+                .map(x -> x.getEvent())
+                .collect(Collectors.toList());
+    }
+
+    public List<Friend> getCommonFriends(Long userId1, Long userId2) {
+        Set<Long> firstUserFriends = new HashSet<>();
+        var friendships = friendshipRepository.findAll();
+        StreamSupport.stream(friendships.spliterator(), false)
+                .filter(fr -> fr.getSecondUser().equals(userId1) || fr.getFirstUser().equals(userId1))
+                .map(fr -> {
+                    Long friendId;
+                    if (fr.getFirstUser().equals(userId1)) {
+                        friendId = fr.getSecondUser();
+                    } else {
+                        friendId = fr.getFirstUser();
+                    }
+                    return friendId;
+                }).forEach(firstUserFriends::add);
+
+        return StreamSupport.stream(friendships.spliterator(), false)
+                .filter(fr -> (fr.getSecondUser().equals(userId2) && firstUserFriends.contains(fr.getFirstUser()))
+                        || (fr.getFirstUser().equals(userId2) && firstUserFriends.contains(fr.getSecondUser())))
+                .map(fr -> {
+                            Utilizator user;
+                            if (fr.getFirstUser().equals(userId2)) {
+                                user = userRepository.findOne(fr.getSecondUser());
+                            } else {
+                                user = userRepository.findOne(fr.getFirstUser());
+                            }
+                            return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId(), user.getImagePath());
+                        }
+                ).collect(Collectors.toList());
     }
 
     /**
@@ -118,7 +223,7 @@ public class Service implements Observable<ChangeObserverEvent> {
         return userRepository.findOne(userID);
     }
 
-    public Utilizator updateUser(Utilizator user){
+    public Utilizator updateUser(Utilizator user) {
         return userRepository.update(user);
     }
 
@@ -147,7 +252,7 @@ public class Service implements Observable<ChangeObserverEvent> {
      * @return the deleted entity
      */
     public Prietenie removeFriendship(Long id) {
-        var friendship =  friendshipRepository.findOne(id);
+        var friendship = friendshipRepository.findOne(id);
         friendRequestRepository.delete(getFriendRequest(friendship.getFirstUser(),
                 friendship.getSecondUser()).get().getId());
 
@@ -261,10 +366,12 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     /**
      * Get all users that are not friends with a certain user
+     *
      * @param userId a users' id
      * @return a list of all users that are not friends with the users with id userId
      */
-    public List<Utilizator> getAllUsersThatAreNotFriends(Long userId){
+    public List<Utilizator> getAllUsersThatAreNotFriends(Long userId) {
+        //can improve performance.
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .filter(x -> !areFriends(userId, x.getId()))
                 .filter(x -> !x.getId().equals(userId))
@@ -425,6 +532,7 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     /**
      * Get a list with all the mssages between two users, sorted in chronological order
+     *
      * @param userId1 the first ussers' id
      * @param userId2 the second users' id
      * @return list with the messages between the users with id userId1 and userId2
@@ -530,11 +638,12 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     /**
      * Returns a pending friend request from userId2 to userId1 if it exists.
+     *
      * @param userId1 first user's id
      * @param userId2 second user's id
      * @return pending friend erquest from userId2 to userId1 or empty optional if no pending requests exists,
      */
-    public Optional<FriendRequest> getPendingFriendRequest(Long userId1, Long userId2){
+    public Optional<FriendRequest> getPendingFriendRequest(Long userId1, Long userId2) {
         return getPendingFriendRequests(userId1).stream()
                 .filter(x -> x.getSender().equals(userId2))
                 .filter(x -> x.getStatus().equals("PENDING"))
@@ -579,6 +688,7 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     /**
      * Deletes the friend request with id requestId
+     *
      * @param requestID the friend requests id.
      */
     public void stopFriendRequest(Long requestID) {
@@ -591,11 +701,12 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     /**
      * Returns a friendship(if any) between two users
+     *
      * @param userId1 first user's id
      * @param userId2 second user's id
      * @return returns a friendship between the two users or an empty optional if there isn't one.
      */
-    public Optional<Prietenie> getFriendship(Long userId1, Long userId2){
+    public Optional<Prietenie> getFriendship(Long userId1, Long userId2) {
         return StreamSupport.stream(friendshipRepository.findAll().spliterator(), false)
                 .filter(x -> (x.getFirstUser().equals(userId1) && x.getSecondUser().equals(userId2)) ||
                         (x.getFirstUser().equals(userId2) && x.getSecondUser().equals(userId1)))
@@ -604,11 +715,12 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     /**
      * Returns a friend request(if any) between two users
+     *
      * @param userId1 first user's id
      * @param userId2 second user's id
      * @return returns a friend request between the two users or an empty optional if there isn't one.
      */
-    public Optional<FriendRequest> getFriendRequest(Long userId1, Long userId2){
+    public Optional<FriendRequest> getFriendRequest(Long userId1, Long userId2) {
         return StreamSupport.stream(friendRequestRepository.findAll().spliterator(), false)
                 .filter(x -> (x.getSender().equals(userId1) && x.getReceiver().equals(userId2)) ||
                         (x.getSender().equals(userId2) && x.getReceiver().equals(userId1)))

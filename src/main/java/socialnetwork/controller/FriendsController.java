@@ -9,12 +9,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import socialnetwork.App;
+import socialnetwork.Util.controller.EventCell;
 import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
+import socialnetwork.domain.Event;
 import socialnetwork.domain.Friend;
 import socialnetwork.service.Service;
 
+import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     Service service;
     Long userId;
     ObservableList<Friend> modelFriendships = FXCollections.observableArrayList();
+    ObservableList<Event> modelEvents = FXCollections.observableArrayList();
 
     @FXML
     AnchorPane friendsPane;
@@ -83,7 +87,28 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     Button homeButton;
 
     @FXML
-    public void initialize(){
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
+
+    @FXML
+    Label mutualEventsLabel;
+
+    @FXML
+    ListView<Event> mutualEventsList;
+
+    @FXML
+    Label noMutualEventsLabel;
+
+    @FXML
+    Label mutualNowLabel;
+
+    @FXML
+    ImageView noMutualEventsImage;
+
+    @FXML
+    public void initialize() {
 
         noFriendSelectedImage.setVisible(true);
         noFriendSelectedLabel.setVisible(true);
@@ -92,6 +117,15 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         removeButton.setVisible(false);
         separator.setVisible(false);
         removeFriendImage.setVisible(false);
+        noMutualEventsLabel.setVisible(false);
+        noMutualEventsImage.setVisible(false);
+        mutualEventsList.setVisible(false);
+        mutualEventsLabel.setVisible(false);
+        mutualNowLabel.setVisible(false);
+
+        mutualEventsList.setItems(modelEvents);
+        mutualEventsList.setCellFactory(x -> new EventCell(160, 90, 400, false));
+
         friendList.setCellFactory(param -> new ListCell<>() {
             private ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
 
@@ -107,12 +141,12 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
                     profileImage.setFitHeight(64);
                     profileImage.setFitWidth(64);
                     profileImage.setBlendMode(BlendMode.DARKEN);
-                    profileImage.setPreserveRatio(true);
+                    //profileImage.setPreserveRatio(true);
                     setProfileImage(friend, profileImage);
                     setText(friend.getFirstName() + " " + friend.getLastName());
                     setGraphic(profileImage);
                     setTextFill(Color.WHITE);
-                    if(isSelected())
+                    if (isSelected())
                         setStyle("-fx-background-color: #1c2a36");
                     else
                         setStyle("-fx-background-color: #243142");
@@ -120,7 +154,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
             }
         });
         friendList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue == null){
+            if (newValue == null) {
                 friendImage.setVisible(false);
                 friendNameLabel.setVisible(false);
                 removeButton.setVisible(false);
@@ -128,8 +162,11 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
                 removeFriendImage.setVisible(false);
                 noFriendSelectedImage.setVisible(true);
                 noFriendSelectedLabel.setVisible(true);
-            }
-            else{
+                mutualEventsList.setVisible(false);
+                noMutualEventsLabel.setVisible(false);
+                noMutualEventsImage.setVisible(false);
+                mutualEventsLabel.setVisible(false);
+            } else {
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 friendImage.setVisible(true);
                 friendNameLabel.setVisible(true);
@@ -140,48 +177,52 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
                 noFriendSelectedLabel.setVisible(false);
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 setProfileImage(newValue, friendImage);
-
+                modelEvents.setAll(service.getCommonEvents(userId, newValue.getId()));
+                noMutualEventsImage.setVisible(modelEvents.size() == 0);
+                noMutualEventsLabel.setVisible(modelEvents.size() == 0);
+                mutualEventsList.setVisible(modelEvents.size()!=0);
+                mutualEventsLabel.setVisible(modelEvents.size()!=0);
             }
-
-                });
+        });
         friendList.setItems(modelFriendships);
     }
 
-    public void updateModel(){
+    public void updateModel() {
         Predicate<Friend> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
         Predicate<Friend> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
         modelFriendships.setAll(service.getFriends(userId)
-                .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
+                .stream().filter(firstNameFilter.or(lastNameFilter))
+                .sorted(Comparator.comparing(Friend::getFirstName))
+                .collect(Collectors.toList()));
     }
 
     public void initData(Service service, Long userId) {
-        this.service=service;
-        this.userId=userId;
+        this.service = service;
+        this.userId = userId;
         updateModel();
         service.addObserver(this);
-        if(modelFriendships.isEmpty()){
+        if (modelFriendships.isEmpty()) {
             noFriendsImage.setVisible(true);
             noFriendsLabel.setVisible(true);
             nowLabel.setVisible(true);
-        }
-        else{
+        } else {
             noFriendsImage.setVisible(false);
             noFriendsLabel.setVisible(false);
             nowLabel.setVisible(false);
         }
     }
 
-    public void onRemoveButtonPress(){
+    public void onRemoveButtonPress() {
         var selectedFriend = friendList.getSelectionModel().getSelectedItem();
-        if(selectedFriend!=null) {
+        if (selectedFriend != null) {
             var friendship = service.getFriendship(userId, selectedFriend.getId());
-            if(friendship.isPresent()){
+            if (friendship.isPresent()) {
                 service.removeFriendship(friendship.get().getId());
             }
         }
     }
 
-    public void onNowClick(){
+    public void onNowClick() {
         App.changeSceneToAddFriendsWindow(service, userId);
     }
 
@@ -193,7 +234,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         App.changeSceneToFriendRequestsWindow(service, userId);
     }
 
-    public void onMenuAddFriendsClick(){
+    public void onMenuAddFriendsClick() {
         App.changeSceneToAddFriendsWindow(service, userId);
     }
 
@@ -201,16 +242,28 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         App.changeSceneToMessagesWindow(service, userId);
     }
 
-    public void onMenuSettingsClick(){
+    public void onMenuSettingsClick() {
         App.changeSceneToSettingsWindow(service, userId);
     }
 
-    public void onLogoutButtonClick(){
+    public void onLogoutButtonClick() {
         App.changeSceneToLogin(service);
     }
 
-    public void onHomeButtonClick(){
+    public void onHomeButtonClick() {
         App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onEventsButtonClick() {
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick() {
+        App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onMutualNowClick() {
+        App.changeSceneToEventsWindow(service, userId);
     }
 
     @Override

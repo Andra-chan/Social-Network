@@ -61,6 +61,12 @@ public class SettingsController {
     Label warningLabel;
 
     @FXML
+    Button notificationsButton;
+
+    @FXML
+    Button eventsButton;
+
+    @FXML
     public void initialize() {
         warningLabel.setVisible(false);
     }
@@ -156,6 +162,14 @@ public class SettingsController {
     }
 
     public void onHomeButtonClick() {
+        App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onEventsButtonClick(){
+        App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onNotificationsButtonClick(){
         App.changeSceneToMainWindow(service, userId);
     }
 }

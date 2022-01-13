@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="955.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.EventsController">
+   <children>
+      <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+               <image>
+                  <Image url="@images/star_icon.jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="logoutButton" layoutX="1000.0" layoutY="25.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="64.0" prefWidth="63.0" style="-fx-background-color: #243142; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" AnchorPane.rightAnchor="12.0">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/Icons8-Windows-8-User-Interface-Logout-1.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="homeButton" layoutX="499.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="503.0">
+               <graphic>
+                  <ImageView blendMode="MULTIPLY" fitHeight="59.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button layoutX="660.0" layoutY="14.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="337.0">
+               <graphic>
+                  <ImageView blendMode="MULTIPLY" fitHeight="64.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/mobile-application-report-function-web-button-menu-digital-silhouette-style-icon-free-vector.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button layoutX="342.0" layoutY="17.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/45533.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="notificationsButton" layoutX="129.0" layoutY="35.0" mnemonicParsing="false" onAction="#onNotificationsButtonClick" prefHeight="45.0" prefWidth="55.0" styleClass="fancyButton" stylesheets="@css/style.css" AnchorPane.leftAnchor="129.0">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/notificationsImage.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <ListView fx:id="eventsList" layoutX="47.0" layoutY="158.0" prefHeight="568.0" prefWidth="984.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" AnchorPane.bottomAnchor="229.0" AnchorPane.topAnchor="158.0" />
+      <Separator layoutX="21.0" layoutY="795.0" prefHeight="0.0" prefWidth="1034.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="151.0" layoutY="838.0" prefHeight="94.0" prefWidth="251.0" text="Want to make an event of your own?" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="newEventButton" layoutX="699.0" layoutY="867.0" mnemonicParsing="false" onAction="#onNewEventButtonClick" prefHeight="37.0" prefWidth="148.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Create a new event">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="noEventsImage" fitHeight="187.0" fitWidth="185.0" layoutX="445.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/noEvents.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="noEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="385.0" layoutY="533.0" prefHeight="113.0" prefWidth="307.0" text="Looks like there are no new events. Create a new event now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="603.0" onMouseClicked="#onNowClick" text="now!" textAlignment="CENTER" textFill="WHITE" underline="true" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="noNotificationsButton" layoutX="1009.0" layoutY="117.0" mnemonicParsing="false" onAction="#onNoNotificationsButtonClick" prefHeight="37.0" prefWidth="41.0" styleClass="fancyButton" stylesheets="@css/style.css">
+         <effect>
+            <DropShadow />
+         </effect>
+         <graphic>
+            <ImageView fx:id="noNotificationsImage" blendMode="DARKEN" fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/noNotificationsImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="joinEventButton" layoutX="480.0" layoutY="743.0" mnemonicParsing="false" onAction="#onJoinEventButtonClick" prefHeight="41.0" prefWidth="116.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Join Event" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/105-1055674_event-icon-png-transparent-png.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="leaveEventButton" layoutX="474.0" layoutY="743.0" mnemonicParsing="false" onAction="#onLeaveEventButtonClick" prefHeight="41.0" prefWidth="127.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Leave Event" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/remove-event-6-1131246.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
