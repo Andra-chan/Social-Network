@@ -92,19 +92,25 @@ public class NewEventController{
         LocalDateTime now = LocalDateTime.now();
         if(dateTime.isBefore(now)){
             warningLabel.setVisible(true);
-            warningLabel.setText("Invalid event time");
+            warningLabel.setStyle("-fx-text-fill: red");
+            warningLabel.setText("Invalid event time!");
             return;
         }
         String description = insertDescriptionTextArea.getText();
         if(currentImageURL.isBlank()){
             warningLabel.setVisible(true);
-            warningLabel.setText("Invalid image");
+            warningLabel.setStyle("-fx-text-fill: red");
+            warningLabel.setText("Invalid image!");
             return;
         }
         try {
             service.addEvent(new Event(currentImageURL, title, description, dateTime));
+            warningLabel.setVisible(true);
+            warningLabel.setStyle("-fx-text-fill: green");
+            warningLabel.setText("Event created successfully!");
         }catch(Exception ex){
             warningLabel.setVisible(true);
+            warningLabel.setStyle("-fx-text-fill: red");
             warningLabel.setText(ex.getMessage());
             return;
         }

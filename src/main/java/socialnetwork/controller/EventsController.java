@@ -84,7 +84,8 @@ public class EventsController implements Observer<ChangeObserverEvent> {
 
     @FXML
     public void initialize() {
-        setNoEventsState(false);
+        setNoEventsState(true);
+        noNotificationsButton.setVisible(false);
         eventsList.setCellFactory(param -> new ListCell<>() {
             private final ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
 
@@ -149,6 +150,7 @@ public class EventsController implements Observer<ChangeObserverEvent> {
         updateModel();
         service.addObserver(this);
         eventsList.setItems(modelEvents);
+        setNoEventsState(modelEvents.size() == 0);
     }
 
     /**

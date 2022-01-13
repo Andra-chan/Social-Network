@@ -3,6 +3,7 @@ package socialnetwork.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,8 +49,24 @@ public class MainPageController {
     Button eventsButton;
 
     @FXML
+    Label nowLabel;
+
+    @FXML
+    Label noUpcomingEventsLabel;
+
+    @FXML
+    ImageView noUpcomingEventsImage;
+
+    @FXML
+    Label upcomingEventsLabel;
+
+    @FXML
+    ListView upcomingEventsList;
+
+    @FXML
     public void initialize(){
     }
+
 
 
     /**
@@ -115,5 +132,9 @@ public class MainPageController {
 
     public void onNotificationsButtonClick(){
         App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onNowClick(){
+        App.changeSceneToEventsWindow(service, userId);
     }
 }
