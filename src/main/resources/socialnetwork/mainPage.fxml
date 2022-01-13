@@ -159,7 +159,7 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <ListView fx:id="upcomingEventsList" layoutX="354.0" layoutY="467.0" prefHeight="474.0" prefWidth="681.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <ListView fx:id="upcomingEventsList" layoutX="354.0" layoutY="467.0" prefHeight="431.0" prefWidth="681.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
       <Label fx:id="upcomingEventsLabel" layoutX="357.0" layoutY="423.0" prefHeight="45.0" prefWidth="362.0" text="Don't miss out on your upcoming events!" textFill="WHITE" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -180,5 +180,7 @@
             <Image url="@images/noEvents.png" />
          </image>
       </ImageView>
+      <Button fx:id="prevPage" layoutX="579.0" layoutY="916.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Prev Page" />
+      <Button fx:id="nextPage" layoutX="696.0" layoutY="916.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Next Page" />
    </children>
 </AnchorPane>

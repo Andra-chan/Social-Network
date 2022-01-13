@@ -194,11 +194,13 @@
                   <Image url="@images/images%20(2).png" />
                </image>
             </ImageView>
-            <ListView fx:id="mutualFriendsList" layoutX="27.0" layoutY="385.0" prefHeight="437.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+            <ListView fx:id="mutualFriendsList" layoutX="27.0" layoutY="385.0" prefHeight="408.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
             <Label fx:id="mutualNowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="372.0" layoutY="715.0" onMouseClicked="#onNowClick" prefHeight="21.0" prefWidth="45.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" textAlignment="CENTER" underline="true" visible="false" wrapText="true" />
+            <Button fx:id="prevPage" layoutX="140.0" layoutY="812.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Prev Page" />
+            <Button fx:id="nextPage" layoutX="257.0" layoutY="812.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Next Page" />
          </children>
       </AnchorPane>
-      <ListView fx:id="userList" layoutX="326.0" layoutY="183.0" prefHeight="766.0" prefWidth="249.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="183.0">
+      <ListView fx:id="userList" layoutX="326.0" layoutY="183.0" prefHeight="711.0" prefWidth="240.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" AnchorPane.bottomAnchor="61.0" AnchorPane.topAnchor="183.0">
          <styleClass>
             <String fx:value="list-view" />
             <String fx:value="list-cell" />
@@ -245,5 +247,7 @@
             </ImageView>
          </graphic>
       </Button>
+      <Button fx:id="friendsPrevPage" layoutX="359.0" layoutY="916.0" mnemonicParsing="false" onAction="#onFriendsPreviousPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Prev Page" />
+      <Button fx:id="friendsNextPage" layoutX="463.0" layoutY="916.0" mnemonicParsing="false" onAction="#onFriendsNextPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Next Page" />
    </children>
 </AnchorPane>
