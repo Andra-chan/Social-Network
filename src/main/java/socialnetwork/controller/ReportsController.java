@@ -2,6 +2,9 @@ package socialnetwork.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import socialnetwork.App;
@@ -27,6 +30,63 @@ public class ReportsController {
 
     @FXML
     ImageView notificationButtonImage;
+
+    @FXML
+    DatePicker startDate;
+
+    @FXML
+    DatePicker endDate;
+
+    @FXML
+    Button previewR1Button;
+
+    @FXML
+    Button previewR2Button;
+
+    @FXML
+    Button exportR1Button;
+
+    @FXML
+    Button exportR2Button;
+
+    @FXML
+    Label chooseFriendLabel;
+
+    @FXML
+    ListView friendsList;
+
+    @FXML
+    ListView newMessagesList;
+
+    @FXML
+    Label startLabel;
+
+    @FXML
+    Label noMessagesLabel;
+
+    @FXML
+    ImageView noMessagesImage;
+
+    @FXML
+    Label newFriendsLabel;
+
+    @FXML
+    ListView newFriendsList;
+
+    @FXML
+    Label receivedMessagesLabel;
+
+    @FXML
+    ListView friendMessagesList;
+
+    @FXML
+    ImageView noFriendsImage;
+
+    @FXML
+    Label noFriendsLabel;
+
+    @FXML
+    Label nowLabel;
 
     @FXML
     public void initialize() {
@@ -55,5 +115,25 @@ public class ReportsController {
         App.changeSceneToMainWindow(service, userId);
     }
 
+    public void onPreviewR1ButtonClick(){
+
+    }
+
+    public void onPreviewR2ButtonClick(){
+
+    }
+
+    public void onExportR1ButtonClick(){
+
+    }
+
+    public void onExportR2ButtonClick(){
+
+    }
+
     public void onEventsButtonClick(){App.changeSceneToEventsWindow(service, userId);}
+
+    public void onStartClick(){App.changeSceneToMessagesWindow(service, userId);}
+
+    public void onNowClick(){App.changeSceneToAddFriendsWindow(service, userId);}
 }
