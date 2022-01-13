@@ -137,7 +137,7 @@
                 </ImageView>
             </children>
         </AnchorPane>
-      <ImageView fx:id="profileImage" blendMode="DARKEN" fitHeight="138.0" fitWidth="182.0" layoutX="592.0" layoutY="204.0" pickOnBounds="true" AnchorPane.leftAnchor="592.0" AnchorPane.topAnchor="204.0">
+      <ImageView fx:id="profileImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="150.0" layoutX="605.0" layoutY="201.0" pickOnBounds="true" AnchorPane.leftAnchor="605.0" AnchorPane.topAnchor="201.0">
          <image>
             <Image url="@images/defaultUserImage.png" />
          </image></ImageView>
@@ -147,7 +147,7 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="chooseImageButton" layoutX="900.0" layoutY="273.0" mnemonicParsing="false" onAction="#onChooseImageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Choose Image" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="273.0">
+      <Button fx:id="chooseImageButton" layoutX="900.0" layoutY="263.0" mnemonicParsing="false" onAction="#onChooseImageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Choose Image" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="263.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>

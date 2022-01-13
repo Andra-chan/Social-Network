@@ -78,12 +78,12 @@
             </Button>
          </children>
       </AnchorPane>
-      <ImageView fx:id="userImageView" blendMode="DARKEN" fitHeight="224.0" fitWidth="250.0" layoutX="345.0" layoutY="159.0" pickOnBounds="true">
+      <ImageView fx:id="userImageView" blendMode="DARKEN" fitHeight="200.0" fitWidth="200.0" layoutX="357.0" layoutY="175.0" pickOnBounds="true">
          <image>
             <Image url="@images/defaultUserImage.png" />
          </image>
       </ImageView>
-      <Label fx:id="usernameLabel" layoutX="646.0" layoutY="271.0" text="User" textFill="WHITE">
+      <Label fx:id="usernameLabel" layoutX="650.0" layoutY="260.0" text="User" textFill="WHITE">
          <font>
             <Font name="Berlin Sans FB" size="25.0" />
          </font>
