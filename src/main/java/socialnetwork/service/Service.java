@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static socialnetwork.Util.Constants.BCryptNumberOfRounds;
+import static socialnetwork.Util.Constants.eventNotificationTimeMinutes;
 
 /**
  * Service class that implements all methods
@@ -114,6 +115,16 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     }
 
+    public List<EventAttendance> getUpcomingEventsForUser(Long userId){
+        var now = LocalDateTime.now();
+        return getEventsForUser(userId)
+                .stream()
+                .filter(x ->
+                        ((x.getEvent().getDate().isAfter(now)) &&
+                        (x.getEvent().getDate().isBefore(now.plusMinutes(eventNotificationTimeMinutes)))))
+                .collect(Collectors.toList());
+    }
+
     public void cancelAttendance(Long eventId, Long userId){
         EventAttendance attendance = new EventAttendance(null, null);
         attendance.setId(new Pair<Long, Long>(eventId, userId));
@@ -127,7 +138,7 @@ public class Service implements Observable<ChangeObserverEvent> {
                 .collect(Collectors.toList());
     }
 
-    public List<EventAttendance> getCommonEvents(Long userId1, Long userId2) {
+    public List<Event> getCommonEvents(Long userId1, Long userId2) {
         var allAttendances = eventAttendanceRepository.findAll();
         Set<Long> firstUserEventIds = new HashSet<>();
         StreamSupport.stream(allAttendances.spliterator(), false)
@@ -137,6 +148,7 @@ public class Service implements Observable<ChangeObserverEvent> {
         return StreamSupport.stream(allAttendances.spliterator(), false)
                 .filter(x -> x.getId().getValue().equals(userId2))
                 .filter(x -> firstUserEventIds.contains(x.getId().getKey()))
+                .map(x -> x.getEvent())
                 .collect(Collectors.toList());
     }
 

@@ -2,7 +2,7 @@ package socialnetwork.domain;
 
 import java.time.LocalDateTime;
 
-public class Event extends Entity<Long> implements ImageHolder{
+public class Event extends Entity<Long> implements ImageHolder {
     String image_path;
     String title;
     String description;

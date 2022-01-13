@@ -69,7 +69,7 @@
                   <DropShadow />
                </effect>
                <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="notificationButtonImage" fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/notificationsImage.png" />
                      </image>

@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import socialnetwork.App;
+import socialnetwork.Util.controller.EventCell;
 import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
@@ -86,53 +87,7 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     public void initialize() {
         setNoEventsState(true);
         noNotificationsButton.setVisible(false);
-        eventsList.setCellFactory(param -> new ListCell<>() {
-            private final ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
-
-            @Override
-            public void updateItem(Event event, boolean empty) {
-                super.updateItem(event, empty);
-                if (empty) {
-                    setGraphic(null);
-                    setText(null);
-                    setStyle("-fx-background-color: #243142");
-                } else {
-                    HBox hbox = new HBox();
-                    VBox vbox = new VBox();
-
-                    hbox.getChildren().clear();
-                    vbox.getChildren().clear();
-                    profileImage.setFitWidth(320);
-                    profileImage.setFitHeight(180);
-                    profileImage.setImage(new Image(event.getImagePath()));
-                    vbox.setPadding(new Insets(15));
-
-                    Text descriptionText = new Text(event.getDescription());
-                    descriptionText.getStyleClass().add("fancyText");
-                    TextFlow descriptionFlow = new TextFlow(descriptionText);
-                    descriptionFlow.maxHeight(160);
-                    Text date = new Text(event.getDate().format(eventDateTime));
-                    date.getStyleClass().add("fancyText");
-                    TextFlow dateFlow = new TextFlow(date);
-                    Text title = new Text(event.getTitle());
-                    title.getStyleClass().add("fancyTitle");
-                    TextFlow titleFlow = new TextFlow(title);
-                    vbox.getChildren().addAll(dateFlow, titleFlow, descriptionFlow);
-                    vbox.setAlignment(Pos.CENTER_LEFT);
-                    hbox.setPadding(new Insets(15));
-                    hbox.getChildren().addAll(profileImage, vbox);
-
-                    hbox.setMaxWidth(930);
-                    hbox.setAlignment(Pos.CENTER_LEFT);
-                    setGraphic(hbox);
-                    if (isSelected()) {
-                        setStyle("-fx-background-color: #1c2a36");
-                    } else {
-                        setStyle("-fx-background-color: #243142");
-                    }
-                }
-            }
-        });
+        eventsList.setCellFactory(param -> new EventCell(320, 180, 930, true));
         eventsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             reloadEventStatus();
         });
