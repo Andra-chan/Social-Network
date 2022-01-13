@@ -10,6 +10,8 @@ import socialnetwork.domain.*;
 import socialnetwork.domain.validators.ValidationException;
 import socialnetwork.repository.Repository;
 import socialnetwork.repository.RepositoryException;
+import socialnetwork.service.paging.Pageable;
+import socialnetwork.service.paging.Paginator;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -97,6 +99,11 @@ public class Service implements Observable<ChangeObserverEvent> {
                 .collect(Collectors.toList());
     }
 
+    public List<Event> getEventsPaged(Pageable pageable) {
+        Paginator<Event> paginator = new Paginator<>(pageable, getEvents());
+        return paginator.paginate().getContent().collect(Collectors.toList());
+    }
+
     public void setNotificationsForEvent(Long userId, Long eventId, boolean wantNotifications) {
         EventAttendance attendance = new EventAttendance(null, null);
         attendance.setId(new Pair<Long, Long>(eventId, userId));
@@ -112,7 +119,6 @@ public class Service implements Observable<ChangeObserverEvent> {
         var retVal = eventAttendanceRepository.save(attendance);
         notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
         return retVal;
-
     }
 
     public List<EventAttendance> getUpcomingEventsForUser(Long userId) {
@@ -122,7 +128,13 @@ public class Service implements Observable<ChangeObserverEvent> {
                 .filter(x ->
                         ((x.getEvent().getDate().isAfter(now)) &&
                                 (x.getEvent().getDate().isBefore(now.plusMinutes(eventNotificationTimeMinutes)))))
+                .sorted(Comparator.comparing(EventAttendance::getDate))
                 .collect(Collectors.toList());
+    }
+
+    public List<EventAttendance> getUpcomingEventsForUserPaged(Long userId, Pageable pageable) {
+        Paginator<EventAttendance> paginator = new Paginator<>(pageable, getUpcomingEventsForUser(userId));
+        return paginator.paginate().getContent().collect(Collectors.toList());
     }
 
     public void cancelAttendance(Long eventId, Long userId) {
@@ -136,6 +148,11 @@ public class Service implements Observable<ChangeObserverEvent> {
         return StreamSupport.stream(eventAttendanceRepository.findAll().spliterator(), false)
                 .filter(x -> x.getId().getValue().equals(userId))
                 .collect(Collectors.toList());
+    }
+
+    public List<EventAttendance> getEventsForUserPaged(Long userId, Pageable pageable) {
+        Paginator<EventAttendance> paginator = new Paginator<>(pageable, getEventsForUser(userId));
+        return paginator.paginate().getContent().collect(Collectors.toList());
     }
 
     public List<Event> getCommonEvents(Long userId1, Long userId2) {
@@ -153,6 +170,38 @@ public class Service implements Observable<ChangeObserverEvent> {
                 .map(x -> x.getEvent())
                 .collect(Collectors.toList());
     }
+
+    public List<Event> getCommonEventsPaged(Long userId1, Long userId2, Pageable pageable) {
+        Paginator<Event> paginator = new Paginator<>(pageable, getCommonEvents(userId1, userId2));
+        return paginator.paginate().getContent().collect(Collectors.toList());
+    }
+
+    /**
+     * Get the list of users directed to the logged in user
+     *
+     * @return a list of users with friend requests directed to the logged in user
+     */
+    public List<Utilizator> getUsersListWithFriendRequests(Long userId) {
+        return getPendingFriendRequests(userId).stream().map(x -> getUser(x.getSender()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Utilizator> getUsersWithPendingRequestsFilteredAndPaged(Long userId, String first_name_filter, String last_name_filter, Pageable pageable) {
+        Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(first_name_filter);
+        Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(last_name_filter);
+        var filteredUsers = getUsersListWithFriendRequests(userId).stream().filter(firstNameFilter.or(lastNameFilter)).toList();
+        Paginator<Utilizator> paginator = new Paginator<>(pageable, filteredUsers);
+        return paginator.paginate().getContent().collect(Collectors.toList());
+    }
+
+    public List<Utilizator> getUsersListWithFriendRequestsFilteredAndPaged(Long userId, String first_name_filter, String last_name_filter, Pageable pageable) {
+        Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(first_name_filter);
+        Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(last_name_filter);
+        var filteredUsers = getUsersListWithFriendRequests(userId).stream().filter(firstNameFilter.or(lastNameFilter)).toList();
+        Paginator<Utilizator> paginator = new Paginator<>(pageable, filteredUsers);
+        return paginator.paginate().getContent().collect(Collectors.toList());
+    }
+
 
     public List<Friend> getCommonFriends(Long userId1, Long userId2) {
         var friendships = friendshipRepository.findAll();
@@ -173,6 +222,11 @@ public class Service implements Observable<ChangeObserverEvent> {
                 ).collect(Collectors.toList());
     }
 
+    public List<Friend> getCommonFriendsPaged(Long userId1, Long userId2, Pageable pageable) {
+        Paginator<Friend> paginator = new Paginator<>(pageable, getCommonFriends(userId1, userId2));
+        return paginator.paginate().getContent().collect(Collectors.toList());
+    }
+
     private HashSet<Long> getFriendsSet(Long userId, Iterable<Prietenie> friendships) {
         HashSet<Long> userFriends = new HashSet<>();
         StreamSupport.stream(friendships.spliterator(), false)
@@ -189,6 +243,7 @@ public class Service implements Observable<ChangeObserverEvent> {
         return userFriends;
     }
 
+
     /**
      * Get all users that are not friends with a certain user
      *
@@ -202,6 +257,14 @@ public class Service implements Observable<ChangeObserverEvent> {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .filter(x -> (!x.getId().equals(userId)) && (!firstUserFriends.contains(x.getId())))
                 .collect(Collectors.toList());
+    }
+
+    public List<Utilizator> getAllUsersThatAreNotFriendsFilteredAndPaged(Long userId, String first_name_filter, String last_name_filter, Pageable pageable) {
+        Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(first_name_filter);
+        Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(last_name_filter);
+        var users = getAllUsersThatAreNotFriends(userId).stream().filter(firstNameFilter.or(lastNameFilter)).toList();
+        Paginator<Utilizator> paginator = new Paginator<>(pageable, users);
+        return paginator.paginate().getContent().collect(Collectors.toList());
     }
 
     /**
@@ -384,6 +447,17 @@ public class Service implements Observable<ChangeObserverEvent> {
                     return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId(), user.getImagePath());
                 })
                 .collect(Collectors.toList());
+    }
+
+    public List<Friend> getFriendsFilteredPaged(Long userId, String first_name_filter, String last_name_filter, Pageable pageable) {
+        Predicate<Friend> firstNameFilter = u -> u.getFirstName().startsWith(first_name_filter);
+        Predicate<Friend> lastNameFilter = u -> u.getLastName().startsWith(last_name_filter);
+        var friends = getFriends(userId).stream().
+                filter(firstNameFilter.or(lastNameFilter)).
+                sorted(Comparator.comparing(Friend::getFirstName)).
+                toList();
+        Paginator<Friend> paginator = new Paginator<>(pageable, friends);
+        return paginator.paginate().getContent().collect(Collectors.toList());
     }
 
     /**

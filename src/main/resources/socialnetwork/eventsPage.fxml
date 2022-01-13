@@ -78,7 +78,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <ListView fx:id="eventsList" layoutX="47.0" layoutY="158.0" prefHeight="568.0" prefWidth="984.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" AnchorPane.bottomAnchor="229.0" AnchorPane.topAnchor="158.0" />
+      <ListView fx:id="eventsList" layoutX="47.0" layoutY="158.0" prefHeight="568.0" prefWidth="984.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" AnchorPane.bottomAnchor="229.0" AnchorPane.topAnchor="158.0" />
       <Separator layoutX="21.0" layoutY="795.0" prefHeight="0.0" prefWidth="1034.0" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="151.0" layoutY="838.0" prefHeight="94.0" prefWidth="251.0" text="Want to make an event of your own?" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
@@ -100,7 +100,7 @@
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="603.0" onMouseClicked="#onNowClick" text="now!" textAlignment="CENTER" textFill="WHITE" underline="true" wrapText="true">
+      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="603.0" onMouseClicked="#onNowClick" text="now!" textAlignment="CENTER" textFill="WHITE" underline="true" visible="false" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
@@ -137,6 +137,24 @@
             <ImageView blendMode="DARKEN" fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/remove-event-6-1131246.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="prevPage" layoutX="28.0" layoutY="748.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/previousPageImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="nextPage" layoutX="1014.0" layoutY="748.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/nextPageIcon.png" />
                </image>
             </ImageView>
          </graphic>

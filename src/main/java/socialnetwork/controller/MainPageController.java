@@ -13,9 +13,12 @@ import socialnetwork.App;
 import socialnetwork.Util.controller.EventCell;
 import socialnetwork.Util.controller.NotificationService;
 import socialnetwork.domain.Event;
+import socialnetwork.domain.EventAttendance;
 import socialnetwork.service.Service;
+import socialnetwork.service.paging.Page;
+import socialnetwork.service.paging.PageableImplementation;
 
-import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
@@ -25,6 +28,9 @@ public class MainPageController {
     Long userId;
     NotificationService notificationService;
     ObservableList<Event> modelEvents = FXCollections.observableArrayList();
+
+    int currentPage = 0;
+    final int pageSize = 4;
 
     @FXML
     Label usernameLabel;
@@ -77,6 +83,12 @@ public class MainPageController {
     @FXML
     ImageView notificationButtonImage;
 
+    @FXML
+    Button prevPage;
+
+    @FXML
+    Button nextPage;
+
     private void setNoEventsState(boolean state) {
         upcomingEventsList.setVisible(!state);
         upcomingEventsLabel.setVisible(!state);
@@ -92,11 +104,14 @@ public class MainPageController {
         upcomingEventsList.setCellFactory(x -> new EventCell(160, 90, 400, false));
     }
 
+    public List<Event> getEvents() {
+        return service.getUpcomingEventsForUserPaged(userId, new PageableImplementation(currentPage, pageSize)).stream()
+                .map(EventAttendance::getEvent)
+                .toList();
+    }
+
     public void updateModel() {
-        modelEvents.setAll(service.getUpcomingEventsForUser(userId).stream()
-                .map(x -> x.getEvent())
-                .sorted(Comparator.comparing(Event::getDate))
-                .collect(Collectors.toList()));
+        modelEvents.setAll(getEvents());
         setNoEventsState(modelEvents.size() == 0);
 
     }
@@ -121,6 +136,23 @@ public class MainPageController {
         updateModel();
     }
 
+    public void onPreviousPageButtonClick() {
+        if(currentPage==0){
+            return;
+        }
+        currentPage--;
+        updateModel();
+    }
+
+    public void onNextPageButtonClick() {
+        currentPage++;
+        var events = getEvents();
+        if(events.isEmpty()){
+            currentPage--;
+            return;
+        }
+        modelEvents.setAll(events);
+    }
 
     /**
      * When the user clicks on the friends button, switch the scene
@@ -176,7 +208,7 @@ public class MainPageController {
         App.changeSceneToEventsWindow(service, userId);
     }
 
-    public void onReportsButtonClick(){
+    public void onReportsButtonClick() {
         App.changeSceneToReportsWindow(service, userId);
     }
 }
