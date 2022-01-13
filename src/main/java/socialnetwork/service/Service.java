@@ -153,19 +153,8 @@ public class Service implements Observable<ChangeObserverEvent> {
     }
 
     public List<Friend> getCommonFriends(Long userId1, Long userId2) {
-        Set<Long> firstUserFriends = new HashSet<>();
         var friendships = friendshipRepository.findAll();
-        StreamSupport.stream(friendships.spliterator(), false)
-                .filter(fr -> fr.getSecondUser().equals(userId1) || fr.getFirstUser().equals(userId1))
-                .map(fr -> {
-                    Long friendId;
-                    if (fr.getFirstUser().equals(userId1)) {
-                        friendId = fr.getSecondUser();
-                    } else {
-                        friendId = fr.getFirstUser();
-                    }
-                    return friendId;
-                }).forEach(firstUserFriends::add);
+        Set<Long> firstUserFriends = getFriendsSet(userId1, friendships);
 
         return StreamSupport.stream(friendships.spliterator(), false)
                 .filter(fr -> (fr.getSecondUser().equals(userId2) && firstUserFriends.contains(fr.getFirstUser()))
@@ -180,6 +169,37 @@ public class Service implements Observable<ChangeObserverEvent> {
                             return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId(), user.getImagePath());
                         }
                 ).collect(Collectors.toList());
+    }
+
+    private HashSet<Long> getFriendsSet(Long userId, Iterable<Prietenie> friendships){
+        HashSet<Long> userFriends = new HashSet<>();
+        StreamSupport.stream(friendships.spliterator(), false)
+                .filter(fr -> fr.getSecondUser().equals(userId) || fr.getFirstUser().equals(userId))
+                .map(fr -> {
+                    Long friendId;
+                    if (fr.getFirstUser().equals(userId)) {
+                        friendId = fr.getSecondUser();
+                    } else {
+                        friendId = fr.getFirstUser();
+                    }
+                    return friendId;
+                }).forEach(userFriends::add);
+        return userFriends;
+    }
+
+    /**
+     * Get all users that are not friends with a certain user
+     *
+     * @param userId a users' id
+     * @return a list of all users that are not friends with the users with id userId
+     */
+    public List<Utilizator> getAllUsersThatAreNotFriends(Long userId) {
+        var friendships = friendshipRepository.findAll();
+        Set<Long> firstUserFriends = getFriendsSet(userId, friendships);
+
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .filter(x->!firstUserFriends.contains(x.getId()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -361,20 +381,6 @@ public class Service implements Observable<ChangeObserverEvent> {
                     }
                     return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId(), user.getImagePath());
                 })
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Get all users that are not friends with a certain user
-     *
-     * @param userId a users' id
-     * @return a list of all users that are not friends with the users with id userId
-     */
-    public List<Utilizator> getAllUsersThatAreNotFriends(Long userId) {
-        //can improve performance.
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
-                .filter(x -> !areFriends(userId, x.getId()))
-                .filter(x -> !x.getId().equals(userId))
                 .collect(Collectors.toList());
     }
 
