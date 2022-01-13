@@ -143,7 +143,7 @@
                 </ImageView>
             </children>
         </AnchorPane>
-          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" layoutX="578.0" layoutY="219.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="498.0" style="-fx-border-color: #243142; -fx-background-color: #243142;" stylesheets="@css/style.css" visible="false" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="219.0">
+          <ScrollPane fx:id="chatScrollPane" fitToHeight="true" fitToWidth="true" layoutX="578.0" layoutY="219.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="498.0" style="-fx-border-color: #243142; -fx-background-color: #243142;" styleClass="scroll-bar" stylesheets="@css/style.css" visible="false" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="219.0">
          <content>
                   <GridPane fx:id="chatGridPane" prefHeight="738.0" prefWidth="494.0" style="-fx-background-color: #243142; -fx-border-color: #243142;">
                       <columnConstraints>
@@ -158,11 +158,6 @@
                       </rowConstraints>
                   </GridPane>
          </content>
-         <styleClass>
-            <String fx:value="scroll-bar" />
-            <String fx:value="thumb" />
-            <String fx:value="track" />
-         </styleClass>
           </ScrollPane>
           <TextField fx:id="chatTextField" layoutX="622.0" layoutY="879.0" prefHeight="48.0" prefWidth="335.0" promptText="Type a message" styleClass="fancyTextField" stylesheets="@css/style.css" visible="false" />
           <Button fx:id="sendButton" layoutX="989.0" layoutY="890.0" mnemonicParsing="false" onAction="#onSendButtonPress" styleClass="fancyButton" stylesheets="@css/style.css" text="Send" visible="false">
