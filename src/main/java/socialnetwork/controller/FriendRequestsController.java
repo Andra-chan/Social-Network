@@ -127,6 +127,7 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         setNoFriendSelectedState(false);
         mutualFriendsList.setItems(modelCommonFriends);
         mutualFriendsList.setCellFactory(x -> new FriendListCell());
+
         userList.setCellFactory(param -> new UserListCell());
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
@@ -179,18 +180,8 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     public void updateModel() {
         Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
         Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
-        modelUsersWithFriendRequests.setAll(getUsersListWithFriendRequests()
+        modelUsersWithFriendRequests.setAll(service.getUsersListWithFriendRequests(userId)
                 .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
-    }
-
-    /**
-     * Get the list of users directed to the logged in user
-     *
-     * @return a list of users with friend requests directed to the logged in user
-     */
-    public List<Utilizator> getUsersListWithFriendRequests() {
-        return service.getPendingFriendRequests(userId).stream().map(x -> service.getUser(x.getSender()))
-                .collect(Collectors.toList());
     }
 
     /**

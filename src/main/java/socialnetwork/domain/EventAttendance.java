@@ -2,6 +2,8 @@ package socialnetwork.domain;
 
 import javafx.util.Pair;
 
+import java.time.LocalDateTime;
+
 public class EventAttendance extends Entity<Pair<Long, Long>>{
     private Utilizator user;
     private Event event;
@@ -35,5 +37,9 @@ public class EventAttendance extends Entity<Pair<Long, Long>>{
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public LocalDateTime getDate(){
+        return event.getDate();
     }
 }

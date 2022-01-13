@@ -3,20 +3,13 @@ package socialnetwork.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import socialnetwork.App;
 import socialnetwork.Util.controller.EventCell;
@@ -26,11 +19,10 @@ import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.Event;
 import socialnetwork.service.Service;
+import socialnetwork.service.paging.PageableImplementation;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static socialnetwork.Util.Constants.eventDateTime;
 
 public class EventsController implements Observer<ChangeObserverEvent> {
     Service service;
@@ -39,6 +31,8 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     Set<Long> userAttendance;
     Set<Long> userEventsWithNotifications;
     NotificationService notificationService;
+    int currentPage = 0;
+    final int pageSize = 4;
 
     @FXML
     Button notificationsButton;
@@ -81,6 +75,12 @@ public class EventsController implements Observer<ChangeObserverEvent> {
 
     @FXML
     ImageView notificationButtonImage;
+
+    @FXML
+    Button prevPage;
+
+    @FXML
+    Button nextPage;
 
     public EventsController() {
         userAttendance = new HashSet<>();
@@ -128,14 +128,13 @@ public class EventsController implements Observer<ChangeObserverEvent> {
      * Update the data model with new data from the service.
      */
     public void updateModel() {
-        modelEvents.setAll(service.getEvents());
+        modelEvents.setAll(service.getEventsPaged(new PageableImplementation(currentPage, pageSize)));
         updateCache();
     }
 
     private void reloadEventStatus(){
         var selectedEvent = eventsList.getSelectionModel().getSelectedItem();
         if (selectedEvent == null) {
-            setNoEventsState(true);
             return;
         }
         setNoEventsState(false);
@@ -190,6 +189,23 @@ public class EventsController implements Observer<ChangeObserverEvent> {
         if (userAttendance.contains(selectedEvent.getId())) {
             service.setNotificationsForEvent(userId, selectedEvent.getId(), !userEventsWithNotifications.contains(selectedEvent.getId()));
         }
+    }
+
+    public void onPreviousPageButtonClick(){
+        if(currentPage==0){
+            return;
+        }
+        currentPage--;
+        modelEvents.setAll(service.getEventsPaged(new PageableImplementation(currentPage, pageSize)));
+    }
+
+    public void onNextPageButtonClick(){
+        var events = service.getEventsPaged(new PageableImplementation(currentPage+1, pageSize));
+        if(events.isEmpty()){
+            return;
+        }
+        currentPage++;
+        modelEvents.setAll(events);
     }
 
     public void onLogoutButtonClick() {

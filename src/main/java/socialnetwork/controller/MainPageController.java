@@ -95,7 +95,6 @@ public class MainPageController {
     public void updateModel() {
         modelEvents.setAll(service.getUpcomingEventsForUser(userId).stream()
                 .map(x -> x.getEvent())
-                .sorted(Comparator.comparing(Event::getDate))
                 .collect(Collectors.toList()));
         setNoEventsState(modelEvents.size() == 0);
 
