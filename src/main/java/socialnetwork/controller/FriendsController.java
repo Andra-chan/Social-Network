@@ -113,10 +113,10 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     ImageView notificationButtonImage;
 
     @FXML
-    Button nextPage;
+    Button eventsNextPage;
 
     @FXML
-    Button prevPage;
+    Button eventsPrevPage;
 
     @FXML
     Button friendsPrevPage;
@@ -208,11 +208,19 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         }
     }
 
-    public void onPreviousPageButtonClick(){
+    public void onFriendsPreviousPageButtonClick(){
 
     }
 
-    public void onNextPageButtonClick(){
+    public void onFriendsNextPageButtonClick(){
+
+    }
+
+    public void onEventsPreviousPageButtonClick(){
+
+    }
+
+    public void onEventsNextPageButtonClick(){
 
     }
 

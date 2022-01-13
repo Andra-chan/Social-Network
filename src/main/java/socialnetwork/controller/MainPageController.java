@@ -77,6 +77,12 @@ public class MainPageController {
     @FXML
     ImageView notificationButtonImage;
 
+    @FXML
+    Button prevPage;
+
+    @FXML
+    Button nextPage;
+
     private void setNoEventsState(boolean state) {
         upcomingEventsList.setVisible(!state);
         upcomingEventsLabel.setVisible(!state);
@@ -118,6 +124,14 @@ public class MainPageController {
         notificationService.setPeriod(Duration.seconds(5));
         notificationService.start();
         updateModel();
+    }
+
+    public void onPreviousPageButtonClick(){
+
+    }
+
+    public void onNextPageButtonClick(){
+
     }
 
 
