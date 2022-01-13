@@ -112,6 +112,18 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     @FXML
     ImageView notificationButtonImage;
 
+    @FXML
+    Button nextPage;
+
+    @FXML
+    Button prevPage;
+
+    @FXML
+    Button friendsPrevPage;
+
+    @FXML
+    Button friendsNextPage;
+
     private void setNoFriendSelectedState(boolean state) {
         noFriendSelectedImage.setVisible(!state);
         noFriendSelectedLabel.setVisible(!state);
@@ -194,6 +206,14 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
                 service.removeFriendship(friendship.get().getId());
             }
         }
+    }
+
+    public void onPreviousPageButtonClick(){
+
+    }
+
+    public void onNextPageButtonClick(){
+
     }
 
     public void onNowClick() {

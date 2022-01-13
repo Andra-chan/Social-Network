@@ -196,7 +196,7 @@
             </ImageView>
             <ListView fx:id="mutualFriendsList" layoutX="28.0" layoutY="385.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
             <Label fx:id="mutualNowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="372.0" layoutY="715.0" onMouseClicked="#onNowClick" prefHeight="21.0" prefWidth="45.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" textAlignment="CENTER" underline="true" visible="false" wrapText="true" />
-            <Button fx:id="prevPage" layoutX="164.0" layoutY="807.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+            <Button fx:id="friendsPrevPage" layoutX="164.0" layoutY="807.0" mnemonicParsing="false" onAction="#onFriendsPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -205,7 +205,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="nextPage" layoutX="306.0" layoutY="807.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="28.0" prefWidth="36.0" styleClass="fancyButton" stylesheets="@css/style.css">
+            <Button fx:id="friendsNextPage" layoutX="306.0" layoutY="807.0" mnemonicParsing="false" onAction="#onFriendsNextPageButtonClick" prefHeight="28.0" prefWidth="36.0" styleClass="fancyButton" stylesheets="@css/style.css">
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -263,7 +263,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="friendsNextPage" layoutX="479.0" layoutY="916.0" mnemonicParsing="false" onAction="#onFriendsNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+      <Button fx:id="nextPage" layoutX="479.0" layoutY="916.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -272,7 +272,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="friendsPrevPage" layoutX="381.0" layoutY="916.0" mnemonicParsing="false" onAction="#onFriendsPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+      <Button fx:id="prevPage" layoutX="381.0" layoutY="916.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="24.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
