@@ -77,7 +77,7 @@
          </styleClass></ListView>
       <AnchorPane layoutX="578.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
          <children>
-            <ImageView fx:id="friendImage" blendMode="DARKEN" fitHeight="128.0" fitWidth="160.0" layoutX="159.0" layoutY="69.0" pickOnBounds="true" visible="false">
+            <ImageView fx:id="friendImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="150.0" layoutX="164.0" layoutY="47.0" pickOnBounds="true" visible="false">
                <image>
                   <Image url="@images/defaultUserImage.png" />
                </image>

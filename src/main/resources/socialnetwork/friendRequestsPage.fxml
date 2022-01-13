@@ -142,7 +142,7 @@
       </AnchorPane>
       <AnchorPane layoutX="988.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
          <children>
-            <ImageView fx:id="userImage" blendMode="DARKEN" fitHeight="134.0" fitWidth="166.0" layoutX="165.0" layoutY="63.0" pickOnBounds="true" visible="false">
+            <ImageView fx:id="userImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="150.0" layoutX="164.0" layoutY="47.0" pickOnBounds="true" visible="false">
                <image>
                   <Image url="@images/defaultUserImage.png" />
                </image>
