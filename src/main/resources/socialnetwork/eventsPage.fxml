@@ -78,7 +78,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <ListView fx:id="eventsList" layoutX="47.0" layoutY="158.0" prefHeight="568.0" prefWidth="984.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" AnchorPane.bottomAnchor="229.0" AnchorPane.topAnchor="158.0" />
+      <ListView fx:id="eventsList" layoutX="47.0" layoutY="158.0" prefHeight="568.0" prefWidth="984.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" AnchorPane.bottomAnchor="229.0" AnchorPane.topAnchor="158.0" />
       <Separator layoutX="21.0" layoutY="795.0" prefHeight="0.0" prefWidth="1034.0" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="151.0" layoutY="838.0" prefHeight="94.0" prefWidth="251.0" text="Want to make an event of your own?" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
@@ -90,17 +90,17 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Button>
-      <ImageView fx:id="noEventsImage" fitHeight="187.0" fitWidth="185.0" layoutX="445.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="noEventsImage" fitHeight="187.0" fitWidth="185.0" layoutX="445.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/noEvents.png" />
          </image>
       </ImageView>
-      <Label fx:id="noEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="385.0" layoutY="533.0" prefHeight="113.0" prefWidth="307.0" text="Looks like there are no new events. Create a new event now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="noEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="385.0" layoutY="533.0" prefHeight="113.0" prefWidth="307.0" text="Looks like there are no new events. Create a new event now!" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="603.0" onMouseClicked="#onNowClick" text="now!" textAlignment="CENTER" textFill="WHITE" underline="true" wrapText="true">
+      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="603.0" onMouseClicked="#onNowClick" text="now!" textAlignment="CENTER" textFill="WHITE" underline="true" visible="false" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
@@ -117,7 +117,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="joinEventButton" layoutX="480.0" layoutY="743.0" mnemonicParsing="false" onAction="#onJoinEventButtonClick" prefHeight="41.0" prefWidth="116.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Join Event" visible="false">
+      <Button fx:id="joinEventButton" layoutX="480.0" layoutY="743.0" mnemonicParsing="false" onAction="#onJoinEventButtonClick" prefHeight="41.0" prefWidth="116.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Join Event">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -140,6 +140,16 @@
                </image>
             </ImageView>
          </graphic>
+      </Button>
+      <Button fx:id="previousPageButton" layoutX="29.0" layoutY="743.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="41.0" prefWidth="104.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Previous Page">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="nextPageButton" layoutX="943.0" layoutY="743.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="41.0" prefWidth="104.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Next Page">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
       </Button>
    </children>
 </AnchorPane>
