@@ -90,12 +90,12 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Button>
-      <ImageView fx:id="noEventsImage" fitHeight="187.0" fitWidth="185.0" layoutX="445.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="noEventsImage" fitHeight="187.0" fitWidth="185.0" layoutX="445.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/noEvents.png" />
          </image>
       </ImageView>
-      <Label fx:id="noEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="385.0" layoutY="533.0" prefHeight="113.0" prefWidth="307.0" text="Looks like there are no new events. Create a new event now!" textAlignment="CENTER" textFill="WHITE" visible="false" wrapText="true">
+      <Label fx:id="noEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="385.0" layoutY="533.0" prefHeight="113.0" prefWidth="307.0" text="Looks like there are no new events. Create a new event now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
@@ -117,7 +117,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="joinEventButton" layoutX="480.0" layoutY="743.0" mnemonicParsing="false" onAction="#onJoinEventButtonClick" prefHeight="41.0" prefWidth="116.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Join Event">
+      <Button fx:id="joinEventButton" layoutX="480.0" layoutY="743.0" mnemonicParsing="false" onAction="#onJoinEventButtonClick" prefHeight="41.0" prefWidth="116.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Join Event" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -141,15 +141,23 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="previousPageButton" layoutX="29.0" layoutY="743.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="41.0" prefWidth="104.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Previous Page">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
+      <Button fx:id="prevPageButton" layoutX="28.0" layoutY="748.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/previousPageImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <Button fx:id="nextPageButton" layoutX="943.0" layoutY="743.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="41.0" prefWidth="104.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Next Page">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
+      <Button fx:id="nextPageButton" layoutX="1014.0" layoutY="748.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/nextPageIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
    </children>
 </AnchorPane>

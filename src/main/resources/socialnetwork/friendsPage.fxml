@@ -70,11 +70,12 @@
             </Button>
          </children>
       </AnchorPane>
-      <ListView fx:id="friendList" layoutX="326.0" layoutY="183.0" prefHeight="721.0" prefWidth="240.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" AnchorPane.bottomAnchor="51.0" AnchorPane.topAnchor="183.0">
+      <ListView fx:id="friendList" layoutX="326.0" layoutY="183.0" prefHeight="720.0" prefWidth="240.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" visible="false" AnchorPane.bottomAnchor="51.0" AnchorPane.topAnchor="183.0">
          <styleClass>
             <String fx:value="list-view" />
             <String fx:value="list-cell" />
-         </styleClass></ListView>
+         </styleClass>
+      </ListView>
       <AnchorPane layoutX="578.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
          <children>
             <ImageView fx:id="friendImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="150.0" layoutX="164.0" layoutY="47.0" pickOnBounds="true" visible="false">
@@ -120,8 +121,25 @@
                   <Image url="@images/noEvents.png" />
                </image>
             </ImageView>
-            <Button fx:id="prevPage" layoutX="144.0" layoutY="806.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Prev Page" />
-            <Button fx:id="nextPage" layoutX="261.0" layoutY="806.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Next Page" />
+            <Button fx:id="prevPage" layoutX="164.0" layoutY="807.0" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/previousPageImage.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="nextPage" layoutX="306.0" layoutY="807.0" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/nextPageIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <ListView fx:id="mutualEventsList" layoutX="35.0" layoutY="387.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
          </children>
       </AnchorPane>
       <Separator layoutX="574.0" layoutY="105.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />
@@ -235,8 +253,23 @@
             </ImageView>
          </graphic>
       </Button>
-      <ListView fx:id="mutualEventsList" layoutX="605.0" layoutY="500.0" prefHeight="402.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
-      <Button fx:id="friendsPrevPage" layoutX="359.0" layoutY="920.0" mnemonicParsing="false" onAction="#onFriendsPreviousPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Prev Page" />
-      <Button fx:id="friendsNextPage" layoutX="451.0" layoutY="920.0" mnemonicParsing="false" onAction="#onFriendsNextPageButtonClick" styleClass="fancyButton" stylesheets="@css/style.css" text="Next Page" />
+      <Button fx:id="friendsNextPage" layoutX="479.0" layoutY="916.0" mnemonicParsing="false" onAction="#onFriendsNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/nextPageIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="friendsPrevPage" layoutX="381.0" layoutY="916.0" mnemonicParsing="false" onAction="#onFriendsPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="24.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/previousPageImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
