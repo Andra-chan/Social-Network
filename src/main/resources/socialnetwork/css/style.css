@@ -59,6 +59,12 @@
     -fx-fill: white;
 }
 
+.fancyLabel {
+    -fx-font-size: 22;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-text-fill: white;
+}
+
 .text-area.content{
     -fx-background-color:  transparent;
     -fx-border-color: grey;

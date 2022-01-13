@@ -96,6 +96,18 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button eventsButton;
 
+    @FXML
+    Label noMutualFriendsLabel;
+
+    @FXML
+    ImageView noMutualFriendsImage;
+
+    @FXML
+    ListView mutualFriendsList;
+
+    @FXML
+    Label mutualFriendsLabel;
+
 
     /**
      * Sets visibility of all required objects to the default one
@@ -111,6 +123,10 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
         cancelRequestButton.setVisible(false);
         denyRequestButton.setVisible(false);
         acceptRequestButton.setVisible(false);
+        noMutualFriendsLabel.setVisible(false);
+        noMutualFriendsImage.setVisible(false);
+        mutualFriendsList.setVisible(false);
+        mutualFriendsLabel.setVisible(false);
 
     }
 

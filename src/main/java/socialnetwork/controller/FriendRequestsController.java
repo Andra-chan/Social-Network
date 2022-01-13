@@ -95,6 +95,21 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button eventsButton;
 
+    @FXML
+    Label noMutualFriendsLabel;
+
+    @FXML
+    ImageView noMutualFriendsImage;
+
+    @FXML
+    ListView mutualFriendsList;
+
+    @FXML
+    Label mutualFriendsLabel;
+
+    @FXML
+    Label mutualNowLabel;
+
 
     /**
      * Initialize UI elements.
@@ -111,6 +126,11 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         separator.setVisible(false);
         declineFriendshipImage.setVisible(false);
         acceptFriendshipImage.setVisible(false);
+        noMutualFriendsLabel.setVisible(false);
+        noMutualFriendsImage.setVisible(false);
+        mutualFriendsList.setVisible(false);
+        mutualFriendsLabel.setVisible(false);
+        mutualNowLabel.setVisible(false);
 
 
         userList.setCellFactory(param ->  new ListCell<Utilizator>(){
@@ -295,6 +315,8 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     public void onHomeButtonClick(){
         App.changeSceneToMainWindow(service, userId);
     }
+
+
 
     /**
      * Update data with new friend request data from the service.

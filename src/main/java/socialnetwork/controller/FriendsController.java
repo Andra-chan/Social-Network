@@ -89,6 +89,21 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     Button eventsButton;
 
     @FXML
+    Label mutualEventsLabel;
+
+    @FXML
+    ListView mutualEventsList;
+
+    @FXML
+    Label noMutualEventsLabel;
+
+    @FXML
+    Label mutualNowLabel;
+
+    @FXML
+    ImageView noMutualEventsImage;
+
+    @FXML
     public void initialize(){
 
         noFriendSelectedImage.setVisible(true);
@@ -98,6 +113,12 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         removeButton.setVisible(false);
         separator.setVisible(false);
         removeFriendImage.setVisible(false);
+        noMutualEventsLabel.setVisible(false);
+        noMutualEventsImage.setVisible(false);
+        mutualEventsList.setVisible(false);
+        mutualEventsLabel.setVisible(false);
+        mutualNowLabel.setVisible(false);
+
         friendList.setCellFactory(param -> new ListCell<>() {
             private ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
 
@@ -226,6 +247,8 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     public void onNotificationsButtonClick(){
         App.changeSceneToMainWindow(service, userId);
     }
+
+    public void onMutualNowClick() { App.changeSceneToEventsWindow(service, userId); }
 
     @Override
     public void update(ChangeObserverEvent event) {

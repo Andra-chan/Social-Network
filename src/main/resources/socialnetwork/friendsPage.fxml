@@ -108,6 +108,18 @@
                   <Image url="@images/29461-200.png" />
                </image>
             </ImageView>
+            <Label fx:id="mutualEventsLabel" layoutX="35.0" layoutY="347.0" prefHeight="31.0" prefWidth="249.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Your mutual events:" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="Berlin Sans FB" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="noMutualEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="674.0" prefHeight="81.0" prefWidth="288.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Looks like there are no mutual events. Go join an event now!" textAlignment="CENTER" visible="false" wrapText="true" />
+            <Label fx:id="mutualNowLabel" layoutX="337.0" layoutY="715.0" onMouseClicked="#onMutualNowClick" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" underline="true" visible="false" />
+            <ImageView fx:id="noMutualEventsImage" fitHeight="161.0" fitWidth="160.0" layoutX="168.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@images/noEvents.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <Separator layoutX="574.0" layoutY="105.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />
@@ -221,5 +233,6 @@
             </ImageView>
          </graphic>
       </Button>
+      <ListView fx:id="mutualEventsList" layoutX="605.0" layoutY="500.0" prefHeight="437.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
    </children>
 </AnchorPane>

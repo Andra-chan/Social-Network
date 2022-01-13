@@ -244,6 +244,18 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label fx:id="mutualFriendsLabel" layoutX="35.0" layoutY="347.0" prefHeight="31.0" prefWidth="249.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Your mutual friends:" textFill="WHITE">
+               <font>
+                  <Font name="Berlin Sans FB" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="noMutualFriendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="674.0" prefHeight="81.0" prefWidth="288.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Looks like you have no mutual friends!" textAlignment="CENTER" wrapText="true" />
+            <ImageView fx:id="noMutualFriendsImage" blendMode="MULTIPLY" fitHeight="161.0" fitWidth="160.0" layoutX="168.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/images%20(2).png" />
+               </image>
+            </ImageView>
+            <ListView fx:id="mutualFriendsList" layoutX="28.0" layoutY="385.0" prefHeight="437.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
          </children>
       </AnchorPane>
       <Label fx:id="noUsersLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="359.0" layoutY="583.0" prefHeight="64.0" prefWidth="183.0" stylesheets="@css/style.css" text="Seems like you're the first one here. Welcome!" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
