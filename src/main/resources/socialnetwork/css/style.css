@@ -59,6 +59,10 @@
     -fx-fill: white;
 }
 
+.scroll-bar:vertical{
+    -fx-background-color: #243142;
+}
+
 .fancyLabel {
     -fx-font-size: 22;
     -fx-font-family: "Berlin Sans FB";

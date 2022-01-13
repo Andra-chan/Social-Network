@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="955.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.ReportsController">
    <children>
@@ -74,5 +79,59 @@
             </Button>
          </children>
       </AnchorPane>
+      <Label layoutX="329.0" layoutY="130.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start date" />
+      <Label layoutX="655.0" layoutY="130.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="End date" />
+      <Label layoutX="53.0" layoutY="147.0" prefHeight="64.0" prefWidth="173.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Choose evaluation period" textAlignment="CENTER" wrapText="true" />
+      <DatePicker fx:id="startDate" blendMode="MULTIPLY" layoutX="288.0" layoutY="166.0" promptText="Start date" />
+      <DatePicker fx:id="endDate" blendMode="MULTIPLY" layoutX="610.0" layoutY="166.0" promptText="End date" />
+      <Label layoutX="290.0" layoutY="227.0" prefHeight="64.0" prefWidth="278.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="R1 1. Show received messages" wrapText="true" />
+      <Label layoutX="290.0" layoutY="339.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="R2   Show messages from a certain friend" />
+      <Label layoutX="53.0" layoutY="281.0" prefHeight="64.0" prefWidth="173.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Choose report type" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="previewR1Button" layoutX="843.0" layoutY="258.0" mnemonicParsing="false" onAction="#onPreviewR1ButtonClick" prefHeight="45.0" prefWidth="73.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Preview R1" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="previewR2Button" layoutX="843.0" layoutY="329.0" mnemonicParsing="false" onAction="#onPreviewR2ButtonClick" prefHeight="45.0" prefWidth="73.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Preview R2" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="exportR1Button" layoutX="952.0" layoutY="259.0" mnemonicParsing="false" onAction="#onExportR1ButtonClick" prefHeight="45.0" prefWidth="78.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Export R1 To PDF" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="exportR2Button" layoutX="952.0" layoutY="329.0" mnemonicParsing="false" onAction="#onExportR2ButtonClick" prefHeight="45.0" prefWidth="78.0" styleClass="fancyButton" stylesheets="@css/style.css" text="Export R2 To PDF" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="355.0" layoutY="268.0" styleClass="fancyLabel" stylesheets="@css/style.css" />
+      <Label layoutX="312.0" layoutY="269.0" prefHeight="64.0" prefWidth="265.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="2. Show new friends" wrapText="true" />
+      <Separator layoutX="257.0" layoutY="119.0" orientation="VERTICAL" prefHeight="286.0" prefWidth="6.0" />
+      <Separator layoutX="22.0" layoutY="418.0" prefHeight="2.0" prefWidth="1035.0" />
+      <Label fx:id="chooseFriendLabel" layoutX="39.0" layoutY="431.0" prefHeight="64.0" prefWidth="202.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Choose a friend for R2" textAlignment="CENTER" visible="false" wrapText="true" />
+      <ListView fx:id="friendsList" layoutX="40.0" layoutY="489.0" prefHeight="446.0" prefWidth="200.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <Separator layoutX="257.0" layoutY="432.0" orientation="VERTICAL" prefHeight="509.0" prefWidth="6.0" />
+      <Label fx:id="noMessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="723.0" prefHeight="87.0" prefWidth="278.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start chatting with a friend to see your messages from a certain period!" textAlignment="CENTER" wrapText="true" />
+      <ImageView fx:id="noMessagesImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="580.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/cancel-chat-close-message-no-ui-notification-no-notification-icon-symbol-logo-trademark-label-transparent-png-1220879.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="startLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="512.0" layoutY="730.0" onMouseClicked="#onStartClick" prefHeight="25.0" prefWidth="55.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start" textAlignment="CENTER" underline="true" wrapText="true" />
+      <Label fx:id="newFriendsLabel" alignment="CENTER" layoutX="53.0" layoutY="431.0" prefHeight="64.0" prefWidth="173.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Your new friends" visible="false" wrapText="true" />
+      <ListView fx:id="newFriendsList" layoutX="40.0" layoutY="489.0" prefHeight="446.0" prefWidth="200.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <Label fx:id="receivedMessagesLabel" layoutX="288.0" layoutY="431.0" prefHeight="64.0" prefWidth="181.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Received messages:" textAlignment="CENTER" visible="false" wrapText="true" />
+      <ListView fx:id="newMessagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <ListView fx:id="friendMessagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <Label fx:id="noFriendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="712.0" prefHeight="87.0" prefWidth="235.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="No friends? Start adding them now!" textAlignment="CENTER" wrapText="true" />
+      <ImageView fx:id="noFriendsImage" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" layoutX="53.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/images%20(2).png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="756.0" onMouseClicked="#onNowClick" prefHeight="25.0" prefWidth="44.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" textAlignment="CENTER" underline="true" wrapText="true" />
    </children>
 </AnchorPane>
