@@ -204,12 +204,12 @@
             <Image url="@images/29461-200.png" />
          </image>
       </ImageView>
-      <Label fx:id="noMessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="660.0" layoutY="502.0" prefHeight="128.0" prefWidth="340.0" text="Start sending messages now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="noMessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="660.0" layoutY="566.0" prefHeight="128.0" prefWidth="340.0" text="Start sending messages now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Label>
-      <ImageView fx:id="noMessagesImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="755.0" layoutY="326.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="noMessagesImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="751.0" layoutY="403.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/cancel-chat-close-message-no-ui-notification-no-notification-icon-symbol-logo-trademark-label-transparent-png-1220879.png" />
          </image>
