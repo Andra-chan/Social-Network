@@ -71,6 +71,9 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button noNotificationsButton;
 
+    @FXML
+    Button reportsButton;
+
     public EventsController() {
         userAttendance = new HashSet<>();
         userEventsWithNotifications = new HashSet<>();
@@ -192,6 +195,10 @@ public class EventsController implements Observer<ChangeObserverEvent> {
 
     public void onNowClick() {
         App.changeSceneToNewEventWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 
     @Override

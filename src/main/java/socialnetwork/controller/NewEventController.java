@@ -66,6 +66,9 @@ public class NewEventController{
     ImageView eventImage;
 
     @FXML
+    Button reportsButton;
+
+    @FXML
     public void initialize(){
         eventStartHourSpinner.valueFactoryProperty().setValue(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0, 1));
         eventStartMinuteSpinner.valueFactoryProperty().setValue(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0, 1));
@@ -153,6 +156,10 @@ public class NewEventController{
 
     public void onEventsButtonClick(){
         App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 
 }

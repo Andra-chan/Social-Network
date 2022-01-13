@@ -67,6 +67,9 @@ public class SettingsController {
     Button eventsButton;
 
     @FXML
+    Button reportsButton;
+
+    @FXML
     public void initialize() {
         warningLabel.setVisible(false);
     }
@@ -171,5 +174,9 @@ public class SettingsController {
 
     public void onNotificationsButtonClick(){
         App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 }

@@ -108,6 +108,9 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     ImageView noMutualEventsImage;
 
     @FXML
+    Button reportsButton;
+
+    @FXML
     public void initialize() {
 
         noFriendSelectedImage.setVisible(true);
@@ -264,6 +267,10 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
 
     public void onMutualNowClick() {
         App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 
     @Override

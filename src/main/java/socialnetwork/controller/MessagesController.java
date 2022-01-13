@@ -105,6 +105,9 @@ public class MessagesController {
     @FXML
     Button eventsButton;
 
+    @FXML
+    Button reportsButton;
+
     /**
      * Set chat elements to a certain visibility state
      *
@@ -374,6 +377,10 @@ public class MessagesController {
 
     public void onNotificationsButtonClick(){
         App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 
     /**

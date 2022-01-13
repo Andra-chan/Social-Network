@@ -108,6 +108,9 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     @FXML
     Label mutualFriendsLabel;
 
+    @FXML
+    Button reportsButton;
+
 
     /**
      * Sets visibility of all required objects to the default one
@@ -287,6 +290,10 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
 
     public void onHomeButtonClick() {
         App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 
     /**

@@ -40,7 +40,7 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Button layoutX="660.0" layoutY="14.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="337.0">
+            <Button fx:id="reportsButton" layoutX="660.0" layoutY="14.0" mnemonicParsing="false" onAction="#onReportsButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="337.0">
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="64.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -165,12 +165,12 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="noUpcomingEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="692.0" prefHeight="156.0" prefWidth="314.0" text="Looks like there are no upcoming events! Go join one now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="noUpcomingEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="521.0" layoutY="693.0" prefHeight="156.0" prefWidth="348.0" text="Looks like there are no upcoming events. Go join one now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="659.0" layoutY="785.0" onMouseClicked="#onNowClick" prefHeight="29.0" prefWidth="64.0" text="now!" textAlignment="CENTER" textFill="WHITE" underline="true" wrapText="true">
+      <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="765.0" layoutY="771.0" onMouseClicked="#onNowClick" prefHeight="29.0" prefWidth="55.0" text="now!" textAlignment="CENTER" textFill="WHITE" underline="true" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>

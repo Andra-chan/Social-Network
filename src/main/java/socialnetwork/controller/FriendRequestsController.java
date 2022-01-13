@@ -110,6 +110,8 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     @FXML
     Label mutualNowLabel;
 
+    @FXML
+    Button reportsButton;
 
     /**
      * Initialize UI elements.
@@ -314,6 +316,10 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
 
     public void onHomeButtonClick(){
         App.changeSceneToMainWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="955.0" prefWidth="1075.0" style="-fx-background-color: #243142;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="socialnetwork.controller.ReportsController">
+   <children>
+      <AnchorPane prefHeight="105.0" prefWidth="1075.0" style="-fx-background-color: teal;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+               <image>
+                  <Image url="@images/star_icon.jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="logoutButton" layoutX="1000.0" layoutY="25.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="64.0" prefWidth="63.0" style="-fx-background-color: #243142; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" AnchorPane.rightAnchor="12.0">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/Icons8-Windows-8-User-Interface-Logout-1.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="homeButton" layoutX="499.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHomeButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="503.0">
+               <graphic>
+                  <ImageView blendMode="MULTIPLY" fitHeight="59.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/images.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button layoutX="660.0" layoutY="14.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-color: #2a9482; -fx-background-radius: 15px;" AnchorPane.rightAnchor="337.0">
+               <graphic>
+                  <ImageView blendMode="MULTIPLY" fitHeight="64.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/mobile-application-report-function-web-button-menu-digital-silhouette-style-icon-free-vector.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="eventsButton" layoutX="342.0" layoutY="17.0" mnemonicParsing="false" onAction="#onEventsButtonClick" prefHeight="81.0" prefWidth="72.0" style="-fx-text-fill: #ffffff; -fx-background-radius: 15px; -fx-background-color: #2a9482;" AnchorPane.rightAnchor="656.0">
+               <graphic>
+                  <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/45533.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button fx:id="notificationsButton" layoutX="129.0" layoutY="35.0" mnemonicParsing="false" onAction="#onNotificationsButtonClick" prefHeight="45.0" prefWidth="55.0" styleClass="fancyButton" stylesheets="@css/style.css" AnchorPane.leftAnchor="129.0">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <graphic>
+                  <ImageView fx:id="notificationButtonImage" fitHeight="24.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/notificationsImage.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

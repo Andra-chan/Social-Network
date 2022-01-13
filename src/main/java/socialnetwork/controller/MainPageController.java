@@ -72,6 +72,9 @@ public class MainPageController {
     ListView<Event> upcomingEventsList;
 
     @FXML
+    Button reportsButton;
+
+    @FXML
     ImageView notificationButtonImage;
 
     private void setNoEventsState(boolean state) {
@@ -171,5 +174,9 @@ public class MainPageController {
 
     public void onNowClick() {
         App.changeSceneToEventsWindow(service, userId);
+    }
+
+    public void onReportsButtonClick(){
+        App.changeSceneToReportsWindow(service, userId);
     }
 }
