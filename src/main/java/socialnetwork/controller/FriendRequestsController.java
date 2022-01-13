@@ -17,6 +17,8 @@ import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.Friend;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
+import socialnetwork.service.paging.Page;
+import socialnetwork.service.paging.PageableImplementation;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -30,7 +32,11 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     ObservableList<Utilizator> modelUsersWithFriendRequests = FXCollections.observableArrayList();
     ObservableList<Friend> modelCommonFriends = FXCollections.observableArrayList();
     NotificationService notificationService;
+    int currentPage = 0;
+    final int pageSize = 7;
 
+    int currentFriendsPage = 0;
+    final int friendsPageSize = 5;
 
     @FXML
     AnchorPane friendsPane;
@@ -119,6 +125,18 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button reportsButton;
 
+    @FXML
+    Button nextPage;
+
+    @FXML
+    Button prevPage;
+
+    @FXML
+    Button friendsPrevPage;
+
+    @FXML
+    Button friendsNextPage;
+
     /**
      * Initialize UI elements.
      */
@@ -136,12 +154,14 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
                 userNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 setNoFriendSelectedState(true);
                 setProfileImage(newValue, userImage);
+                currentFriendsPage = 0;
                 modelCommonFriends.setAll(service.getCommonFriends(userId, newValue.getId()));
+                modelCommonFriends.setAll(service.getCommonFriendsPaged(userId, newValue.getId(), new PageableImplementation(currentFriendsPage, friendsPageSize)));
                 noMutualFriendsImage.setVisible(modelCommonFriends.size() == 0);
                 noMutualFriendsLabel.setVisible(modelCommonFriends.size() == 0);
                 mutualNowLabel.setVisible(modelCommonFriends.size() == 0);
-                mutualFriendsList.setVisible(!(modelCommonFriends.size()==0));
-                mutualFriendsLabel.setVisible(!(modelCommonFriends.size()==0));
+                mutualFriendsList.setVisible(!(modelCommonFriends.size() == 0));
+                mutualFriendsLabel.setVisible(!(modelCommonFriends.size() == 0));
             }
         });
         userList.setItems(modelUsersWithFriendRequests);
@@ -174,14 +194,61 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         notificationService.start();
     }
 
+    private List<Utilizator> getUsers(){
+        return service.getUsersListWithFriendRequestsFilteredAndPaged(userId, searchField.getText(), searchField.getText(), new PageableImplementation(currentPage, pageSize));
+    }
+
     /**
      * Update the data model with new data from the service.
      */
     public void updateModel() {
-        Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
-        Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
-        modelUsersWithFriendRequests.setAll(service.getUsersListWithFriendRequests(userId)
-                .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
+        if (!(searchField.getText().isBlank())) {
+            currentPage = 0;
+        }
+        modelUsersWithFriendRequests.setAll(getUsers());
+    }
+
+    public void onFriendsPreviousPageButtonClick() {
+        var selectedFriend = userList.getSelectionModel().getSelectedItem();
+        if (selectedFriend == null) {
+            return;
+        }
+        if (currentFriendsPage == 0) {
+            return;
+        }
+        currentFriendsPage--;
+        modelCommonFriends.setAll(service.getCommonFriendsPaged(userId, selectedFriend.getId(), new PageableImplementation(currentFriendsPage, friendsPageSize)));
+    }
+
+    public void onFriendsNextPageButtonClick() {
+        var selectedItem = userList.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        }
+        var friends = service.getCommonFriendsPaged(userId, selectedItem.getId(), new PageableImplementation(currentFriendsPage + 1, friendsPageSize));
+        if (friends.isEmpty()) {
+            return;
+        }
+        currentFriendsPage++;
+        modelCommonFriends.setAll(friends);
+    }
+
+    public void onNextPageButtonClick() {
+        currentPage++;
+        var users = getUsers();
+        if (users.isEmpty()) {
+            currentPage--;
+            return;
+        }
+        modelUsersWithFriendRequests.setAll(users);
+    }
+
+    public void onPreviousPageButtonClick() {
+        if (currentPage == 0) {
+            return;
+        }
+        currentPage--;
+        updateModel();
     }
 
     /**
@@ -268,7 +335,7 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         App.changeSceneToMainWindow(service, userId);
     }
 
-    public void onReportsButtonClick(){
+    public void onReportsButtonClick() {
         App.changeSceneToReportsWindow(service, userId);
     }
 

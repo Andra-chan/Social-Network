@@ -17,10 +17,9 @@ import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.Event;
 import socialnetwork.domain.Friend;
 import socialnetwork.service.Service;
+import socialnetwork.service.paging.PageableImplementation;
 
-import java.util.Comparator;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
@@ -30,6 +29,11 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     ObservableList<Friend> modelFriendships = FXCollections.observableArrayList();
     ObservableList<Event> modelEvents = FXCollections.observableArrayList();
     NotificationService notificationService;
+    int currentFriendsPage = 0;
+    final int friendsPageSize = 7;
+
+    int currentEventsPage = 0;
+    final int eventsPageSize = 4;
 
     @FXML
     AnchorPane friendsPane;
@@ -113,16 +117,17 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     ImageView notificationButtonImage;
 
     @FXML
-    Button eventsNextPage;
-
-    @FXML
-    Button eventsPrevPage;
+    Button friendsNextPage;
 
     @FXML
     Button friendsPrevPage;
 
     @FXML
-    Button friendsNextPage;
+    Button eventsNextPage;
+
+    @FXML
+    Button eventsPrevPage;
+
 
     private void setNoFriendSelectedState(boolean state) {
         noFriendSelectedImage.setVisible(!state);
@@ -157,7 +162,9 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
                 setNoFriendSelectedState(true);
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 setProfileImage(newValue, friendImage);
-                modelEvents.setAll(service.getCommonEvents(userId, newValue.getId()));
+                currentEventsPage = 0;
+                modelEvents.setAll(service.getCommonEventsPaged(userId, newValue.getId(), new PageableImplementation(currentEventsPage, eventsPageSize)));
+
                 noMutualEventsImage.setVisible(modelEvents.size() == 0);
                 noMutualEventsLabel.setVisible(modelEvents.size() == 0);
                 mutualNowLabel.setVisible(modelEvents.size() == 0);
@@ -168,13 +175,58 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         friendList.setItems(modelFriendships);
     }
 
+    public List<Friend> getFriends() {
+        return service.getFriendsFilteredPaged(userId, searchField.getText(), searchField.getText(), new PageableImplementation(currentFriendsPage, friendsPageSize));
+    }
+
+    public void onEventsPreviousPageButtonClick(){
+        var selected = friendList.getSelectionModel().getSelectedItem();
+        if(selected==null){
+            return;
+        }
+        if(currentEventsPage==0){
+            return;
+        }
+        currentEventsPage--;
+        modelEvents.setAll(service.getCommonEventsPaged(userId, selected.getId(), new PageableImplementation(currentEventsPage, eventsPageSize)));
+    }
+
+    public void onEventsNextPageButtonClick(){
+        var selected = friendList.getSelectionModel().getSelectedItem();
+        if(selected==null){
+            return;
+        }
+        var events =  service.getCommonEventsPaged(userId, selected.getId(), new PageableImplementation(currentEventsPage+1, eventsPageSize));
+        if(events.isEmpty()){
+            return;
+        }
+        currentEventsPage++;
+        modelEvents.setAll(events);
+    }
+
+    public void onFriendsPreviousPageButtonClick() {
+        if (currentFriendsPage == 0) {
+            return;
+        }
+        currentFriendsPage--;
+        modelFriendships.setAll(getFriends());
+    }
+
+    public void onFriendsNextPageButtonClick() {
+        currentFriendsPage++;
+        var friends = getFriends();
+        if (friends.isEmpty()) {
+            currentFriendsPage--;
+            return;
+        }
+        modelFriendships.setAll(friends);
+    }
+
     public void updateModel() {
-        Predicate<Friend> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
-        Predicate<Friend> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
-        modelFriendships.setAll(service.getFriends(userId)
-                .stream().filter(firstNameFilter.or(lastNameFilter))
-                .sorted(Comparator.comparing(Friend::getFirstName))
-                .collect(Collectors.toList()));
+        if (!(searchField.getText().isBlank())) {
+            currentFriendsPage = 1;
+        }
+        modelFriendships.setAll(getFriends());
     }
 
     public void initData(Service service, Long userId) {
@@ -208,19 +260,11 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         }
     }
 
-    public void onFriendsPreviousPageButtonClick(){
+    public void onPreviousPageButtonClick() {
 
     }
 
-    public void onFriendsNextPageButtonClick(){
-
-    }
-
-    public void onEventsPreviousPageButtonClick(){
-
-    }
-
-    public void onEventsNextPageButtonClick(){
+    public void onNextPageButtonClick() {
 
     }
 
@@ -268,7 +312,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         App.changeSceneToEventsWindow(service, userId);
     }
 
-    public void onReportsButtonClick(){
+    public void onReportsButtonClick() {
         App.changeSceneToReportsWindow(service, userId);
     }
 

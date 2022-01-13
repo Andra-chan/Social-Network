@@ -282,7 +282,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
         if (friends.isEmpty()) {
             return;
         }
-        currentPage++;
+        currentFriendsPage++;
         modelCommonFriends.setAll(friends);
     }
 
@@ -370,12 +370,8 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
      * Updates the modelUsers with new data from service.
      */
     public void updateModel() {
-        Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
-        Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
-        modelUsers.setAll(getUserList()
-                .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
-        if (!(searchField.getText().isBlank() && searchField.getText().isBlank())) {
-            currentPage = 1;
+        if (!(searchField.getText().isBlank())) {
+            currentPage = 0;
         }
         modelUsers.setAll(getUserList());
     }

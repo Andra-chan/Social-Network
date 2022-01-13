@@ -92,6 +92,8 @@ public class EventsController implements Observer<ChangeObserverEvent> {
         noEventsImage.setVisible(state);
         noEventsLabel.setVisible(state);
         nowLabel.setVisible(state);
+        prevPage.setVisible(!state);
+        nextPage.setVisible(!state);
     }
 
     @FXML
