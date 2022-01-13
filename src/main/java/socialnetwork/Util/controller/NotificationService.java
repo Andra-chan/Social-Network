@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,7 +44,7 @@ public class NotificationService extends ScheduledService<Void> {
                     notificationButton.setEffect(glow);
                     notificationImageView.setImage(notificationImage);
                 } else {
-                    notificationButton.setEffect(null);
+                    notificationButton.setEffect(new DropShadow());
                     notificationImageView.setImage(noNotificationsImage);
                 }
                 return null;

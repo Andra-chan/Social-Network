@@ -9,14 +9,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 import socialnetwork.App;
 import socialnetwork.Util.controller.EventCell;
+import socialnetwork.Util.controller.NotificationService;
 import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
@@ -34,6 +38,7 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     ObservableList<Event> modelEvents = FXCollections.observableArrayList();
     Set<Long> userAttendance;
     Set<Long> userEventsWithNotifications;
+    NotificationService notificationService;
 
     @FXML
     Button notificationsButton;
@@ -74,6 +79,9 @@ public class EventsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button reportsButton;
 
+    @FXML
+    ImageView notificationButtonImage;
+
     public EventsController() {
         userAttendance = new HashSet<>();
         userEventsWithNotifications = new HashSet<>();
@@ -109,6 +117,11 @@ public class EventsController implements Observer<ChangeObserverEvent> {
         service.addObserver(this);
         eventsList.setItems(modelEvents);
         setNoEventsState(modelEvents.size() == 0);
+        notificationService = new NotificationService(service, userId, notificationsButton,
+                notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
+                String.valueOf(App.class.getResource("images/activeNotifications.png")));
+        notificationService.setPeriod(Duration.seconds(5));
+        notificationService.start();
     }
 
     /**
@@ -138,8 +151,10 @@ public class EventsController implements Observer<ChangeObserverEvent> {
         }
         if (userEventsWithNotifications.contains(selectedEvent.getId())) {
             noNotificationsImage.setImage(new Image(String.valueOf(App.class.getResource("images/notificationsImage.png"))));
+            noNotificationsButton.setEffect(new Glow());
         } else {
             noNotificationsImage.setImage(new Image(String.valueOf(App.class.getResource("images/noNotificationsImage.png"))));
+            noNotificationsButton.setEffect(new DropShadow());
         }
     }
 

@@ -8,7 +8,10 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import socialnetwork.App;
+import socialnetwork.Util.controller.NotificationService;
+import socialnetwork.Util.controller.UserListCell;
 import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
@@ -26,6 +29,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     Service service;
     Long userId;
     ObservableList<Utilizator> modelUsers = FXCollections.observableArrayList();
+    NotificationService notificationService;
 
     @FXML
     AnchorPane friendsPane;
@@ -111,6 +115,9 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button reportsButton;
 
+    @FXML
+    ImageView notificationButtonImage;
+
 
     /**
      * Sets visibility of all required objects to the default one
@@ -150,34 +157,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
     @FXML
     public void initialize() {
         setButtonsToDefaultState();
-        userList.setCellFactory(param -> new ListCell<>() {
-            private ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
-
-            @Override
-            public void updateItem(Utilizator user, boolean empty) {
-                super.updateItem(user, empty);
-                if (empty) {
-                    setGraphic(null);
-                    setText(null);
-                    setStyle("-fx-background-color: #243142");
-
-                } else {
-                    profileImage.setFitHeight(64);
-                    profileImage.setFitWidth(64);
-                    profileImage.setBlendMode(BlendMode.DARKEN);
-                    //profileImage.setPreserveRatio(true);
-                    setProfileImage(user, profileImage);
-                    setText(user.getFirstName() + " " + user.getLastName());
-                    setGraphic(profileImage);
-                    setTextFill(Color.WHITE);
-                    if (isSelected())
-                        setStyle("-fx-background-color: #1c2a36");
-                    else {
-                        setStyle("-fx-background-color: #243142");
-                    }
-                }
-            }
-        });
+        userList.setCellFactory(param -> new UserListCell());
 
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
@@ -239,6 +219,11 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
             noUsersImage.setVisible(false);
             noUsersLabel.setVisible(false);
         }
+        notificationService = new NotificationService(service, userId, notificationsButton,
+                notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
+                String.valueOf(App.class.getResource("images/activeNotifications.png")));
+        notificationService.setPeriod(Duration.seconds(5));
+        notificationService.start();
     }
 
     /**

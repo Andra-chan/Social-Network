@@ -8,7 +8,9 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import socialnetwork.App;
+import socialnetwork.Util.controller.NotificationService;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
@@ -20,6 +22,7 @@ public class SettingsController {
     Service service;
     Long userId;
     Utilizator currentUser;
+    NotificationService notificationService;
 
     @FXML
     AnchorPane friendsPane;
@@ -67,6 +70,9 @@ public class SettingsController {
     Button eventsButton;
 
     @FXML
+    ImageView notificationButtonImage;
+
+    @FXML
     Button reportsButton;
 
     @FXML
@@ -79,6 +85,11 @@ public class SettingsController {
         this.userId = userId;
         this.currentUser = service.getUser(userId);
         update();
+        notificationService = new NotificationService(service, userId, notificationsButton,
+                notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
+                String.valueOf(App.class.getResource("images/activeNotifications.png")));
+        notificationService.setPeriod(Duration.seconds(5));
+        notificationService.start();
     }
 
     private void update() {

@@ -4,12 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import socialnetwork.App;
 import socialnetwork.Util.controller.EventCell;
+import socialnetwork.Util.controller.FriendListCell;
+import socialnetwork.Util.controller.NotificationService;
 import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
@@ -28,6 +29,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     Long userId;
     ObservableList<Friend> modelFriendships = FXCollections.observableArrayList();
     ObservableList<Event> modelEvents = FXCollections.observableArrayList();
+    NotificationService notificationService;
 
     @FXML
     AnchorPane friendsPane;
@@ -108,83 +110,47 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     ImageView noMutualEventsImage;
 
     @FXML
+    ImageView notificationButtonImage;
+
+    private void setNoFriendSelectedState(boolean state) {
+        noFriendSelectedImage.setVisible(!state);
+        noFriendSelectedLabel.setVisible(!state);
+        friendImage.setVisible(state);
+        friendNameLabel.setVisible(state);
+        removeButton.setVisible(state);
+        separator.setVisible(state);
+        removeFriendImage.setVisible(state);
+        noMutualEventsLabel.setVisible(state);
+        noMutualEventsImage.setVisible(state);
+        mutualEventsList.setVisible(state);
+        mutualEventsLabel.setVisible(state);
+        mutualNowLabel.setVisible(state);
+    }
+
+    @FXML
     Button reportsButton;
 
     @FXML
     public void initialize() {
-
-        noFriendSelectedImage.setVisible(true);
-        noFriendSelectedLabel.setVisible(true);
-        friendImage.setVisible(false);
-        friendNameLabel.setVisible(false);
-        removeButton.setVisible(false);
-        separator.setVisible(false);
-        removeFriendImage.setVisible(false);
-        noMutualEventsLabel.setVisible(false);
-        noMutualEventsImage.setVisible(false);
-        mutualEventsList.setVisible(false);
-        mutualEventsLabel.setVisible(false);
-        mutualNowLabel.setVisible(false);
-
+        setNoFriendSelectedState(false);
         mutualEventsList.setItems(modelEvents);
         mutualEventsList.setCellFactory(x -> new EventCell(160, 90, 400, false));
 
-        friendList.setCellFactory(param -> new ListCell<>() {
-            private ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
-
-            @Override
-            public void updateItem(Friend friend, boolean empty) {
-                super.updateItem(friend, empty);
-                if (empty) {
-                    setGraphic(null);
-                    setText(null);
-                    setStyle("-fx-background-color: #243142");
-
-                } else {
-                    profileImage.setFitHeight(64);
-                    profileImage.setFitWidth(64);
-                    profileImage.setBlendMode(BlendMode.DARKEN);
-                    //profileImage.setPreserveRatio(true);
-                    setProfileImage(friend, profileImage);
-                    setText(friend.getFirstName() + " " + friend.getLastName());
-                    setGraphic(profileImage);
-                    setTextFill(Color.WHITE);
-                    if (isSelected())
-                        setStyle("-fx-background-color: #1c2a36");
-                    else
-                        setStyle("-fx-background-color: #243142");
-                }
-            }
-        });
+        friendList.setCellFactory(param -> new FriendListCell());
         friendList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
-                friendImage.setVisible(false);
-                friendNameLabel.setVisible(false);
-                removeButton.setVisible(false);
-                separator.setVisible(false);
-                removeFriendImage.setVisible(false);
-                noFriendSelectedImage.setVisible(true);
-                noFriendSelectedLabel.setVisible(true);
-                mutualEventsList.setVisible(false);
-                noMutualEventsLabel.setVisible(false);
-                noMutualEventsImage.setVisible(false);
-                mutualEventsLabel.setVisible(false);
+                setNoFriendSelectedState(false);
             } else {
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
-                friendImage.setVisible(true);
-                friendNameLabel.setVisible(true);
-                removeButton.setVisible(true);
-                separator.setVisible(true);
-                removeFriendImage.setVisible(true);
-                noFriendSelectedImage.setVisible(false);
-                noFriendSelectedLabel.setVisible(false);
+                setNoFriendSelectedState(true);
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 setProfileImage(newValue, friendImage);
                 modelEvents.setAll(service.getCommonEvents(userId, newValue.getId()));
                 noMutualEventsImage.setVisible(modelEvents.size() == 0);
                 noMutualEventsLabel.setVisible(modelEvents.size() == 0);
-                mutualEventsList.setVisible(modelEvents.size()!=0);
-                mutualEventsLabel.setVisible(modelEvents.size()!=0);
+                mutualNowLabel.setVisible(modelEvents.size() == 0);
+                mutualEventsList.setVisible(modelEvents.size() != 0);
+                mutualEventsLabel.setVisible(modelEvents.size() != 0);
             }
         });
         friendList.setItems(modelFriendships);
@@ -213,6 +179,11 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
             noFriendsLabel.setVisible(false);
             nowLabel.setVisible(false);
         }
+        notificationService = new NotificationService(service, userId, notificationsButton,
+                notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
+                String.valueOf(App.class.getResource("images/activeNotifications.png")));
+        notificationService.setPeriod(Duration.seconds(5));
+        notificationService.start();
     }
 
     public void onRemoveButtonPress() {

@@ -83,13 +83,13 @@ public class Service implements Observable<ChangeObserverEvent> {
         }
     }
 
-    public Event addEvent(Event event){
+    public Event addEvent(Event event) {
         var ret = eventRepository.save(event);
         notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT));
         return ret;
     }
 
-    public List<Event> getEvents(){
+    public List<Event> getEvents() {
         LocalDateTime now = LocalDateTime.now();
         return StreamSupport.stream(eventRepository.findAll().spliterator(), false)
                 .filter(x -> x.getDate().isAfter(now))
@@ -97,7 +97,7 @@ public class Service implements Observable<ChangeObserverEvent> {
                 .collect(Collectors.toList());
     }
 
-    public void setNotificationsForEvent(Long userId, Long eventId, boolean wantNotifications){
+    public void setNotificationsForEvent(Long userId, Long eventId, boolean wantNotifications) {
         EventAttendance attendance = new EventAttendance(null, null);
         attendance.setId(new Pair<Long, Long>(eventId, userId));
         attendance.setNotifications(wantNotifications);
@@ -105,7 +105,7 @@ public class Service implements Observable<ChangeObserverEvent> {
         notifyObservers(new ChangeObserverEvent(ChangeObserverEventType.EVENT_ATTENDANCE));
     }
 
-    public EventAttendance addAttendance(Long eventId, Long userId){
+    public EventAttendance addAttendance(Long eventId, Long userId) {
         EventAttendance attendance = new EventAttendance(null, null);
         attendance.setId(new Pair<Long, Long>(eventId, userId));
         attendance.setNotifications(true);
@@ -115,17 +115,17 @@ public class Service implements Observable<ChangeObserverEvent> {
 
     }
 
-    public List<EventAttendance> getUpcomingEventsForUser(Long userId){
+    public List<EventAttendance> getUpcomingEventsForUser(Long userId) {
         var now = LocalDateTime.now();
         return getEventsForUser(userId)
                 .stream()
                 .filter(x ->
                         ((x.getEvent().getDate().isAfter(now)) &&
-                        (x.getEvent().getDate().isBefore(now.plusMinutes(eventNotificationTimeMinutes)))))
+                                (x.getEvent().getDate().isBefore(now.plusMinutes(eventNotificationTimeMinutes)))))
                 .collect(Collectors.toList());
     }
 
-    public void cancelAttendance(Long eventId, Long userId){
+    public void cancelAttendance(Long eventId, Long userId) {
         EventAttendance attendance = new EventAttendance(null, null);
         attendance.setId(new Pair<Long, Long>(eventId, userId));
         eventAttendanceRepository.delete(attendance.getId());
@@ -145,9 +145,11 @@ public class Service implements Observable<ChangeObserverEvent> {
                 .filter(x -> x.getId().getValue().equals(userId1))
                 .map(x -> x.getId().getKey())
                 .forEach(firstUserEventIds::add);
+        var now = LocalDateTime.now();
         return StreamSupport.stream(allAttendances.spliterator(), false)
                 .filter(x -> x.getId().getValue().equals(userId2))
                 .filter(x -> firstUserEventIds.contains(x.getId().getKey()))
+                .filter(x -> x.getEvent().getDate().isAfter(now))
                 .map(x -> x.getEvent())
                 .collect(Collectors.toList());
     }
@@ -171,7 +173,7 @@ public class Service implements Observable<ChangeObserverEvent> {
                 ).collect(Collectors.toList());
     }
 
-    private HashSet<Long> getFriendsSet(Long userId, Iterable<Prietenie> friendships){
+    private HashSet<Long> getFriendsSet(Long userId, Iterable<Prietenie> friendships) {
         HashSet<Long> userFriends = new HashSet<>();
         StreamSupport.stream(friendships.spliterator(), false)
                 .filter(fr -> fr.getSecondUser().equals(userId) || fr.getFirstUser().equals(userId))
@@ -198,7 +200,7 @@ public class Service implements Observable<ChangeObserverEvent> {
         Set<Long> firstUserFriends = getFriendsSet(userId, friendships);
 
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
-                .filter(x->!firstUserFriends.contains(x.getId()))
+                .filter(x -> (!x.getId().equals(userId)) && (!firstUserFriends.contains(x.getId())))
                 .collect(Collectors.toList());
     }
 

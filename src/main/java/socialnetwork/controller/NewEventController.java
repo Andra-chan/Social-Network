@@ -17,7 +17,9 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import socialnetwork.App;
+import socialnetwork.Util.controller.NotificationService;
 import socialnetwork.domain.Event;
 import socialnetwork.service.Service;
 
@@ -25,6 +27,7 @@ public class NewEventController{
     Service service;
     Long userId;
     String currentImageURL;
+    NotificationService notificationService;
 
     @FXML
     Button notificationsButton;
@@ -66,6 +69,9 @@ public class NewEventController{
     ImageView eventImage;
 
     @FXML
+    ImageView notificationButtonImage;
+
+    @FXML
     Button reportsButton;
 
     @FXML
@@ -83,6 +89,11 @@ public class NewEventController{
         this.service=service;
         this.userId=userId;
         currentImageURL="";
+        notificationService = new NotificationService(service, userId, notificationsButton,
+                notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
+                String.valueOf(App.class.getResource("images/activeNotifications.png")));
+        notificationService.setPeriod(Duration.seconds(5));
+        notificationService.start();
     }
 
 

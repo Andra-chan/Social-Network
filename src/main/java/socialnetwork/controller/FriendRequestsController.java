@@ -4,14 +4,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import socialnetwork.App;
+import socialnetwork.Util.controller.FriendListCell;
+import socialnetwork.Util.controller.NotificationService;
+import socialnetwork.Util.controller.UserListCell;
 import socialnetwork.Util.events.ChangeObserverEvent;
 import socialnetwork.Util.events.ChangeObserverEventType;
 import socialnetwork.Util.observer.Observer;
+import socialnetwork.domain.Friend;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
 
@@ -25,6 +28,9 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     Service service;
     Long userId;
     ObservableList<Utilizator> modelUsersWithFriendRequests = FXCollections.observableArrayList();
+    ObservableList<Friend> modelCommonFriends = FXCollections.observableArrayList();
+    NotificationService notificationService;
+
 
     @FXML
     AnchorPane friendsPane;
@@ -102,7 +108,7 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     ImageView noMutualFriendsImage;
 
     @FXML
-    ListView mutualFriendsList;
+    ListView<Friend> mutualFriendsList;
 
     @FXML
     Label mutualFriendsLabel;
@@ -117,108 +123,60 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
      * Initialize UI elements.
      */
     @FXML
-    public void initialize(){
-
-        noUserSelectedImage.setVisible(true);
-        noUserSelectedLabel.setVisible(true);
-        userImage.setVisible(false);
-        userNameLabel.setVisible(false);
-        declineButton.setVisible(false);
-        acceptButton.setVisible(false);
-        separator.setVisible(false);
-        declineFriendshipImage.setVisible(false);
-        acceptFriendshipImage.setVisible(false);
-        noMutualFriendsLabel.setVisible(false);
-        noMutualFriendsImage.setVisible(false);
-        mutualFriendsList.setVisible(false);
-        mutualFriendsLabel.setVisible(false);
-        mutualNowLabel.setVisible(false);
-
-
-        userList.setCellFactory(param ->  new ListCell<Utilizator>(){
-            private ImageView profileImage =  new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
-            @Override
-            public void updateItem(Utilizator user, boolean empty){
-                super.updateItem(user, empty);
-                if(empty){
-                    setGraphic(null);
-                    setText(null);
-                    setStyle("-fx-background-color: #243142");
-
-                } else {
-
-                    profileImage.setFitHeight(64);
-                    profileImage.setFitWidth(64);
-                    profileImage.setBlendMode(BlendMode.DARKEN);
-                    //profileImage.setPreserveRatio(true);
-                    setProfileImage(user, profileImage);
-                    setText(user.getFirstName() + " " + user.getLastName());
-                    setGraphic(profileImage);
-                    setTextFill(Color.WHITE);
-                    if(isSelected())
-                        setStyle("-fx-background-color: #1c2a36");
-                    else{
-                        setStyle("-fx-background-color: #243142");
-                    }
-                }
-            }
-        });
+    public void initialize() {
+        setNoFriendSelectedState(false);
+        mutualFriendsList.setItems(modelCommonFriends);
+        mutualFriendsList.setCellFactory(x -> new FriendListCell());
+        userList.setCellFactory(param -> new UserListCell());
         userList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue == null){
-                userImage.setVisible(false);
-                userNameLabel.setVisible(false);
-                declineButton.setVisible(false);
-                acceptButton.setVisible(false);
-                separator.setVisible(false);
-                declineFriendshipImage.setVisible(false);
-                acceptFriendshipImage.setVisible(false);
-                noUserSelectedImage.setVisible(true);
-                noUserSelectedLabel.setVisible(true);
-            }
-            else{
+            if (newValue == null) {
+                setNoFriendSelectedState(false);
+            } else {
                 userNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
-                userImage.setVisible(true);
-                userNameLabel.setVisible(true);
-                declineButton.setVisible(true);
-                acceptButton.setVisible(true);
-                separator.setVisible(true);
-                declineFriendshipImage.setVisible(true);
-                acceptFriendshipImage.setVisible(true);
-                noUserSelectedImage.setVisible(false);
-                noUserSelectedLabel.setVisible(false);
+                setNoFriendSelectedState(true);
                 setProfileImage(newValue, userImage);
+                modelCommonFriends.setAll(service.getCommonFriends(userId, newValue.getId()));
+                noMutualFriendsImage.setVisible(modelCommonFriends.size() == 0);
+                noMutualFriendsLabel.setVisible(modelCommonFriends.size() == 0);
+                mutualNowLabel.setVisible(modelCommonFriends.size() == 0);
+                mutualFriendsList.setVisible(!(modelCommonFriends.size()==0));
+                mutualFriendsLabel.setVisible(!(modelCommonFriends.size()==0));
             }
-
         });
         userList.setItems(modelUsersWithFriendRequests);
     }
 
     /**
      * Initialize data using the service, and logged-in user
+     *
      * @param service the Service
-     * @param userId the logged-in users' id
+     * @param userId  the logged-in users' id
      */
     public void initData(Service service, Long userId) {
-        this.service=service;
-        this.userId=userId;
+        this.service = service;
+        this.userId = userId;
         updateModel();
         service.addObserver(this);
-        if(modelUsersWithFriendRequests.isEmpty()){
+        if (modelUsersWithFriendRequests.isEmpty()) {
             noFriendRequestsImage.setVisible(true);
             noFriendRequestsLabel.setVisible(true);
             nowLabel.setVisible(true);
-        }
-        else{
+        } else {
             noFriendRequestsImage.setVisible(false);
             noFriendRequestsLabel.setVisible(false);
             nowLabel.setVisible(false);
         }
+        notificationService = new NotificationService(service, userId, notificationsButton,
+                notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
+                String.valueOf(App.class.getResource("images/activeNotifications.png")));
+        notificationService.setPeriod(Duration.seconds(5));
+        notificationService.start();
     }
 
     /**
      * Update the data model with new data from the service.
      */
-    public void updateModel(){
+    public void updateModel() {
         Predicate<Utilizator> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
         Predicate<Utilizator> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
         modelUsersWithFriendRequests.setAll(getUsersListWithFriendRequests()
@@ -227,9 +185,10 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
 
     /**
      * Get the list of users directed to the logged in user
+     *
      * @return a list of users with friend requests directed to the logged in user
      */
-    public List<Utilizator> getUsersListWithFriendRequests(){
+    public List<Utilizator> getUsersListWithFriendRequests() {
         return service.getPendingFriendRequests(userId).stream().map(x -> service.getUser(x.getSender()))
                 .collect(Collectors.toList());
     }
@@ -251,7 +210,7 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     /**
      * When the user clicks on the add friendsbutton, switch the scene
      */
-    public void onMenuAddFriendsClick(){
+    public void onMenuAddFriendsClick() {
         App.changeSceneToAddFriendsWindow(service, userId);
     }
 
@@ -265,33 +224,33 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     /**
      * When the user clicks on the settings button, switch the scene
      */
-    public void onMenuSettingsClick(){
+    public void onMenuSettingsClick() {
         App.changeSceneToSettingsWindow(service, userId);
     }
 
     /**
      * When the user clicks on the logout button, switch the scene
      */
-    public void onLogoutButtonClick(){
+    public void onLogoutButtonClick() {
         App.changeSceneToLogin(service);
     }
 
-    public void onEventsButtonClick(){
+    public void onEventsButtonClick() {
         App.changeSceneToEventsWindow(service, userId);
     }
 
-    public void onNotificationsButtonClick(){
+    public void onNotificationsButtonClick() {
         App.changeSceneToMainWindow(service, userId);
     }
 
     /**
      * When the user clicks on the accept button, accept the friend request from the selected user.
      */
-    public void onAcceptButtonClick(){
+    public void onAcceptButtonClick() {
         var selectedFriend = userList.getSelectionModel().getSelectedItem();
-        if(selectedFriend!=null) {
+        if (selectedFriend != null) {
             var friendRequest = service.getFriendRequest(userId, selectedFriend.getId());
-            if(friendRequest.isPresent()){
+            if (friendRequest.isPresent()) {
                 service.handleFriendRequest(friendRequest.get().getId(), "A");
             }
         }
@@ -300,21 +259,21 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     /**
      * When the user clicks on the decline button, decline the friend request from the selected user.
      */
-    public void onDeclineButtonClick(){
+    public void onDeclineButtonClick() {
         var selectedFriend = userList.getSelectionModel().getSelectedItem();
-        if(selectedFriend!=null) {
+        if (selectedFriend != null) {
             var friendRequest = service.getFriendRequest(userId, selectedFriend.getId());
-            if(friendRequest.isPresent()){
+            if (friendRequest.isPresent()) {
                 service.handleFriendRequest(friendRequest.get().getId(), "R");
             }
         }
     }
 
-    public void onNowClick(){
+    public void onNowClick() {
         App.changeSceneToAddFriendsWindow(service, userId);
     }
 
-    public void onHomeButtonClick(){
+    public void onHomeButtonClick() {
         App.changeSceneToMainWindow(service, userId);
     }
 
@@ -323,9 +282,29 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     }
 
 
+    @FXML
+    ImageView notificationButtonImage;
+
+    private void setNoFriendSelectedState(boolean state) {
+        noUserSelectedImage.setVisible(!state);
+        noUserSelectedLabel.setVisible(!state);
+        userImage.setVisible(state);
+        userNameLabel.setVisible(state);
+        declineButton.setVisible(state);
+        acceptButton.setVisible(state);
+        separator.setVisible(state);
+        declineFriendshipImage.setVisible(state);
+        acceptFriendshipImage.setVisible(state);
+        noMutualFriendsLabel.setVisible(state);
+        noMutualFriendsImage.setVisible(state);
+        mutualFriendsList.setVisible(state);
+        mutualFriendsLabel.setVisible(state);
+        mutualNowLabel.setVisible(state);
+    }
 
     /**
      * Update data with new friend request data from the service.
+     *
      * @param event the event type.
      */
     @Override

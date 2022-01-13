@@ -15,7 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 import socialnetwork.App;
+import socialnetwork.Util.controller.FriendListCell;
+import socialnetwork.Util.controller.NotificationService;
 import socialnetwork.Util.message.MessageType;
 import socialnetwork.domain.Friend;
 import socialnetwork.domain.MessageDTO;
@@ -32,6 +35,7 @@ public class MessagesController {
     Service service;
     Long userId;
     ObservableList<Friend> modelFriendships = FXCollections.observableArrayList();
+    NotificationService notificationService;
 
     @FXML
     public ScrollPane chatScrollPane;
@@ -108,6 +112,9 @@ public class MessagesController {
     @FXML
     Button reportsButton;
 
+    @FXML
+    ImageView notificationButtonImage;
+
     /**
      * Set chat elements to a certain visibility state
      *
@@ -168,33 +175,7 @@ public class MessagesController {
         setNotifyNoMessagesVisiblity(false);
         chatScrollPane.vvalueProperty().bind(chatGridPane.heightProperty());
         chatTextField.setOnKeyPressed(event -> enterKeyPressed(event.getCode()));
-        friendList.setCellFactory(param -> new ListCell<>() {
-            private final ImageView profileImage = new ImageView(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
-
-            @Override
-            public void updateItem(Friend friend, boolean empty) {
-                super.updateItem(friend, empty);
-                if (empty) {
-                    setGraphic(null);
-                    setText(null);
-                    setStyle("-fx-background-color: #243142");
-
-                } else {
-                    profileImage.setFitHeight(64);
-                    profileImage.setFitWidth(64);
-                    profileImage.setBlendMode(BlendMode.DARKEN);
-                    //profileImage.setPreserveRatio(true);
-                    setProfileImage(friend, profileImage);
-                    setText(friend.getFirstName() + " " + friend.getLastName());
-                    setGraphic(profileImage);
-                    setTextFill(Color.WHITE);
-                    if (isSelected())
-                        setStyle("-fx-background-color: #1c2a36");
-                    else
-                        setStyle("-fx-background-color: #243142");
-                }
-            }
-        });
+        friendList.setCellFactory(param -> new FriendListCell());
 
         friendList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
@@ -314,6 +295,11 @@ public class MessagesController {
         setNotifyNoMessagesVisiblity(false);
         setChatObjectsVisibility(false);
         setNotifyUsageVisibility(true);
+        notificationService = new NotificationService(service, userId, notificationsButton,
+                notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
+                String.valueOf(App.class.getResource("images/activeNotifications.png")));
+        notificationService.setPeriod(Duration.seconds(5));
+        notificationService.start();
     }
 
     /**
