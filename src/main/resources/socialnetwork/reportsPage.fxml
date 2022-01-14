@@ -112,7 +112,6 @@
       <Separator layoutX="257.0" layoutY="119.0" orientation="VERTICAL" prefHeight="286.0" prefWidth="6.0" />
       <Separator layoutX="22.0" layoutY="418.0" prefHeight="2.0" prefWidth="1035.0" />
       <Label fx:id="chooseFriendLabel" layoutX="39.0" layoutY="431.0" prefHeight="64.0" prefWidth="202.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Choose a friend for R2" textAlignment="CENTER" visible="false" wrapText="true" />
-      <ListView fx:id="friendsList" layoutX="40.0" layoutY="489.0" prefHeight="446.0" prefWidth="200.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
       <Separator layoutX="257.0" layoutY="432.0" orientation="VERTICAL" prefHeight="509.0" prefWidth="6.0" />
       <Label fx:id="noMessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="723.0" prefHeight="87.0" prefWidth="278.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start chatting with a friend to see your messages from a certain period!" textAlignment="CENTER" wrapText="true" />
       <ImageView fx:id="noMessagesImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="580.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
@@ -122,10 +121,9 @@
       </ImageView>
       <Label fx:id="startLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="512.0" layoutY="730.0" onMouseClicked="#onStartClick" prefHeight="25.0" prefWidth="55.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start" textAlignment="CENTER" underline="true" wrapText="true" />
       <Label fx:id="newFriendsLabel" alignment="CENTER" layoutX="53.0" layoutY="431.0" prefHeight="64.0" prefWidth="173.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Your new friends" visible="false" wrapText="true" />
-      <ListView fx:id="friendsList" layoutX="40.0" layoutY="489.0" prefHeight="446.0" prefWidth="200.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <ListView fx:id="friendsList" layoutX="28.0" layoutY="498.0" prefHeight="398.0" prefWidth="200.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
       <Label fx:id="receivedMessagesLabel" layoutX="288.0" layoutY="431.0" prefHeight="64.0" prefWidth="181.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Received messages:" textAlignment="CENTER" visible="false" wrapText="true" />
-      <ListView fx:id="messagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
-      <ListView fx:id="messagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <ListView fx:id="messagesList" layoutX="282.0" layoutY="498.0" prefHeight="398.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
       <Label fx:id="noFriendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="712.0" prefHeight="87.0" prefWidth="235.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="No friends? Start adding them now!" textAlignment="CENTER" wrapText="true" />
       <ImageView fx:id="noFriendsImage" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" layoutX="53.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -133,5 +131,41 @@
          </image>
       </ImageView>
       <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="756.0" onMouseClicked="#onNowClick" prefHeight="25.0" prefWidth="44.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" textAlignment="CENTER" underline="true" wrapText="true" />
+      <Button fx:id="friendsNextPage" layoutX="158.0" layoutY="909.0" mnemonicParsing="false" onAction="#onFriendsNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css" visible="false">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/nextPageIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="friendsPrevPage" layoutX="61.0" layoutY="909.0" mnemonicParsing="false" onAction="#onFriendsPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css" visible="false">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="24.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/previousPageImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="MessagesPrevPage" layoutX="600.0" layoutY="910.0" mnemonicParsing="false" onAction="#onMessagesPreviousPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css" visible="false">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/previousPageImage.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="messagesNextPage" layoutX="698.0" layoutY="910.0" mnemonicParsing="false" onAction="#onMessagesNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css" visible="false">
+         <graphic>
+            <ImageView blendMode="DARKEN" fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/nextPageIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
