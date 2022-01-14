@@ -196,8 +196,8 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
                 friendsNextPage.setVisible(!(modelCommonFriends.size() == 0));
                 noMutualFriendsImage.setVisible(modelCommonFriends.size() == 0);
                 noMutualFriendsLabel.setVisible(modelCommonFriends.size() == 0);
-                nextPage.setVisible(modelCommonFriends.size() != 0);
-                prevPage.setVisible(modelCommonFriends.size() != 0);
+                friendsNextPage.setVisible(modelCommonFriends.size() != 0);
+                friendsPrevPage.setVisible(modelCommonFriends.size() != 0);
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 setProfileImage(newValue, friendImage);
                 var maybePending = service.getFriendRequest(userId, newValue.getId());
