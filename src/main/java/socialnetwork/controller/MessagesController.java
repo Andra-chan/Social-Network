@@ -124,6 +124,12 @@ public class MessagesController {
     @FXML
     ImageView noFriendsImage;
 
+    @FXML
+    Button friendsNextPage;
+
+    @FXML
+    Button friendsPrevPage;
+
     /**
      * Set chat elements to a certain visibility state
      *
@@ -329,6 +335,13 @@ public class MessagesController {
             return null;
         }
         return messages.get(messages.size() - 1);
+    }
+
+    public void onFriendsPreviousPageButtonClick() {
+
+    }
+
+    public void onFriendsNextPageButtonClick() {
     }
 
     /**

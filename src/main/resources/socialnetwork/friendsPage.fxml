@@ -114,7 +114,7 @@
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="noMutualEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="674.0" prefHeight="81.0" prefWidth="288.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Looks like there are no mutual events. Go join an event now!" textAlignment="CENTER" visible="false" wrapText="true" />
+            <Label fx:id="noMutualEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="674.0" prefHeight="81.0" prefWidth="288.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Looks like you have no mutual events. Go join an event now!" textAlignment="CENTER" visible="false" wrapText="true" />
             <Label fx:id="mutualNowLabel" layoutX="337.0" layoutY="715.0" onMouseClicked="#onMutualNowClick" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" underline="true" visible="false" />
             <ImageView fx:id="noMutualEventsImage" fitHeight="161.0" fitWidth="160.0" layoutX="168.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>

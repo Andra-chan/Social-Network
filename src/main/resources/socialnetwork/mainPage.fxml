@@ -170,7 +170,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="noUpcomingEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="521.0" layoutY="693.0" prefHeight="156.0" prefWidth="348.0" text="Looks like there are no upcoming events. Go join one now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="noUpcomingEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="521.0" layoutY="693.0" prefHeight="156.0" prefWidth="348.0" text="Looks like you have no upcoming events. Go join one now!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>

@@ -261,14 +261,6 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         }
     }
 
-    public void onPreviousPageButtonClick() {
-
-    }
-
-    public void onNextPageButtonClick() {
-
-    }
-
     public void onNowClick() {
         App.changeSceneToAddFriendsWindow(service, userId);
     }
