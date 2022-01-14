@@ -72,8 +72,8 @@
       </AnchorPane>
       <ListView fx:id="friendList" layoutX="326.0" layoutY="183.0" prefHeight="720.0" prefWidth="240.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" visible="false" AnchorPane.bottomAnchor="51.0" AnchorPane.topAnchor="183.0">
          <styleClass>
-            <String fx:value="list-view" />
             <String fx:value="list-cell" />
+            <String fx:value="scroll-bar" />
          </styleClass>
       </ListView>
       <AnchorPane layoutX="578.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
@@ -139,7 +139,11 @@
                   </ImageView>
                </graphic>
             </Button>
-            <ListView fx:id="mutualEventsList" layoutX="35.0" layoutY="387.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+            <ListView fx:id="mutualEventsList" layoutX="35.0" layoutY="387.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" visible="false">
+               <styleClass>
+                  <String fx:value="list-cell" />
+                  <String fx:value="scroll-bar" />
+               </styleClass></ListView>
          </children>
       </AnchorPane>
       <Separator layoutX="574.0" layoutY="105.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />

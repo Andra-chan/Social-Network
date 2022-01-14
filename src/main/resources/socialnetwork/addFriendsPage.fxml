@@ -153,8 +153,8 @@
       </AnchorPane>
       <ListView fx:id="userList" layoutX="326.0" layoutY="183.0" prefHeight="720.0" prefWidth="240.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" AnchorPane.bottomAnchor="51.0" AnchorPane.topAnchor="183.0">
          <styleClass>
-            <String fx:value="list-view" />
             <String fx:value="list-cell" />
+            <String fx:value="scroll-bar" />
          </styleClass>
       </ListView>
       <Separator layoutX="574.0" layoutY="105.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />
@@ -255,7 +255,11 @@
                   <Image url="@images/images%20(2).png" />
                </image>
             </ImageView>
-            <ListView fx:id="mutualFriendsList" layoutX="35.0" layoutY="387.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" />
+            <ListView fx:id="mutualFriendsList" layoutX="35.0" layoutY="387.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css">
+               <styleClass>
+                  <String fx:value="list-cell" />
+                  <String fx:value="scroll-bar" />
+               </styleClass></ListView>
             <Button fx:id="friendsNextPage" layoutX="306.0" layoutY="807.0" mnemonicParsing="false" onAction="#onFriendsNextPageButtonClick" prefHeight="31.0" prefWidth="31.0" styleClass="fancyButton" stylesheets="@css/style.css">
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
