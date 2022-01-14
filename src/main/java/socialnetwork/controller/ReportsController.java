@@ -38,7 +38,7 @@ public class ReportsController {
     final int friendsPageSize = 5;
 
     int currentMessagesPage = 0;
-    final int messagesPageSize = 0;
+    final int messagesPageSize = 5;
 
     Long userId;
 
@@ -155,7 +155,7 @@ public class ReportsController {
 
     @FXML
     public void initialize() {
-
+        warningLabel.setVisible(false);
     }
 
     public void initData(Service service, Long userId) {
@@ -178,14 +178,29 @@ public class ReportsController {
                     Text messageText = new Text(message.getMessageBody());
                     messageText.getStyleClass().add("fancyText");
                     TextFlow messageFlow = new TextFlow(messageText);
-                    Text sender = new Text("from: " + message.getFrom().getFirstName() + " "
+                    Text sender = new Text("From: " + message.getFrom().getFirstName() + " "
                             + message.getFrom().getLastName() + " @ " + message.getDate().format(eventDateTime));
+                    sender.setStyle("-fx-fill: black");
                     sender.getStyleClass().add("fancyText");
                     TextFlow senderFlow = new TextFlow(sender);
                     vbox.getChildren().addAll(senderFlow, messageFlow);
                     setGraphic(vbox);
                 }
             }
+        });
+        friendsList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (!isR2) {
+                return;
+            }
+            if (newValue == null) {
+                noMessagesImage.setVisible(true);
+                noMessagesLabel.setVisible(true);
+                startLabel.setVisible(true);
+                receivedMessagesLabel.setVisible(false);
+                messagesList.setVisible(false);
+                return;
+            }
+            updateReceivedMessagesFromUser();
         });
         notificationService = new NotificationService(service, userId, notificationsButton,
                 notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
@@ -205,6 +220,8 @@ public class ReportsController {
         noFriendsLabel.setVisible(modelFriendships.size() == 0);
         noFriendsImage.setVisible(modelFriendships.size() == 0);
         friendsList.setVisible(modelFriendships.size() != 0);
+        friendsNextPage.setVisible(modelFriendships.size() != 0);
+        friendsPrevPage.setVisible(modelFriendships.size() != 0);
     }
 
     public List<Message> getReceivedMessages() {
@@ -214,11 +231,33 @@ public class ReportsController {
                 new PageableImplementation(currentMessagesPage, messagesPageSize));
     }
 
+    public List<Message> getReceivedMessagesFromUser() {
+        var selectedUser = friendsList.getSelectionModel().getSelectedItem();
+        return service.getReceivedMesasgesFromUserFromTimePeriodPaged(userId, selectedUser.getId(),
+                LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)),
+                LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59, 59)),
+                new PageableImplementation(currentMessagesPage, messagesPageSize)
+        );
+    }
+
+    public void updateReceivedMessagesFromUser() {
+        modelMessages.setAll(getReceivedMessagesFromUser());
+        noMessagesImage.setVisible(modelMessages.size() == 0);
+        noMessagesLabel.setVisible(modelMessages.size() == 0);
+        receivedMessagesLabel.setVisible(modelMessages.size() != 0);
+        messagesList.setVisible(modelMessages.size() != 0);
+        messagesNextPage.setVisible(modelMessages.size() != 0);
+        messagesPrevPage.setVisible(modelMessages.size() != 0);
+    }
+
     public void updateReceivedMessaged() {
         modelMessages.setAll(getReceivedMessages());
         noMessagesImage.setVisible(modelMessages.size() == 0);
         noMessagesLabel.setVisible(modelMessages.size() == 0);
+        receivedMessagesLabel.setVisible(modelMessages.size() != 0);
         messagesList.setVisible(modelMessages.size() != 0);
+        messagesNextPage.setVisible(modelMessages.size() != 0);
+        messagesPrevPage.setVisible(modelMessages.size() != 0);
     }
 
     public List<Friend> getFriendsFiltered() {
@@ -233,6 +272,8 @@ public class ReportsController {
         noFriendsLabel.setVisible(modelFriendships.size() == 0);
         noFriendsImage.setVisible(modelFriendships.size() == 0);
         friendsList.setVisible(modelFriendships.size() != 0);
+        friendsNextPage.setVisible(modelFriendships.size() != 0);
+        friendsPrevPage.setVisible(modelFriendships.size() != 0);
     }
 
     public void onLogoutButtonClick() {
@@ -251,15 +292,16 @@ public class ReportsController {
         isR2 = false;
         currentMessagesPage = 0;
         currentFriendsPage = 0;
-        setR1Visibility(false);
         LocalDate now = LocalDate.now();
-        if (startDate == null || endDate == null
+        if (startDate.getValue() == null || endDate.getValue() == null
                 || startDate.getValue().isAfter(now)
                 || endDate.getValue().isAfter(now)
-                || startDate.getValue().isAfter(endDate.getValue())){
+                || startDate.getValue().isAfter(endDate.getValue())) {
             warningLabel.setVisible(true);
             warningLabel.setText("Invalid date!");
+            return;
         }
+        setR1Visibility(false);
         updateFriendsFiltered();
         updateReceivedMessaged();
         warningLabel.setVisible(false);
@@ -278,12 +320,13 @@ public class ReportsController {
             return;
         }
         currentFriendsPage--;
-        modelFriendships.setAll(getFriends());
+        var friends = isR2 ? getFriends() : getFriendsFiltered();
+        modelFriendships.setAll(friends);
     }
 
     public void onFriendsNextPageButtonClick() {
         currentFriendsPage++;
-        var friends = getFriends();
+        var friends = isR2 ? getFriends() : getFriendsFiltered();
         if (friends.isEmpty()) {
             currentFriendsPage--;
             return;
@@ -292,11 +335,22 @@ public class ReportsController {
     }
 
     public void onMessagesNextPageButtonClick() {
-
+        currentMessagesPage++;
+        var messages = getReceivedMessages();
+        if (messages.isEmpty()) {
+            currentMessagesPage--;
+            return;
+        }
+        modelMessages.setAll(messages);
     }
 
     public void onMessagesPreviousPageButtonClick() {
-
+        if (currentMessagesPage == 0) {
+            return;
+        }
+        currentMessagesPage--;
+        //TODO: CHANGE LIST IF R1 OR R2;
+        modelMessages.setAll(getReceivedMessages());
     }
 
     public void onExportR1ButtonClick() {

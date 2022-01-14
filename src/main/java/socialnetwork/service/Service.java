@@ -164,6 +164,7 @@ public class Service implements Observable<ChangeObserverEvent> {
                     }
                     return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId(), user.getImagePath());
                 })
+                .sorted(Comparator.comparing(Friend::getFirstName))
                 .toList();
     }
 
@@ -177,12 +178,25 @@ public class Service implements Observable<ChangeObserverEvent> {
         var messages = messageRepository.findAll();
         return StreamSupport.stream(messages.spliterator(), false)
                 .filter(x -> x.getTo().get(0).getId().equals(userId))
-                .filter(x -> x.getDate().isAfter(from)&&x.getDate().isBefore(to))
+                .filter(x -> x.getDate().isAfter(from) && x.getDate().isBefore(to))
+                .sorted(Comparator.comparing(Message::getDate))
                 .toList();
     }
 
-    public List<Message> getReceivedMessagesFromTimePeriodPaged(Long userId, LocalDateTime from, LocalDateTime to, Pageable pageable){
+    public List<Message> getReceivedMessagesFromTimePeriodPaged(Long userId, LocalDateTime from, LocalDateTime to, Pageable pageable) {
         var messages = getReceivedMessagesFromTimePeriod(userId, from, to);
+        Paginator<Message> paginator = new Paginator<>(pageable, messages);
+        return paginator.paginate().getContent().collect(Collectors.toList());
+    }
+
+    public List<Message> getReceivedMesasgesFromUserFromTimePeriod(Long userid1, Long userid2, LocalDateTime from, LocalDateTime to) {
+        return getReceivedMessagesFromTimePeriod(userid1, from, to).stream()
+                .filter(x -> x.getFrom().getId().equals(userid2))
+                .toList();
+    }
+
+    public List<Message> getReceivedMesasgesFromUserFromTimePeriodPaged(Long userId1, Long userId2, LocalDateTime from, LocalDateTime to, Pageable pageable) {
+        var messages = getReceivedMesasgesFromUserFromTimePeriod(userId1, userId2, from, to);
         Paginator<Message> paginator = new Paginator<>(pageable, messages);
         return paginator.paginate().getContent().collect(Collectors.toList());
     }
@@ -483,10 +497,10 @@ public class Service implements Observable<ChangeObserverEvent> {
     public List<Friend> getFriendsFilteredPaged(Long userId, String first_name_filter, String last_name_filter, Pageable pageable) {
         Predicate<Friend> firstNameFilter = u -> u.getFirstName().startsWith(first_name_filter);
         Predicate<Friend> lastNameFilter = u -> u.getLastName().startsWith(last_name_filter);
-        var friends = getFriends(userId).stream().
-                filter(firstNameFilter.or(lastNameFilter)).
-                sorted(Comparator.comparing(Friend::getFirstName)).
-                toList();
+        var friends = getFriends(userId).stream()
+                .filter(firstNameFilter.or(lastNameFilter))
+                .sorted(Comparator.comparing(Friend::getFirstName))
+                .toList();
         Paginator<Friend> paginator = new Paginator<>(pageable, friends);
         return paginator.paginate().getContent().collect(Collectors.toList());
     }
