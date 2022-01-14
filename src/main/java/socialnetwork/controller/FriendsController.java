@@ -142,6 +142,8 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         mutualEventsList.setVisible(state);
         mutualEventsLabel.setVisible(state);
         mutualNowLabel.setVisible(state);
+        eventsPrevPage.setVisible(state);
+        eventsNextPage.setVisible(state);
     }
 
     @FXML
@@ -170,6 +172,8 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
                 mutualNowLabel.setVisible(modelEvents.size() == 0);
                 mutualEventsList.setVisible(modelEvents.size() != 0);
                 mutualEventsLabel.setVisible(modelEvents.size() != 0);
+                eventsNextPage.setVisible(modelEvents.size() != 0);
+                eventsPrevPage.setVisible(modelEvents.size() != 0);
             }
         });
         friendList.setItems(modelFriendships);
@@ -179,25 +183,25 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         return service.getFriendsFilteredPaged(userId, searchField.getText(), searchField.getText(), new PageableImplementation(currentFriendsPage, friendsPageSize));
     }
 
-    public void onEventsPreviousPageButtonClick(){
+    public void onEventsPreviousPageButtonClick() {
         var selected = friendList.getSelectionModel().getSelectedItem();
-        if(selected==null){
+        if (selected == null) {
             return;
         }
-        if(currentEventsPage==0){
+        if (currentEventsPage == 0) {
             return;
         }
         currentEventsPage--;
         modelEvents.setAll(service.getCommonEventsPaged(userId, selected.getId(), new PageableImplementation(currentEventsPage, eventsPageSize)));
     }
 
-    public void onEventsNextPageButtonClick(){
+    public void onEventsNextPageButtonClick() {
         var selected = friendList.getSelectionModel().getSelectedItem();
-        if(selected==null){
+        if (selected == null) {
             return;
         }
-        var events =  service.getCommonEventsPaged(userId, selected.getId(), new PageableImplementation(currentEventsPage+1, eventsPageSize));
-        if(events.isEmpty()){
+        var events = service.getCommonEventsPaged(userId, selected.getId(), new PageableImplementation(currentEventsPage + 1, eventsPageSize));
+        if (events.isEmpty()) {
             return;
         }
         currentEventsPage++;
@@ -238,11 +242,15 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
             noFriendsImage.setVisible(true);
             noFriendsLabel.setVisible(true);
             nowLabel.setVisible(true);
+            friendsNextPage.setVisible(false);
+            friendsPrevPage.setVisible(false);
         } else {
             friendList.setVisible(true);
             noFriendsImage.setVisible(false);
             noFriendsLabel.setVisible(false);
             nowLabel.setVisible(false);
+            friendsNextPage.setVisible(true);
+            friendsPrevPage.setVisible(true);
         }
         notificationService = new NotificationService(service, userId, notificationsButton,
                 notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
