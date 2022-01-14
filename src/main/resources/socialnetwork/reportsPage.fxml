@@ -164,7 +164,7 @@
                <image>
                   <Image url="@images/nextPageIcon.png" />
                </image>
-            </ImageView>git
+            </ImageView>
          </graphic>
       </Button>
       <Label fx:id="warningLabel" layoutX="905.0" layoutY="169.0" stylesheets="@css/style.css" text="Warning" textFill="RED">
