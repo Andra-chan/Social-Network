@@ -128,6 +128,8 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     @FXML
     Button eventsPrevPage;
 
+    @FXML
+    Button reportsButton;
 
     private void setNoFriendSelectedState(boolean state) {
         noFriendSelectedImage.setVisible(!state);
@@ -145,9 +147,6 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
         eventsPrevPage.setVisible(state);
         eventsNextPage.setVisible(state);
     }
-
-    @FXML
-    Button reportsButton;
 
     @FXML
     public void initialize() {
@@ -228,7 +227,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
 
     public void updateModel() {
         if (!(searchField.getText().isBlank())) {
-            currentFriendsPage = 1;
+            currentFriendsPage = 0;
         }
         modelFriendships.setAll(getFriends());
     }
