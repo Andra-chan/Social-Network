@@ -150,8 +150,40 @@ public class Service implements Observable<ChangeObserverEvent> {
                 .collect(Collectors.toList());
     }
 
-    public List<EventAttendance> getEventsForUserPaged(Long userId, Pageable pageable) {
-        Paginator<EventAttendance> paginator = new Paginator<>(pageable, getEventsForUser(userId));
+    public List<Friend> getNewFriendsFromTimePeriod(Long userId, LocalDateTime from, LocalDateTime to) {
+        var friendships = friendshipRepository.findAll();
+        return StreamSupport.stream(friendships.spliterator(), false)
+                .filter(x -> x.getFirstUser().equals(userId) || x.getSecondUser().equals(userId))
+                .filter(x -> x.getDate().isAfter(from) && x.getDate().isBefore(to))
+                .map(fr -> {
+                    Utilizator user;
+                    if (fr.getFirstUser().equals(userId)) {
+                        user = userRepository.findOne(fr.getSecondUser());
+                    } else {
+                        user = userRepository.findOne(fr.getFirstUser());
+                    }
+                    return new Friend(user.getFirstName(), user.getLastName(), fr.getDate(), user.getId(), user.getImagePath());
+                })
+                .toList();
+    }
+
+    public List<Friend> getNewFriendsFromTimePeriodPaged(Long userId, LocalDateTime from, LocalDateTime to, Pageable pageable) {
+        var friends = getNewFriendsFromTimePeriod(userId, from, to);
+        Paginator<Friend> paginator = new Paginator<>(pageable, friends);
+        return paginator.paginate().getContent().collect(Collectors.toList());
+    }
+
+    public List<Message> getReceivedMessagesFromTimePeriod(Long userId, LocalDateTime from, LocalDateTime to) {
+        var messages = messageRepository.findAll();
+        return StreamSupport.stream(messages.spliterator(), false)
+                .filter(x -> x.getTo().get(0).getId().equals(userId))
+                .filter(x -> x.getDate().isAfter(from)&&x.getDate().isBefore(to))
+                .toList();
+    }
+
+    public List<Message> getReceivedMessagesFromTimePeriodPaged(Long userId, LocalDateTime from, LocalDateTime to, Pageable pageable){
+        var messages = getReceivedMessagesFromTimePeriod(userId, from, to);
+        Paginator<Message> paginator = new Paginator<>(pageable, messages);
         return paginator.paginate().getContent().collect(Collectors.toList());
     }
 
@@ -433,8 +465,7 @@ public class Service implements Observable<ChangeObserverEvent> {
      * @return a list of Friends of the given user
      */
     public List<Friend> getFriends(Long userID) {
-        List<Prietenie> friendships = new ArrayList<>();
-        friendshipRepository.findAll().forEach(friendships::add);
+        var friendships = StreamSupport.stream(friendshipRepository.findAll().spliterator(), false).toList();
 
         return friendships.stream().filter(fr -> fr.getSecondUser().equals(userID) || fr.getFirstUser().equals(userID))
                 .map(fr -> {

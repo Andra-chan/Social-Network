@@ -122,10 +122,10 @@
       </ImageView>
       <Label fx:id="startLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="512.0" layoutY="730.0" onMouseClicked="#onStartClick" prefHeight="25.0" prefWidth="55.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start" textAlignment="CENTER" underline="true" wrapText="true" />
       <Label fx:id="newFriendsLabel" alignment="CENTER" layoutX="53.0" layoutY="431.0" prefHeight="64.0" prefWidth="173.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Your new friends" visible="false" wrapText="true" />
-      <ListView fx:id="newFriendsList" layoutX="40.0" layoutY="489.0" prefHeight="446.0" prefWidth="200.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <ListView fx:id="friendsList" layoutX="40.0" layoutY="489.0" prefHeight="446.0" prefWidth="200.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
       <Label fx:id="receivedMessagesLabel" layoutX="288.0" layoutY="431.0" prefHeight="64.0" prefWidth="181.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Received messages:" textAlignment="CENTER" visible="false" wrapText="true" />
-      <ListView fx:id="newMessagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
-      <ListView fx:id="friendMessagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <ListView fx:id="messagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+      <ListView fx:id="messagesList" layoutX="282.0" layoutY="498.0" prefHeight="434.0" prefWidth="769.0" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
       <Label fx:id="noFriendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="712.0" prefHeight="87.0" prefWidth="235.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="No friends? Start adding them now!" textAlignment="CENTER" wrapText="true" />
       <ImageView fx:id="noFriendsImage" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" layoutX="53.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
          <image>
