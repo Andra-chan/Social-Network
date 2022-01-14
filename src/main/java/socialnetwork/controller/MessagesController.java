@@ -115,6 +115,15 @@ public class MessagesController {
     @FXML
     ImageView notificationButtonImage;
 
+    @FXML
+    Label nowLabel;
+
+    @FXML
+    Label noFriendsLabel;
+
+    @FXML
+    ImageView noFriendsImage;
+
     /**
      * Set chat elements to a certain visibility state
      *
@@ -129,6 +138,13 @@ public class MessagesController {
         chatScrollPane.setVisible(state);
         separator1.setVisible(state);
         separator2.setVisible(state);
+    }
+
+    private void setButtonsToDefaultState(boolean state) {
+        friendList.setVisible(!state);
+        noFriendsImage.setVisible(state);
+        noFriendsLabel.setVisible(state);
+        nowLabel.setVisible(state);
     }
 
     /**
@@ -291,6 +307,7 @@ public class MessagesController {
         this.userId = userId;
         updateModel();
         friendList.setItems(modelFriendships);
+        setButtonsToDefaultState(modelFriendships.isEmpty());
         updateMessagesAndUpdateUI();
         setNotifyNoMessagesVisiblity(false);
         setChatObjectsVisibility(false);
@@ -367,6 +384,10 @@ public class MessagesController {
 
     public void onReportsButtonClick(){
         App.changeSceneToReportsWindow(service, userId);
+    }
+
+    public void onNowClick(){
+        App.changeSceneToAddFriendsWindow(service, userId);
     }
 
     /**

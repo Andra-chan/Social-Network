@@ -30,7 +30,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
     ObservableList<Event> modelEvents = FXCollections.observableArrayList();
     NotificationService notificationService;
     int currentFriendsPage = 0;
-    final int friendsPageSize = 7;
+    final int friendsPageSize = 10;
 
     int currentEventsPage = 0;
     final int eventsPageSize = 4;
@@ -239,6 +239,7 @@ public class FriendsController implements Observer<ChangeObserverEvent> {
             noFriendsLabel.setVisible(true);
             nowLabel.setVisible(true);
         } else {
+            friendList.setVisible(true);
             noFriendsImage.setVisible(false);
             noFriendsLabel.setVisible(false);
             nowLabel.setVisible(false);

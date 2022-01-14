@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -226,5 +227,23 @@
             </ImageView>
          </graphic>
       </Button>
+      <Label fx:id="noFriendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="369.0" layoutY="593.0" prefHeight="64.0" prefWidth="183.0" stylesheets="@css/style.css" text="Don't see any friends? Start adding them now!" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="noFriendsImage" blendMode="MULTIPLY" fitHeight="144.0" fitWidth="134.0" layoutX="391.0" layoutY="388.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/images%20(2).png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nowLabel" layoutX="513.0" layoutY="625.0" onMouseClicked="#onNowClick" prefHeight="17.0" prefWidth="39.0" text="now!" textFill="WHITE" underline="true">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
     </children>
 </AnchorPane>
