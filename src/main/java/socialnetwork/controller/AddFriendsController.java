@@ -34,7 +34,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
 
     NotificationService notificationService;
     int currentPage = 0;
-    final int pageSize = 7;
+    final int pageSize = 10;
 
     int currentFriendsPage = 0;
     final int friendsPageSize = 5;

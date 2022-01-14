@@ -189,7 +189,7 @@
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
       </Label>
-      <ImageView fx:id="userNameImage" blendMode="DARKEN" fitHeight="94.0" fitWidth="94.0" layoutX="630.0" layoutY="115.0" pickOnBounds="true">
+      <ImageView fx:id="userNameImage" blendMode="DARKEN" fitHeight="94.0" fitWidth="94.0" layoutX="630.0" layoutY="115.0" pickOnBounds="true" visible="false">
          <image>
             <Image url="@images/defaultUserImage.png" />
          </image>
