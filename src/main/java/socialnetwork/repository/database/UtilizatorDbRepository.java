@@ -54,8 +54,10 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
                 Long id = resultSet.getLong("id");
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
+                String imagePath = resultSet.getString("image_path");
 
                 Utilizator utilizator = new Utilizator(firstName, lastName, "", "");
+                utilizator.setImagePath(imagePath);
                 utilizator.setId(id);
                 users.add(utilizator);
             }

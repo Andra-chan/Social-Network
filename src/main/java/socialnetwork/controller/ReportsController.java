@@ -185,6 +185,7 @@ public class ReportsController {
         messagesList.setCellFactory(param -> new ListCell<>() {
             @Override
             public void updateItem(Message message, boolean empty) {
+                super.updateItem(message, empty);
                 if (empty) {
                     setGraphic(null);
                     setText(null);
@@ -355,6 +356,7 @@ public class ReportsController {
         currentMessagesPage = 0;
         currentFriendsPage = 0;
         stateR2Visibility(false);
+        modelMessages.clear();
         updateFriendsList();
     }
 
