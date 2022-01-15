@@ -17,12 +17,9 @@ import socialnetwork.Util.observer.Observer;
 import socialnetwork.domain.Friend;
 import socialnetwork.domain.Utilizator;
 import socialnetwork.service.Service;
-import socialnetwork.service.paging.Page;
 import socialnetwork.service.paging.PageableImplementation;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
@@ -33,7 +30,7 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
     ObservableList<Friend> modelCommonFriends = FXCollections.observableArrayList();
     NotificationService notificationService;
     int currentPage = 0;
-    final int pageSize = 7;
+    final int pageSize = 10;
 
     int currentFriendsPage = 0;
     final int friendsPageSize = 5;
@@ -162,6 +159,8 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
                 mutualNowLabel.setVisible(modelCommonFriends.size() == 0);
                 mutualFriendsList.setVisible(!(modelCommonFriends.size() == 0));
                 mutualFriendsLabel.setVisible(!(modelCommonFriends.size() == 0));
+                nextPage.setVisible(modelCommonFriends.size() != 0);
+                prevPage.setVisible(modelCommonFriends.size() != 0);
             }
         });
         userList.setItems(modelUsersWithFriendRequests);
@@ -182,10 +181,14 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
             noFriendRequestsImage.setVisible(true);
             noFriendRequestsLabel.setVisible(true);
             nowLabel.setVisible(true);
+            nextPage.setVisible(false);
+            prevPage.setVisible(false);
         } else {
             noFriendRequestsImage.setVisible(false);
             noFriendRequestsLabel.setVisible(false);
             nowLabel.setVisible(false);
+            nextPage.setVisible(true);
+            prevPage.setVisible(true);
         }
         notificationService = new NotificationService(service, userId, notificationsButton,
                 notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),
@@ -194,7 +197,7 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         notificationService.start();
     }
 
-    private List<Utilizator> getUsers(){
+    private List<Utilizator> getUsers() {
         return service.getUsersListWithFriendRequestsFilteredAndPaged(userId, searchField.getText(), searchField.getText(), new PageableImplementation(currentPage, pageSize));
     }
 
@@ -358,6 +361,8 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
         mutualFriendsList.setVisible(state);
         mutualFriendsLabel.setVisible(state);
         mutualNowLabel.setVisible(state);
+        friendsNextPage.setVisible(state);
+        friendsPrevPage.setVisible(state);
     }
 
     /**

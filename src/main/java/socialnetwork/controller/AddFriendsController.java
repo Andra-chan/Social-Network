@@ -21,8 +21,6 @@ import socialnetwork.service.Service;
 import socialnetwork.service.paging.PageableImplementation;
 
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static socialnetwork.Util.imageHelper.Helpers.setProfileImage;
 
@@ -34,7 +32,7 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
 
     NotificationService notificationService;
     int currentPage = 0;
-    final int pageSize = 7;
+    final int pageSize = 100;
 
     int currentFriendsPage = 0;
     final int friendsPageSize = 5;
@@ -158,7 +156,6 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
         mutualFriendsLabel.setVisible(false);
         friendsPrevPage.setVisible(false);
         friendsNextPage.setVisible(false);
-
     }
 
     /**
@@ -199,6 +196,8 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
                 friendsNextPage.setVisible(!(modelCommonFriends.size() == 0));
                 noMutualFriendsImage.setVisible(modelCommonFriends.size() == 0);
                 noMutualFriendsLabel.setVisible(modelCommonFriends.size() == 0);
+                friendsNextPage.setVisible(modelCommonFriends.size() != 0);
+                friendsPrevPage.setVisible(modelCommonFriends.size() != 0);
                 friendNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 setProfileImage(newValue, friendImage);
                 var maybePending = service.getFriendRequest(userId, newValue.getId());
@@ -250,9 +249,13 @@ public class AddFriendsController implements Observer<ChangeObserverEvent> {
         if (modelUsers.isEmpty()) {
             noUsersImage.setVisible(true);
             noUsersLabel.setVisible(true);
+            nextPage.setVisible(false);
+            prevPage.setVisible(false);
         } else {
             noUsersImage.setVisible(false);
             noUsersLabel.setVisible(false);
+            nextPage.setVisible(true);
+            prevPage.setVisible(true);
         }
         notificationService = new NotificationService(service, userId, notificationsButton,
                 notificationButtonImage, String.valueOf(App.class.getResource("images/notificationsImage.png")),

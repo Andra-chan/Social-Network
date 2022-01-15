@@ -80,7 +80,9 @@ public class RegisterController {
         }
 
         try {
-            var user = service.addUser(new Utilizator(firstName, lastName, email, password));
+            var newUser = new Utilizator(firstName, lastName, email, password);
+            newUser.setImagePath(String.valueOf(App.class.getResource("images/defaultUserImage.png")));
+            var user = service.addUser(newUser);
             if (user == null) {
                 errorLabel.setStyle("-fx-text-fill: green");
                 errorLabel.setText("Register successful");

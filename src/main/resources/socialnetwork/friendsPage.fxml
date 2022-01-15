@@ -72,8 +72,8 @@
       </AnchorPane>
       <ListView fx:id="friendList" layoutX="326.0" layoutY="183.0" prefHeight="720.0" prefWidth="240.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" visible="false" AnchorPane.bottomAnchor="51.0" AnchorPane.topAnchor="183.0">
          <styleClass>
-            <String fx:value="list-view" />
             <String fx:value="list-cell" />
+            <String fx:value="scroll-bar" />
          </styleClass>
       </ListView>
       <AnchorPane layoutX="578.0" layoutY="109.0" prefHeight="679.0" prefWidth="495.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="577.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="109.0">
@@ -114,7 +114,7 @@
                   <Font name="Berlin Sans FB" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="noMutualEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="674.0" prefHeight="81.0" prefWidth="288.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Looks like there are no mutual events. Go join an event now!" textAlignment="CENTER" visible="false" wrapText="true" />
+            <Label fx:id="noMutualEventsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="674.0" prefHeight="81.0" prefWidth="288.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Looks like you have no mutual events. Go join an event now!" textAlignment="CENTER" visible="false" wrapText="true" />
             <Label fx:id="mutualNowLabel" layoutX="337.0" layoutY="715.0" onMouseClicked="#onMutualNowClick" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" underline="true" visible="false" />
             <ImageView fx:id="noMutualEventsImage" fitHeight="161.0" fitWidth="160.0" layoutX="168.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
@@ -139,7 +139,11 @@
                   </ImageView>
                </graphic>
             </Button>
-            <ListView fx:id="mutualEventsList" layoutX="35.0" layoutY="387.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" styleClass="list-cell" stylesheets="@css/style.css" visible="false" />
+            <ListView fx:id="mutualEventsList" layoutX="35.0" layoutY="387.0" prefHeight="410.0" prefWidth="440.0" style="-fx-background-color: #243142;" stylesheets="@css/style.css" visible="false">
+               <styleClass>
+                  <String fx:value="list-cell" />
+                  <String fx:value="scroll-bar" />
+               </styleClass></ListView>
          </children>
       </AnchorPane>
       <Separator layoutX="574.0" layoutY="105.0" orientation="VERTICAL" prefHeight="849.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="106.0" />

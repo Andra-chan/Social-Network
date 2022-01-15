@@ -1,7 +1,5 @@
 package socialnetwork.domain;
 
-import javafx.scene.image.Image;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +7,7 @@ import java.util.Objects;
 /**
  * Utilizator Entity, main object to be stored
  */
-public class Utilizator extends Entity<Long> implements ImageHolder{
+public class Utilizator extends Entity<Long> implements ImageHolder {
     private final List<Utilizator> friends;
     private final UserCredentials credentials;
     private String firstName;
@@ -101,7 +99,8 @@ public class Utilizator extends Entity<Long> implements ImageHolder{
         if (this == o)
             return true;
         Utilizator that = (Utilizator) o;
-        return getFirstName().equals(that.getFirstName()) &&
+        return getId().equals(that.getId()) &&
+                getFirstName().equals(that.getFirstName()) &&
                 getLastName().equals(that.getLastName()) &&
                 getFriends().equals(that.getFriends());
     }

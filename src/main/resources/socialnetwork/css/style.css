@@ -20,6 +20,17 @@
     -fx-font-family: "Berlin Sans FB";
 }
 
+.fancyButton{
+    -fx-background-color:  #2a9482;
+    -fx-background-radius:  15px;
+}
+
+.fancyLabel {
+    -fx-font-size: 22;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-text-fill: white;
+}
+
 .list-view:focused.list-cell:selected{
     -fx-background-color: #243142;
 }
@@ -29,9 +40,24 @@
     -fx-text-fill: white;
 }
 
-.fancyButton{
-    -fx-background-color:  #2a9482;
-    -fx-background-radius:  15px;
+list-view.scroll-bar:vertical{
+    -fx-background-color: #243142;
+}
+
+.list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #2a9482;
+    -fx-background-insets: 5, 5, 5;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: #243142;
+}
+
+scroll-bar:vertical .thumb{
+    -fx-background-color: #2a9482;
+    -fx-background-insets: 5, 5, 5;
+    -fx-background-radius: 5;
 }
 
 .message {
@@ -41,6 +67,7 @@
 
 .sentMessage {
     -fx-background-color: dodgerblue;
+    -fx-text-alignment: right;
 }
 
 .sentMessageContent {
@@ -57,12 +84,6 @@
 
 .messageAgent {
     -fx-fill: white;
-}
-
-.fancyLabel {
-    -fx-font-size: 22;
-    -fx-font-family: "Berlin Sans FB";
-    -fx-text-fill: white;
 }
 
 .text-area.content{

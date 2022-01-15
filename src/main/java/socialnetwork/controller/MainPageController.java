@@ -95,6 +95,8 @@ public class MainPageController {
         noUpcomingEventsImage.setVisible(state);
         noUpcomingEventsLabel.setVisible(state);
         nowLabel.setVisible(state);
+        nextPage.setVisible(!state);
+        prevPage.setVisible(!state);
     }
 
     @FXML

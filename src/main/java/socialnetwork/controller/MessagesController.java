@@ -6,13 +6,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
@@ -23,6 +21,7 @@ import socialnetwork.Util.message.MessageType;
 import socialnetwork.domain.Friend;
 import socialnetwork.domain.MessageDTO;
 import socialnetwork.service.Service;
+import socialnetwork.service.paging.PageableImplementation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,8 @@ public class MessagesController {
     Long userId;
     ObservableList<Friend> modelFriendships = FXCollections.observableArrayList();
     NotificationService notificationService;
+    int currentFriendsPage = 0;
+    final int friendsPageSize = 10;
 
     @FXML
     public ScrollPane chatScrollPane;
@@ -115,6 +116,21 @@ public class MessagesController {
     @FXML
     ImageView notificationButtonImage;
 
+    @FXML
+    Label nowLabel;
+
+    @FXML
+    Label noFriendsLabel;
+
+    @FXML
+    ImageView noFriendsImage;
+
+    @FXML
+    Button friendsNextPage;
+
+    @FXML
+    Button friendsPrevPage;
+
     /**
      * Set chat elements to a certain visibility state
      *
@@ -131,8 +147,15 @@ public class MessagesController {
         separator2.setVisible(state);
     }
 
+    private void setButtonsToDefaultState(boolean state) {
+        friendList.setVisible(!state);
+        noFriendsImage.setVisible(state);
+        noFriendsLabel.setVisible(state);
+        nowLabel.setVisible(state);
+    }
+
     /**
-     * Set usage notification to a certain visibiliy state
+     * Set usage notification to a certain visibility state
      *
      * @param state the visibility state
      */
@@ -146,7 +169,7 @@ public class MessagesController {
      *
      * @param state the visibility state
      */
-    public void setNotifyNoMessagesVisiblity(boolean state) {
+    public void setNotifyNoMessagesVisibility(boolean state) {
         noMessagesImage.setVisible(state);
         noMessagesLabel.setVisible(state);
     }
@@ -157,7 +180,7 @@ public class MessagesController {
     private void updateMessagesAndUpdateUI() {
         var messages = getAllMessages();
         if (messages.isEmpty()) {
-            setNotifyNoMessagesVisiblity(true);
+            setNotifyNoMessagesVisibility(true);
             setChatObjectsVisibility(true);
             setNotifyUsageVisibility(false);
             return;
@@ -172,7 +195,7 @@ public class MessagesController {
     public void initialize() {
         setNotifyUsageVisibility(true);
         setNotifyUsageVisibility(false);
-        setNotifyNoMessagesVisiblity(false);
+        setNotifyNoMessagesVisibility(false);
         chatScrollPane.vvalueProperty().bind(chatGridPane.heightProperty());
         chatTextField.setOnKeyPressed(event -> enterKeyPressed(event.getCode()));
         friendList.setCellFactory(param -> new FriendListCell());
@@ -181,11 +204,11 @@ public class MessagesController {
             if (newValue == null) {
                 setChatObjectsVisibility(false);
                 setNotifyUsageVisibility(true);
-                setNotifyNoMessagesVisiblity(false);
+                setNotifyNoMessagesVisibility(false);
             } else {
                 setNotifyUsageVisibility(false);
                 setChatObjectsVisibility(true);
-                setNotifyNoMessagesVisiblity(false);
+                setNotifyNoMessagesVisibility(false);
                 setProfileImage(newValue, userNameImage);
                 userNameLabel.setText(newValue.getFirstName() + " " + newValue.getLastName());
                 chatGridPane.getChildren().clear();
@@ -255,10 +278,10 @@ public class MessagesController {
      * Update the friendship model.
      */
     public void updateModel() {
-        Predicate<Friend> firstNameFilter = u -> u.getFirstName().startsWith(searchField.getText());
-        Predicate<Friend> lastNameFilter = u -> u.getLastName().startsWith(searchField.getText());
-        modelFriendships.setAll(service.getFriends(userId)
-                .stream().filter(firstNameFilter.or(lastNameFilter)).collect(Collectors.toList()));
+        if (!(searchField.getText().isBlank())) {
+            currentFriendsPage = 0;
+        }
+        modelFriendships.setAll(getFriends());
     }
 
     /**
@@ -291,8 +314,9 @@ public class MessagesController {
         this.userId = userId;
         updateModel();
         friendList.setItems(modelFriendships);
+        setButtonsToDefaultState(modelFriendships.isEmpty());
         updateMessagesAndUpdateUI();
-        setNotifyNoMessagesVisiblity(false);
+        setNotifyNoMessagesVisibility(false);
         setChatObjectsVisibility(false);
         setNotifyUsageVisibility(true);
         notificationService = new NotificationService(service, userId, notificationsButton,
@@ -304,7 +328,7 @@ public class MessagesController {
 
     /**
      * Get the last message added.
-     * @return the last message eadded.
+     * @return the last message added.
      */
     private MessageDTO getLastMessage() {
         var messages = getAllMessages();
@@ -312,6 +336,28 @@ public class MessagesController {
             return null;
         }
         return messages.get(messages.size() - 1);
+    }
+
+    public List<Friend> getFriends(){
+        return service.getFriendsFilteredPaged(userId, searchField.getText(), searchField.getText(), new PageableImplementation(currentFriendsPage, friendsPageSize));
+    }
+
+    public void onFriendsPreviousPageButtonClick() {
+        if (currentFriendsPage == 0) {
+            return;
+        }
+        currentFriendsPage--;
+        modelFriendships.setAll(getFriends());
+    }
+
+    public void onFriendsNextPageButtonClick() {
+        currentFriendsPage++;
+        var friends = getFriends();
+        if (friends.isEmpty()) {
+            currentFriendsPage--;
+            return;
+        }
+        modelFriendships.setAll(friends);
     }
 
     /**
@@ -369,6 +415,10 @@ public class MessagesController {
         App.changeSceneToReportsWindow(service, userId);
     }
 
+    public void onNowClick(){
+        App.changeSceneToAddFriendsWindow(service, userId);
+    }
+
     /**
      * When you press the send button, send a message to the selected user.
      */
@@ -385,7 +435,7 @@ public class MessagesController {
             var message = service.sendMessage(userId, to, messageText);
             if (message == null) {
                 addMessageToChat(getLastMessage());
-                setNotifyNoMessagesVisiblity(false);
+                setNotifyNoMessagesVisibility(false);
             }
             chatTextField.clear();
         }
