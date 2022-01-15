@@ -55,6 +55,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
     implementation 'com.itextpdf:itextpdf:5.5.13.2'
 
+    // https://mvnrepository.com/artifact/org.jfree/jfreechart
+    implementation 'org.jfree:jfreechart:1.5.3'
 }
 
 test {

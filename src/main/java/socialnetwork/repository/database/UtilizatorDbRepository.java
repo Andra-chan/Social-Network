@@ -75,7 +75,7 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
             throw new RepositoryException("Email already exists");
         }
 
-        String insert_user_sql = "insert into users ( first_name, last_name ) values (?,?)";
+        String insert_user_sql = "insert into users ( first_name, last_name, image_path ) values (?,?, ?)";
         String insert_credentials_sql = "insert into user_credentials (user_id, email, password) values (?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(insert_user_sql, Statement.RETURN_GENERATED_KEYS);
@@ -83,6 +83,7 @@ public class UtilizatorDbRepository implements Repository<Long, Utilizator> {
 
             ps.setString(1, entity.getFirstName());
             ps.setString(2, entity.getLastName());
+            ps.setString(3, entity.getImagePath());
 
             ps.executeUpdate();
 

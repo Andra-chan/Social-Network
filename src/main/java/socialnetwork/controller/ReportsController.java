@@ -9,15 +9,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import socialnetwork.App;
 import socialnetwork.Util.controller.FriendListCell;
 import socialnetwork.Util.controller.NotificationService;
+import socialnetwork.Util.reports.PDFHelper;
 import socialnetwork.domain.Friend;
 import socialnetwork.domain.Message;
 import socialnetwork.service.Service;
 import socialnetwork.service.paging.PageableImplementation;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -214,6 +217,12 @@ public class ReportsController {
                 new PageableImplementation(currentFriendsPage, friendsPageSize));
     }
 
+    public List<Friend> getAllNewFriends() {
+        return service.getNewFriendsFromTimePeriod(userId,
+                LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)),
+                LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59, 59)));
+    }
+
     private void updateFriendsList() {
         modelFriendships.setAll(getFriends());
 
@@ -231,13 +240,25 @@ public class ReportsController {
                 new PageableImplementation(currentMessagesPage, messagesPageSize));
     }
 
+    public List<Message> getAllReceivedMessages() {
+        return service.getReceivedMessagesFromTimePeriod(userId,
+                LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)),
+                LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59, 59)));
+    }
+
     public List<Message> getReceivedMessagesFromUser() {
         var selectedUser = friendsList.getSelectionModel().getSelectedItem();
         return service.getReceivedMesasgesFromUserFromTimePeriodPaged(userId, selectedUser.getId(),
                 LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)),
                 LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59, 59)),
-                new PageableImplementation(currentMessagesPage, messagesPageSize)
-        );
+                new PageableImplementation(currentMessagesPage, messagesPageSize));
+    }
+
+    public List<Message> getAllReceivedMessagesFromUser() {
+        var selectedUser = friendsList.getSelectionModel().getSelectedItem();
+        return service.getReceivedMesasgesFromUserFromTimePeriod(userId, selectedUser.getId(),
+                LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)),
+                LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59, 59)));
     }
 
     public void updateReceivedMessagesFromUser() {
@@ -292,6 +313,16 @@ public class ReportsController {
         isR2 = false;
         currentMessagesPage = 0;
         currentFriendsPage = 0;
+        if (!validateDate()) {
+            return;
+        }
+        setR1Visibility(false);
+        updateFriendsFiltered();
+        updateReceivedMessaged();
+        warningLabel.setVisible(false);
+    }
+
+    private boolean validateDate() {
         LocalDate now = LocalDate.now();
         if (startDate.getValue() == null || endDate.getValue() == null
                 || startDate.getValue().isAfter(now)
@@ -299,12 +330,9 @@ public class ReportsController {
                 || startDate.getValue().isAfter(endDate.getValue())) {
             warningLabel.setVisible(true);
             warningLabel.setText("Invalid date!");
-            return;
+            return false;
         }
-        setR1Visibility(false);
-        updateFriendsFiltered();
-        updateReceivedMessaged();
-        warningLabel.setVisible(false);
+        return true;
     }
 
     public void onPreviewR2ButtonClick() {
@@ -336,7 +364,7 @@ public class ReportsController {
 
     public void onMessagesNextPageButtonClick() {
         currentMessagesPage++;
-        var messages = getReceivedMessages();
+        var messages = isR2 ? getReceivedMessagesFromUser() : getReceivedMessages();
         if (messages.isEmpty()) {
             currentMessagesPage--;
             return;
@@ -349,16 +377,55 @@ public class ReportsController {
             return;
         }
         currentMessagesPage--;
-        //TODO: CHANGE LIST IF R1 OR R2;
-        modelMessages.setAll(getReceivedMessages());
+        var messages = isR2 ? getReceivedMessagesFromUser() : getReceivedMessages();
+        modelMessages.setAll(messages);
     }
 
     public void onExportR1ButtonClick() {
-
+        if (isR2) {
+            return;
+        }
+        if (!validateDate()) {
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(App.currentStage);
+        if (file == null) {
+            return;
+        }
+        PDFHelper.exportR1(service.getUser(userId),
+                LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)),
+                LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59, 59)),
+                getAllNewFriends(), getAllReceivedMessages(),
+                file.getPath());
     }
 
     public void onExportR2ButtonClick() {
+        if (!isR2) {
+            return;
+        }
+        if (!validateDate()) {
+            return;
+        }
+        var selectedUser = friendsList.getSelectionModel().getSelectedItem();
+        if (selectedUser == null) {
+            return;
+        }
 
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(App.currentStage);
+        if (file == null) {
+            return;
+        }
+        PDFHelper.exportR2(service.getUser(userId),
+                LocalDateTime.of(startDate.getValue(), LocalTime.of(0, 0)),
+                LocalDateTime.of(endDate.getValue(), LocalTime.of(23, 59, 59)),
+                getAllReceivedMessagesFromUser(),
+                file.getPath());
     }
 
     public void onEventsButtonClick() {

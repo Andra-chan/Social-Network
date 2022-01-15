@@ -10,6 +10,7 @@ module socialnetwork {
     requires spring.security.crypto;
     requires commons.validator;
     requires itextpdf;
+    requires org.jfree.jfreechart;
 
     opens socialnetwork to javafx.graphics, javafx.fxml, javafx.base;
     opens socialnetwork.domain to javafx.graphics, javafx.fxml, javafx.base;
