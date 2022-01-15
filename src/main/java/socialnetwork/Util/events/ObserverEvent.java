@@ -1,4 +1,4 @@
 package socialnetwork.Util.events;
 
-public interface Event {
+public interface ObserverEvent {
 }

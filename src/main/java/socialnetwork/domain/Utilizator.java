@@ -7,16 +7,42 @@ import java.util.Objects;
 /**
  * Utilizator Entity, main object to be stored
  */
-public class Utilizator extends Entity<Long> {
+public class Utilizator extends Entity<Long> implements ImageHolder {
+    private final List<Utilizator> friends;
+    private final UserCredentials credentials;
     private String firstName;
     private String lastName;
-    private final List<Utilizator> friends;
 
+    private String image_path;
 
     public Utilizator(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.credentials = new UserCredentials("", "");
         friends = new ArrayList<>();
+    }
+
+    public Utilizator(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.credentials = new UserCredentials(email, password);
+        friends = new ArrayList<>();
+    }
+
+    public String getPassword() {
+        return credentials.getPassword();
+    }
+
+    public void setPassword(String password) {
+        credentials.setPassword(password);
+    }
+
+    public String getEmail() {
+        return credentials.getEmail();
+    }
+
+    public void setEmail(String email) {
+        this.credentials.setEmail(email);
     }
 
     /**
@@ -29,14 +55,6 @@ public class Utilizator extends Entity<Long> {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public List<Utilizator> getFriends() {
-        return friends;
-    }
-
     /**
      * Setters used to modify an entity
      *
@@ -47,8 +65,16 @@ public class Utilizator extends Entity<Long> {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Utilizator> getFriends() {
+        return friends;
     }
 
     /**
@@ -73,7 +99,8 @@ public class Utilizator extends Entity<Long> {
         if (this == o)
             return true;
         Utilizator that = (Utilizator) o;
-        return getFirstName().equals(that.getFirstName()) &&
+        return getId().equals(that.getId()) &&
+                getFirstName().equals(that.getFirstName()) &&
                 getLastName().equals(that.getLastName()) &&
                 getFriends().equals(that.getFriends());
     }
@@ -81,5 +108,13 @@ public class Utilizator extends Entity<Long> {
     @Override
     public int hashCode() {
         return Objects.hash(getFirstName(), getLastName(), getClass());
+    }
+
+    public String getImagePath() {
+        return image_path;
+    }
+
+    public void setImagePath(String image_path) {
+        this.image_path = image_path;
     }
 }

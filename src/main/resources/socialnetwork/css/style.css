@@ -1,0 +1,128 @@
+.fancyTextField {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-padding: 10;
+    -fx-text-fill: grey;
+    -fx-font-size: 15;
+    -fx-font-family: "Berlin Sans FB";
+}
+
+.fancyText{
+    -fx-fill: grey;
+    -fx-font-size: 15;
+    -fx-font-family: "Berlin Sans FB";
+}
+.fancyTitle{
+    -fx-fill: black;
+    -fx-font-size: 20;
+    -fx-font-style: italic;
+    -fx-font-family: "Berlin Sans FB";
+}
+
+.fancyButton{
+    -fx-background-color:  #2a9482;
+    -fx-background-radius:  15px;
+}
+
+.fancyLabel {
+    -fx-font-size: 22;
+    -fx-font-family: "Berlin Sans FB";
+    -fx-text-fill: white;
+}
+
+.list-view:focused.list-cell:selected{
+    -fx-background-color: #243142;
+}
+
+.list-view.list-cell{
+    -fx-background-color: #243142;
+    -fx-text-fill: white;
+}
+
+list-view.scroll-bar:vertical{
+    -fx-background-color: #243142;
+}
+
+.list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #2a9482;
+    -fx-background-insets: 5, 5, 5;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: #243142;
+}
+
+scroll-bar:vertical .thumb{
+    -fx-background-color: #2a9482;
+    -fx-background-insets: 5, 5, 5;
+    -fx-background-radius: 5;
+}
+
+.message {
+    -fx-background-radius:10;
+    -fx-padding:10;
+}
+
+.sentMessage {
+    -fx-background-color: dodgerblue;
+    -fx-text-alignment: right;
+}
+
+.sentMessageContent {
+    -fx-fill: white;
+}
+
+.receivedMessage {
+    -fx-background-color: lightgray;
+}
+
+.receivedMessageContent {
+    -fx-fill: black;
+}
+
+.messageAgent {
+    -fx-fill: white;
+}
+
+.text-area.content{
+    -fx-background-color:  transparent;
+    -fx-border-color: grey;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-padding: 10;
+    -fx-text-fill: grey;
+    -fx-font-size: 15;
+    -fx-font-family: "Berlin Sans FB";
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.list-view.scroll-bar:horizontal{
+    -fx-background-color: #243142;
+}
+
+.list-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: #2a9482;
+    -fx-background-insets: 5, 5, 5;
+    -fx-background-radius: 5;
+}
+.scroll-bar:horizontal{
+    -fx-background-color: #243142;
+}
+
+scroll-bar:horizontal .thumb{
+    -fx-background-color: #2a9482;
+    -fx-background-insets: 5, 5, 5;
+    -fx-background-radius: 5;
+}
