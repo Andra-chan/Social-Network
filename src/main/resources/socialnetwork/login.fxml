@@ -16,7 +16,7 @@
          <children>
             <ImageView fitHeight="407.0" fitWidth="228.0" layoutX="14.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/stars_starry_sky_gradient_181398_2160x3840.jpg" />
+                  <Image url="@images/loginBackground.jpg" />
                </image>
             </ImageView>
             <Label alignment="CENTER" layoutX="33.0" layoutY="139.0" prefHeight="104.0" prefWidth="190.0" text="Here to watch the stars?" textAlignment="CENTER" textFill="#0a0000" wrapText="true">
@@ -69,7 +69,7 @@
             </Label>
             <ImageView blendMode="DARKEN" fitHeight="129.0" fitWidth="107.0" layoutX="183.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="183.0" AnchorPane.rightAnchor="158.0">
                <image>
-                  <Image url="@images/star_icon.jpg" />
+                  <Image url="@images/logo.jpg" />
                </image>
             </ImageView>
             <PasswordField fx:id="textFieldPassword" layoutX="109.0" layoutY="249.0" prefHeight="39.0" prefWidth="270.0" promptText="Password" styleClass="fancyTextField" stylesheets="@css/style.css" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="69.0">

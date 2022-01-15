@@ -159,8 +159,8 @@ public class FriendRequestsController implements Observer<ChangeObserverEvent> {
                 mutualNowLabel.setVisible(modelCommonFriends.size() == 0);
                 mutualFriendsList.setVisible(!(modelCommonFriends.size() == 0));
                 mutualFriendsLabel.setVisible(!(modelCommonFriends.size() == 0));
-                nextPage.setVisible(modelCommonFriends.size() != 0);
-                prevPage.setVisible(modelCommonFriends.size() != 0);
+                friendsNextPage.setVisible(modelCommonFriends.size() != 0);
+                friendsPrevPage.setVisible(modelCommonFriends.size() != 0);
             }
         });
         userList.setItems(modelUsersWithFriendRequests);

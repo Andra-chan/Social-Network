@@ -18,14 +18,14 @@
          <children>
             <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
                <image>
-                  <Image url="@images/star_icon.jpg" />
+                  <Image url="@images/logo.jpg" />
                </image>
             </ImageView>
             <Button fx:id="logoutButton" layoutX="1000.0" layoutY="25.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="64.0" prefWidth="63.0" style="-fx-background-color: #243142; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" AnchorPane.rightAnchor="12.0">
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/Icons8-Windows-8-User-Interface-Logout-1.jpg" />
+                        <Image url="@images/logout.jpg" />
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -33,7 +33,7 @@
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="59.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/images.png" />
+                        <Image url="@images/home.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -45,7 +45,7 @@
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="64.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/mobile-application-report-function-web-button-menu-digital-silhouette-style-icon-free-vector.jpg" />
+                        <Image url="@images/reports.jpg" />
                      </image>
                   </ImageView>
                </graphic>
@@ -57,7 +57,7 @@
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/45533.png" />
+                        <Image url="@images/addEvent.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -129,7 +129,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/105-1055674_event-icon-png-transparent-png.png" />
+                  <Image url="@images/newEvent.png" />
                </image>
             </ImageView>
          </graphic>
@@ -141,7 +141,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/remove-event-6-1131246.png" />
+                  <Image url="@images/removeEvent.png" />
                </image>
             </ImageView>
          </graphic>
@@ -150,7 +150,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/previousPageImage.png" />
+                  <Image url="@images/prevPage.png" />
                </image>
             </ImageView>
          </graphic>
@@ -159,7 +159,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/nextPageIcon.png" />
+                  <Image url="@images/nextPage.png" />
                </image>
             </ImageView>
          </graphic>

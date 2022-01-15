@@ -18,14 +18,14 @@
          <children>
             <ImageView blendMode="DARKEN" fitHeight="94.0" fitWidth="107.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
                <image>
-                  <Image url="@images/star_icon.jpg" />
+                  <Image url="@images/logo.jpg" />
                </image>
             </ImageView>
             <Button fx:id="logoutButton" layoutX="1000.0" layoutY="25.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="64.0" prefWidth="63.0" style="-fx-background-color: #243142; -fx-text-fill: #ffffff; -fx-background-radius: 15px;" AnchorPane.rightAnchor="12.0">
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="44.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/Icons8-Windows-8-User-Interface-Logout-1.jpg" />
+                        <Image url="@images/logout.jpg" />
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -33,7 +33,7 @@
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="59.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/images.png" />
+                        <Image url="@images/home.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -45,7 +45,7 @@
                <graphic>
                   <ImageView blendMode="MULTIPLY" fitHeight="64.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/mobile-application-report-function-web-button-menu-digital-silhouette-style-icon-free-vector.jpg" />
+                        <Image url="@images/reports.jpg" />
                      </image>
                   </ImageView>
                </graphic>
@@ -57,7 +57,7 @@
                <graphic>
                   <ImageView blendMode="DARKEN" fitHeight="61.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/45533.png" />
+                        <Image url="@images/addEvent.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -116,7 +116,7 @@
       <Label fx:id="noMessagesLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="516.0" layoutY="723.0" prefHeight="87.0" prefWidth="278.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start chatting with a friend to see your messages from a certain period!" textAlignment="CENTER" wrapText="true" />
       <ImageView fx:id="noMessagesImage" blendMode="DARKEN" fitHeight="150.0" fitWidth="200.0" layoutX="580.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/cancel-chat-close-message-no-ui-notification-no-notification-icon-symbol-logo-trademark-label-transparent-png-1220879.png" />
+            <Image url="@images/noMessages.png" />
          </image>
       </ImageView>
       <Label fx:id="startLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="512.0" layoutY="730.0" onMouseClicked="#onStartClick" prefHeight="25.0" prefWidth="55.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="Start" textAlignment="CENTER" underline="true" wrapText="true" />
@@ -127,7 +127,7 @@
       <Label fx:id="noFriendsLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="16.0" layoutY="712.0" prefHeight="87.0" prefWidth="235.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="No friends? Start adding them now!" textAlignment="CENTER" wrapText="true" />
       <ImageView fx:id="noFriendsImage" blendMode="MULTIPLY" fitHeight="150.0" fitWidth="200.0" layoutX="53.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/images%20(2).png" />
+            <Image url="@images/missingFriends.png" />
          </image>
       </ImageView>
       <Label fx:id="nowLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="140.0" layoutY="756.0" onMouseClicked="#onNowClick" prefHeight="25.0" prefWidth="44.0" styleClass="fancyLabel" stylesheets="@css/style.css" text="now!" textAlignment="CENTER" underline="true" wrapText="true" />
@@ -135,7 +135,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/nextPageIcon.png" />
+                  <Image url="@images/nextPage.png" />
                </image>
             </ImageView>
          </graphic>
@@ -144,7 +144,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="24.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/previousPageImage.png" />
+                  <Image url="@images/prevPage.png" />
                </image>
             </ImageView>
          </graphic>
@@ -153,7 +153,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/previousPageImage.png" />
+                  <Image url="@images/prevPage.png" />
                </image>
             </ImageView>
          </graphic>
@@ -162,7 +162,7 @@
          <graphic>
             <ImageView blendMode="DARKEN" fitHeight="23.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/nextPageIcon.png" />
+                  <Image url="@images/nextPage.png" />
                </image>
             </ImageView>
          </graphic>
