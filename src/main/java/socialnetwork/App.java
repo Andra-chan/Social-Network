@@ -24,30 +24,13 @@ public class App extends Application {
     public static Stage currentStage;
     public static String defaultImagePath;
 
-    public static void changeSceneToReportsWindow(Service service, Long userId) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("reportsPage.fxml"));
-            AnchorPane root = fxmlLoader.load();
-            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
-            App.currentStage.setMinHeight(root.getPrefHeight());
-            App.currentStage.setMinWidth(root.getPrefWidth());
-            App.currentStage.setResizable(false);
-            service.clearObservers();
-
-            ReportsController controller = fxmlLoader.getController();
-            controller.initData(service, userId);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     @Override
     public void start(Stage stage) throws IOException {
         App.currentStage = stage;
 
-        String url = "jdbc:postgresql://localhost:5432/socialnetwork";
-        String username = "postgres";
-        String password = "mypostgres";
+        String url = "";
+        String username = "";
+        String password = "";
 
         Validator<Utilizator> userValidator = new UtilizatorValidator();
 
@@ -93,6 +76,23 @@ public class App extends Application {
         stage.setMaxWidth(root.getPrefWidth());
         stage.setResizable(false);
         stage.show();
+    }
+
+    public static void changeSceneToReportsWindow(Service service, Long userId) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("reportsPage.fxml"));
+            AnchorPane root = fxmlLoader.load();
+            App.currentStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+            App.currentStage.setMinHeight(root.getPrefHeight());
+            App.currentStage.setMinWidth(root.getPrefWidth());
+            App.currentStage.setResizable(false);
+            service.clearObservers();
+
+            ReportsController controller = fxmlLoader.getController();
+            controller.initData(service, userId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void changeSceneToMainWindow(Service service, Long userId) {
