@@ -126,6 +126,9 @@ public class ReportsController {
     @FXML
     Label warningLabel;
 
+    /**
+     * Sets visibility of all required R1 preview objects to the provided one
+     */
     private void setR1Visibility(boolean state) {
         noFriendsImage.setVisible(state);
         noFriendsLabel.setVisible(state);
@@ -141,6 +144,9 @@ public class ReportsController {
         startLabel.setVisible(state);
     }
 
+    /**
+     * Sets visibility of all required R2 preview objects to the provided one
+     */
     private void stateR2Visibility(boolean state) {
         newFriendsLabel.setVisible(state);
         noFriendsImage.setVisible(state);
@@ -156,11 +162,20 @@ public class ReportsController {
         messagesList.setVisible(!state);
     }
 
+    /**
+     * Initializes the controller
+     */
     @FXML
     public void initialize() {
         warningLabel.setVisible(false);
     }
 
+    /**
+     * Initialize the data inside the controller
+     *
+     * @param service a Service
+     * @param userId  the logged in user's id
+     */
     public void initData(Service service, Long userId) {
         this.service = service;
         this.userId = userId;

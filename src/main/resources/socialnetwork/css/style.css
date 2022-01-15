@@ -67,6 +67,7 @@ scroll-bar:vertical .thumb{
 
 .sentMessage {
     -fx-background-color: dodgerblue;
+    -fx-text-alignment: right;
 }
 
 .sentMessageContent {

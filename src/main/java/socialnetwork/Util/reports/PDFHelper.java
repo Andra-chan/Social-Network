@@ -1,6 +1,7 @@
 package socialnetwork.Util.reports;
 
 import com.itextpdf.awt.DefaultFontMapper;
+import com.itextpdf.awt.PdfGraphics2D;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.*;
@@ -100,8 +101,7 @@ public class PDFHelper {
         int height = 300;
         PdfTemplate pdfTemplate = pdfContentByte.createTemplate(width, height);
 
-        Graphics2D graphics2d = pdfTemplate.createGraphics(width, height,
-                new DefaultFontMapper());
+        Graphics2D graphics2d = new PdfGraphics2D(pdfTemplate, width, height);
         Rectangle2D rectangle2d = new Rectangle2D.Double(
                 0, 0, width, height);
         chart.draw(graphics2d, rectangle2d);
